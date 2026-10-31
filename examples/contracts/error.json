@@ -1,0 +1,7 @@
+{
+  "code": "HTTPS_TLS_CERTIFICATE_ERROR",
+  "category": "transport",
+  "message": "Synthetic fixture reason.",
+  "retryable": false,
+  "attempt_id": "fixture-req-01"
+}

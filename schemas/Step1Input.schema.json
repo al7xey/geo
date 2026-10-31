@@ -1,0 +1,1350 @@
+{
+  "$defs": {
+    "BudgetSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "enum": [
+            "1.0.0",
+            "1.1.0"
+          ],
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "started_at": {
+          "format": "date-time",
+          "title": "Started At",
+          "type": "string"
+        },
+        "captured_at": {
+          "format": "date-time",
+          "title": "Captured At",
+          "type": "string"
+        },
+        "step0_deadline_at": {
+          "format": "date-time",
+          "title": "Step0 Deadline At",
+          "type": "string"
+        },
+        "total_deadline_at": {
+          "format": "date-time",
+          "title": "Total Deadline At",
+          "type": "string"
+        },
+        "elapsed_seconds": {
+          "minimum": 0,
+          "title": "Elapsed Seconds",
+          "type": "number"
+        },
+        "step0_attempts": {
+          "minimum": 0,
+          "title": "Step0 Attempts",
+          "type": "integer"
+        },
+        "total_attempts": {
+          "minimum": 0,
+          "title": "Total Attempts",
+          "type": "integer"
+        },
+        "step0_max_attempts": {
+          "minimum": 1,
+          "title": "Step0 Max Attempts",
+          "type": "integer"
+        },
+        "total_max_attempts": {
+          "minimum": 1,
+          "title": "Total Max Attempts",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "schema_version",
+        "started_at",
+        "captured_at",
+        "step0_deadline_at",
+        "total_deadline_at",
+        "elapsed_seconds",
+        "step0_attempts",
+        "total_attempts",
+        "step0_max_attempts",
+        "total_max_attempts"
+      ],
+      "title": "BudgetSnapshot",
+      "type": "object"
+    },
+    "ErrorDetail": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "enum": [
+            "INPUT_URL_INVALID",
+            "INPUT_SCHEME_UNSUPPORTED",
+            "INPUT_CREDENTIALS_FORBIDDEN",
+            "INPUT_PORT_INVALID",
+            "INPUT_ARTIFACT_INVALID",
+            "TARGET_NOT_PUBLIC",
+            "TARGET_DNS_REBINDING",
+            "TARGET_PORT_FORBIDDEN",
+            "TARGET_PATH_FORBIDDEN",
+            "TARGET_SECURITY_UNAVAILABLE",
+            "DNS_NXDOMAIN",
+            "DNS_TEMPORARY",
+            "NETWORK_CONNECT_ERROR",
+            "NETWORK_READ_ERROR",
+            "NETWORK_TIMEOUT",
+            "NETWORK_CANCELLED",
+            "HTTPS_TLS_CERTIFICATE_ERROR",
+            "HTTPS_TLS_HANDSHAKE_ERROR",
+            "HTTPS_DOWNGRADE",
+            "REDIRECT_INVALID_LOCATION",
+            "REDIRECT_LOOP",
+            "REDIRECT_LIMIT",
+            "REDIRECT_EXTERNAL_HOST",
+            "FALLBACK_NO_USABLE_RESULT",
+            "FALLBACK_USED",
+            "HTTP_DENIED",
+            "HTTP_MISSING",
+            "HTTP_UNAVAILABLE",
+            "HTTP_UNEXPECTED_STATUS",
+            "CONTENT_EMPTY",
+            "CONTENT_NON_HTML",
+            "CONTENT_TOO_LARGE",
+            "CONTENT_INCOMPLETE",
+            "CONTENT_ENCODING_UNSUPPORTED",
+            "CONTENT_DECODE_ERROR",
+            "CONTENT_SUSPICIOUS",
+            "CONTENT_JS_CANDIDATE",
+            "ACCESS_LOGIN",
+            "ACCESS_CHALLENGE",
+            "BUDGET_DEADLINE",
+            "BUDGET_ATTEMPTS",
+            "RETRY_DEFERRED",
+            "OUTPUT_WRITE_FAILED",
+            "IMPLEMENTATION_NOT_AVAILABLE"
+          ],
+          "title": "Code",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "input",
+            "target",
+            "transport",
+            "http",
+            "content",
+            "budget",
+            "output",
+            "implementation"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "retryable": {
+          "title": "Retryable",
+          "type": "boolean"
+        },
+        "attempt_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Attempt Id"
+        }
+      },
+      "required": [
+        "code",
+        "category",
+        "message",
+        "retryable",
+        "attempt_id"
+      ],
+      "title": "ErrorDetail",
+      "type": "object"
+    },
+    "EvidenceFile": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "size_bytes": {
+          "minimum": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        },
+        "representation": {
+          "enum": [
+            "content_encoded",
+            "entity_bytes",
+            "decoded_text",
+            "attempt_observation"
+          ],
+          "title": "Representation",
+          "type": "string"
+        },
+        "complete": {
+          "title": "Complete",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "size_bytes",
+        "representation",
+        "complete"
+      ],
+      "title": "EvidenceFile",
+      "type": "object"
+    },
+    "EvidenceRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "enum": [
+            "1.0.0",
+            "1.1.0"
+          ],
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "evidence_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "attempt_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Attempt Id",
+          "type": "string"
+        },
+        "requested_url": {
+          "format": "uri",
+          "pattern": "^https?://",
+          "title": "Requested Url",
+          "type": "string"
+        },
+        "captured_at": {
+          "format": "date-time",
+          "title": "Captured At",
+          "type": "string"
+        },
+        "files": {
+          "items": {
+            "$ref": "#/$defs/EvidenceFile"
+          },
+          "minItems": 1,
+          "title": "Files",
+          "type": "array"
+        },
+        "declared_encoding": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Declared Encoding"
+        },
+        "applied_encoding": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Applied Encoding"
+        },
+        "replacement_characters": {
+          "minimum": 0,
+          "title": "Replacement Characters",
+          "type": "integer"
+        },
+        "sniffed_html": {
+          "title": "Sniffed Html",
+          "type": "boolean"
+        },
+        "classification_basis": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Classification Basis",
+          "type": "array"
+        },
+        "classification_confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Classification Confidence"
+        },
+        "redacted_headers": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Redacted Headers",
+          "type": "array"
+        }
+      },
+      "required": [
+        "schema_version",
+        "evidence_id",
+        "attempt_id",
+        "requested_url",
+        "captured_at",
+        "files",
+        "declared_encoding",
+        "applied_encoding",
+        "replacement_characters",
+        "sniffed_html",
+        "classification_basis",
+        "classification_confidence",
+        "redacted_headers"
+      ],
+      "title": "EvidenceRecord",
+      "type": "object"
+    },
+    "FetchAttempt": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "enum": [
+            "1.0.0",
+            "1.1.0"
+          ],
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "attempt_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Attempt Id",
+          "type": "string"
+        },
+        "parent_attempt_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Parent Attempt Id"
+        },
+        "requested_url": {
+          "format": "uri",
+          "pattern": "^https?://",
+          "title": "Requested Url",
+          "type": "string"
+        },
+        "purpose": {
+          "enum": [
+            "initial",
+            "retry",
+            "http_fallback",
+            "redirect"
+          ],
+          "title": "Purpose",
+          "type": "string"
+        },
+        "request_sent": {
+          "title": "Request Sent",
+          "type": "boolean"
+        },
+        "resolved_target": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ResolvedTarget"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status_code": {
+          "anyOf": [
+            {
+              "maximum": 599,
+              "minimum": 100,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Status Code"
+        },
+        "response_headers": {
+          "items": {
+            "$ref": "#/$defs/Header"
+          },
+          "title": "Response Headers",
+          "type": "array"
+        },
+        "started_at": {
+          "format": "date-time",
+          "title": "Started At",
+          "type": "string"
+        },
+        "elapsed_ms": {
+          "minimum": 0,
+          "title": "Elapsed Ms",
+          "type": "number"
+        },
+        "transport_error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorDetail"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tls_state": {
+          "enum": [
+            "not_observed",
+            "not_applicable",
+            "verified",
+            "certificate_error",
+            "handshake_error"
+          ],
+          "title": "Tls State",
+          "type": "string"
+        },
+        "evidence_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "bytes_read": {
+          "minimum": 0,
+          "title": "Bytes Read",
+          "type": "integer"
+        },
+        "decoded_bytes": {
+          "minimum": 0,
+          "title": "Decoded Bytes",
+          "type": "integer"
+        },
+        "body_complete": {
+          "title": "Body Complete",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "schema_version",
+        "attempt_id",
+        "parent_attempt_id",
+        "requested_url",
+        "purpose",
+        "request_sent",
+        "resolved_target",
+        "status_code",
+        "response_headers",
+        "started_at",
+        "elapsed_ms",
+        "transport_error",
+        "tls_state",
+        "evidence_id",
+        "bytes_read",
+        "decoded_bytes",
+        "body_complete"
+      ],
+      "title": "FetchAttempt",
+      "type": "object"
+    },
+    "Header": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "enum": [
+            "content-type",
+            "content-length",
+            "content-encoding",
+            "location",
+            "retry-after",
+            "server",
+            "date",
+            "vary",
+            "cache-control",
+            "etag",
+            "last-modified"
+          ],
+          "title": "Name",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "redacted": {
+          "title": "Redacted",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "value",
+        "redacted"
+      ],
+      "title": "Header",
+      "type": "object"
+    },
+    "RedirectHop": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "enum": [
+            "1.0.0",
+            "1.1.0"
+          ],
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_attempt_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Source Attempt Id",
+          "type": "string"
+        },
+        "source_url": {
+          "format": "uri",
+          "pattern": "^https?://",
+          "title": "Source Url",
+          "type": "string"
+        },
+        "status_code": {
+          "enum": [
+            301,
+            302,
+            303,
+            307,
+            308
+          ],
+          "title": "Status Code",
+          "type": "integer"
+        },
+        "raw_location": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Raw Location"
+        },
+        "target_url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "pattern": "^https?://",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Target Url"
+        },
+        "decision": {
+          "enum": [
+            "follow",
+            "allow_www_alias",
+            "needs_input",
+            "reject"
+          ],
+          "title": "Decision",
+          "type": "string"
+        },
+        "reason_code": {
+          "anyOf": [
+            {
+              "enum": [
+                "INPUT_URL_INVALID",
+                "INPUT_SCHEME_UNSUPPORTED",
+                "INPUT_CREDENTIALS_FORBIDDEN",
+                "INPUT_PORT_INVALID",
+                "INPUT_ARTIFACT_INVALID",
+                "TARGET_NOT_PUBLIC",
+                "TARGET_DNS_REBINDING",
+                "TARGET_PORT_FORBIDDEN",
+                "TARGET_PATH_FORBIDDEN",
+                "TARGET_SECURITY_UNAVAILABLE",
+                "DNS_NXDOMAIN",
+                "DNS_TEMPORARY",
+                "NETWORK_CONNECT_ERROR",
+                "NETWORK_READ_ERROR",
+                "NETWORK_TIMEOUT",
+                "NETWORK_CANCELLED",
+                "HTTPS_TLS_CERTIFICATE_ERROR",
+                "HTTPS_TLS_HANDSHAKE_ERROR",
+                "HTTPS_DOWNGRADE",
+                "REDIRECT_INVALID_LOCATION",
+                "REDIRECT_LOOP",
+                "REDIRECT_LIMIT",
+                "REDIRECT_EXTERNAL_HOST",
+                "FALLBACK_NO_USABLE_RESULT",
+                "FALLBACK_USED",
+                "HTTP_DENIED",
+                "HTTP_MISSING",
+                "HTTP_UNAVAILABLE",
+                "HTTP_UNEXPECTED_STATUS",
+                "CONTENT_EMPTY",
+                "CONTENT_NON_HTML",
+                "CONTENT_TOO_LARGE",
+                "CONTENT_INCOMPLETE",
+                "CONTENT_ENCODING_UNSUPPORTED",
+                "CONTENT_DECODE_ERROR",
+                "CONTENT_SUSPICIOUS",
+                "CONTENT_JS_CANDIDATE",
+                "ACCESS_LOGIN",
+                "ACCESS_CHALLENGE",
+                "BUDGET_DEADLINE",
+                "BUDGET_ATTEMPTS",
+                "RETRY_DEFERRED",
+                "OUTPUT_WRITE_FAILED",
+                "IMPLEMENTATION_NOT_AVAILABLE"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reason Code"
+        },
+        "observed_at": {
+          "format": "date-time",
+          "title": "Observed At",
+          "type": "string"
+        },
+        "psl_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Psl Sha256"
+        }
+      },
+      "required": [
+        "schema_version",
+        "source_attempt_id",
+        "source_url",
+        "status_code",
+        "raw_location",
+        "target_url",
+        "decision",
+        "reason_code",
+        "observed_at",
+        "psl_sha256"
+      ],
+      "title": "RedirectHop",
+      "type": "object"
+    },
+    "ResolvedTarget": {
+      "additionalProperties": false,
+      "properties": {
+        "host": {
+          "title": "Host",
+          "type": "string"
+        },
+        "port": {
+          "maximum": 65535,
+          "minimum": 1,
+          "title": "Port",
+          "type": "integer"
+        },
+        "addresses": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Addresses",
+          "type": "array"
+        },
+        "connected_ip": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Connected Ip"
+        },
+        "enforcement": {
+          "enum": [
+            "pinned",
+            "controlled_egress"
+          ],
+          "title": "Enforcement",
+          "type": "string"
+        }
+      },
+      "required": [
+        "host",
+        "port",
+        "addresses",
+        "connected_ip",
+        "enforcement"
+      ],
+      "title": "ResolvedTarget",
+      "type": "object"
+    },
+    "SiteValidationResult": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "enum": [
+            "1.0.0",
+            "1.1.0"
+          ],
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "algorithm_version": {
+          "enum": [
+            "step0-1.0",
+            "step0-1.1"
+          ],
+          "title": "Algorithm Version",
+          "type": "string"
+        },
+        "config_version": {
+          "enum": [
+            "step0-config-1.0.0",
+            "step0-config-1.1.0"
+          ],
+          "title": "Config Version",
+          "type": "string"
+        },
+        "config": {
+          "$ref": "#/$defs/Step0Config"
+        },
+        "config_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Config Sha256",
+          "type": "string"
+        },
+        "run_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "parent_run_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Parent Run Id"
+        },
+        "started_at": {
+          "format": "date-time",
+          "title": "Started At",
+          "type": "string"
+        },
+        "finished_at": {
+          "format": "date-time",
+          "title": "Finished At",
+          "type": "string"
+        },
+        "source_timezone": {
+          "title": "Source Timezone",
+          "type": "string"
+        },
+        "input_url": {
+          "title": "Input Url",
+          "type": "string"
+        },
+        "normalized_url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "pattern": "^https?://",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Normalized Url"
+        },
+        "input_scheme_explicit": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Input Scheme Explicit"
+        },
+        "input_host_unicode": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Input Host Unicode"
+        },
+        "effective_url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "pattern": "^https?://",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Effective Url"
+        },
+        "origin": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Origin"
+        },
+        "entry_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Entry Path"
+        },
+        "allowed_hosts": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Allowed Hosts",
+          "type": "array"
+        },
+        "path_scope": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Path Scope",
+          "type": "array"
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "partial",
+            "needs_input",
+            "failed"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "can_enter_step1": {
+          "title": "Can Enter Step1",
+          "type": "boolean"
+        },
+        "content_state": {
+          "enum": [
+            "not_received",
+            "html",
+            "js_candidate",
+            "access_barrier",
+            "suspicious_html",
+            "empty",
+            "non_html",
+            "http_denied",
+            "http_missing",
+            "http_unavailable",
+            "http_other",
+            "incomplete",
+            "too_large"
+          ],
+          "title": "Content State",
+          "type": "string"
+        },
+        "diagnostic_allowed": {
+          "title": "Diagnostic Allowed",
+          "type": "boolean"
+        },
+        "fallback_used": {
+          "title": "Fallback Used",
+          "type": "boolean"
+        },
+        "selected_evidence_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Selected Evidence Id"
+        },
+        "final_attempt_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Final Attempt Id"
+        },
+        "attempt_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+            "type": "string"
+          },
+          "title": "Attempt Ids",
+          "type": "array"
+        },
+        "attempts": {
+          "items": {
+            "$ref": "#/$defs/FetchAttempt"
+          },
+          "title": "Attempts",
+          "type": "array"
+        },
+        "redirect_chain": {
+          "items": {
+            "$ref": "#/$defs/RedirectHop"
+          },
+          "title": "Redirect Chain",
+          "type": "array"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceRecord"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "errors": {
+          "items": {
+            "$ref": "#/$defs/ErrorDetail"
+          },
+          "title": "Errors",
+          "type": "array"
+        },
+        "reason_codes": {
+          "items": {
+            "enum": [
+              "INPUT_URL_INVALID",
+              "INPUT_SCHEME_UNSUPPORTED",
+              "INPUT_CREDENTIALS_FORBIDDEN",
+              "INPUT_PORT_INVALID",
+              "INPUT_ARTIFACT_INVALID",
+              "TARGET_NOT_PUBLIC",
+              "TARGET_DNS_REBINDING",
+              "TARGET_PORT_FORBIDDEN",
+              "TARGET_PATH_FORBIDDEN",
+              "TARGET_SECURITY_UNAVAILABLE",
+              "DNS_NXDOMAIN",
+              "DNS_TEMPORARY",
+              "NETWORK_CONNECT_ERROR",
+              "NETWORK_READ_ERROR",
+              "NETWORK_TIMEOUT",
+              "NETWORK_CANCELLED",
+              "HTTPS_TLS_CERTIFICATE_ERROR",
+              "HTTPS_TLS_HANDSHAKE_ERROR",
+              "HTTPS_DOWNGRADE",
+              "REDIRECT_INVALID_LOCATION",
+              "REDIRECT_LOOP",
+              "REDIRECT_LIMIT",
+              "REDIRECT_EXTERNAL_HOST",
+              "FALLBACK_NO_USABLE_RESULT",
+              "FALLBACK_USED",
+              "HTTP_DENIED",
+              "HTTP_MISSING",
+              "HTTP_UNAVAILABLE",
+              "HTTP_UNEXPECTED_STATUS",
+              "CONTENT_EMPTY",
+              "CONTENT_NON_HTML",
+              "CONTENT_TOO_LARGE",
+              "CONTENT_INCOMPLETE",
+              "CONTENT_ENCODING_UNSUPPORTED",
+              "CONTENT_DECODE_ERROR",
+              "CONTENT_SUSPICIOUS",
+              "CONTENT_JS_CANDIDATE",
+              "ACCESS_LOGIN",
+              "ACCESS_CHALLENGE",
+              "BUDGET_DEADLINE",
+              "BUDGET_ATTEMPTS",
+              "RETRY_DEFERRED",
+              "OUTPUT_WRITE_FAILED",
+              "IMPLEMENTATION_NOT_AVAILABLE"
+            ],
+            "type": "string"
+          },
+          "title": "Reason Codes",
+          "type": "array"
+        },
+        "proposed_target_url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "pattern": "^https?://",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Proposed Target Url"
+        },
+        "next_action": {
+          "minLength": 1,
+          "title": "Next Action",
+          "type": "string"
+        },
+        "budget": {
+          "$ref": "#/$defs/BudgetSnapshot"
+        }
+      },
+      "required": [
+        "schema_version",
+        "algorithm_version",
+        "config_version",
+        "config",
+        "config_sha256",
+        "run_id",
+        "parent_run_id",
+        "started_at",
+        "finished_at",
+        "source_timezone",
+        "input_url",
+        "normalized_url",
+        "input_scheme_explicit",
+        "input_host_unicode",
+        "effective_url",
+        "origin",
+        "entry_path",
+        "allowed_hosts",
+        "path_scope",
+        "status",
+        "can_enter_step1",
+        "content_state",
+        "diagnostic_allowed",
+        "fallback_used",
+        "selected_evidence_id",
+        "final_attempt_id",
+        "attempt_ids",
+        "attempts",
+        "redirect_chain",
+        "evidence",
+        "errors",
+        "reason_codes",
+        "proposed_target_url",
+        "next_action",
+        "budget"
+      ],
+      "title": "SiteValidationResult",
+      "type": "object"
+    },
+    "Step0Config": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "default": "1.1.0",
+          "enum": [
+            "1.0.0",
+            "1.1.0"
+          ],
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "config_version": {
+          "default": "step0-config-1.1.0",
+          "enum": [
+            "step0-config-1.0.0",
+            "step0-config-1.1.0"
+          ],
+          "title": "Config Version",
+          "type": "string"
+        },
+        "allow_http_fallback": {
+          "default": true,
+          "title": "Allow Http Fallback",
+          "type": "boolean"
+        },
+        "allowed_hosts": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Allowed Hosts",
+          "type": "array"
+        },
+        "allowed_extra_ports": {
+          "default": [],
+          "items": {
+            "type": "integer"
+          },
+          "title": "Allowed Extra Ports",
+          "type": "array"
+        },
+        "path_scope": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Path Scope",
+          "type": "array"
+        },
+        "step0_deadline_seconds": {
+          "default": 60.0,
+          "exclusiveMinimum": 0,
+          "title": "Step0 Deadline Seconds",
+          "type": "number"
+        },
+        "total_deadline_seconds": {
+          "default": 300.0,
+          "exclusiveMinimum": 0,
+          "title": "Total Deadline Seconds",
+          "type": "number"
+        },
+        "step0_max_attempts": {
+          "default": 15,
+          "minimum": 1,
+          "title": "Step0 Max Attempts",
+          "type": "integer"
+        },
+        "total_max_attempts": {
+          "default": 150,
+          "minimum": 1,
+          "title": "Total Max Attempts",
+          "type": "integer"
+        },
+        "connect_timeout_seconds": {
+          "default": 5.0,
+          "exclusiveMinimum": 0,
+          "title": "Connect Timeout Seconds",
+          "type": "number"
+        },
+        "read_timeout_seconds": {
+          "default": 15.0,
+          "exclusiveMinimum": 0,
+          "title": "Read Timeout Seconds",
+          "type": "number"
+        },
+        "write_timeout_seconds": {
+          "default": 10.0,
+          "exclusiveMinimum": 0,
+          "title": "Write Timeout Seconds",
+          "type": "number"
+        },
+        "pool_timeout_seconds": {
+          "default": 5.0,
+          "exclusiveMinimum": 0,
+          "title": "Pool Timeout Seconds",
+          "type": "number"
+        },
+        "max_redirect_hops": {
+          "default": 5,
+          "minimum": 0,
+          "title": "Max Redirect Hops",
+          "type": "integer"
+        },
+        "max_retries": {
+          "default": 2,
+          "minimum": 0,
+          "title": "Max Retries",
+          "type": "integer"
+        },
+        "retry_delays_seconds": {
+          "default": [
+            1.0,
+            2.0
+          ],
+          "items": {
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "title": "Retry Delays Seconds",
+          "type": "array"
+        },
+        "retry_jitter_seconds": {
+          "default": 0.2,
+          "minimum": 0,
+          "title": "Retry Jitter Seconds",
+          "type": "number"
+        },
+        "max_encoded_bytes": {
+          "default": 5242880,
+          "minimum": 1,
+          "title": "Max Encoded Bytes",
+          "type": "integer"
+        },
+        "max_decoded_bytes": {
+          "default": 5242880,
+          "minimum": 1,
+          "title": "Max Decoded Bytes",
+          "type": "integer"
+        },
+        "sniff_bytes": {
+          "default": 4096,
+          "maximum": 4096,
+          "minimum": 1,
+          "title": "Sniff Bytes",
+          "type": "integer"
+        },
+        "min_host_interval_seconds": {
+          "default": 1.0,
+          "exclusiveMinimum": 0,
+          "title": "Min Host Interval Seconds",
+          "type": "number"
+        },
+        "user_agent": {
+          "default": "GEOAudit/0.1",
+          "minLength": 1,
+          "title": "User Agent",
+          "type": "string"
+        },
+        "accept_language": {
+          "default": "ru,en;q=0.8",
+          "minLength": 1,
+          "title": "Accept Language",
+          "type": "string"
+        },
+        "source_timezone": {
+          "default": "Europe/Moscow",
+          "title": "Source Timezone",
+          "type": "string"
+        },
+        "tls_verify": {
+          "const": true,
+          "default": true,
+          "title": "Tls Verify",
+          "type": "boolean"
+        },
+        "trust_env": {
+          "const": false,
+          "default": false,
+          "title": "Trust Env",
+          "type": "boolean"
+        },
+        "proxy_mode": {
+          "const": "disabled",
+          "default": "disabled",
+          "title": "Proxy Mode",
+          "type": "string"
+        },
+        "cookie_mode": {
+          "const": "disabled",
+          "default": "disabled",
+          "title": "Cookie Mode",
+          "type": "string"
+        },
+        "dns_policy": {
+          "const": "public_only_pinned",
+          "default": "public_only_pinned",
+          "title": "Dns Policy",
+          "type": "string"
+        }
+      },
+      "title": "Step0Config",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "enum": [
+        "1.0.0",
+        "1.1.0"
+      ],
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_step": {
+      "const": 0,
+      "title": "Source Step",
+      "type": "integer"
+    },
+    "site": {
+      "$ref": "#/$defs/SiteValidationResult"
+    },
+    "selected_response": {
+      "$ref": "#/$defs/FetchAttempt"
+    },
+    "selected_evidence": {
+      "$ref": "#/$defs/EvidenceRecord"
+    },
+    "budget": {
+      "$ref": "#/$defs/BudgetSnapshot"
+    },
+    "crawl_permission": {
+      "const": "unknown",
+      "title": "Crawl Permission",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "source_step",
+    "site",
+    "selected_response",
+    "selected_evidence",
+    "budget",
+    "crawl_permission"
+  ],
+  "title": "Step1Input",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:Step1Input:1.1.0"
+}

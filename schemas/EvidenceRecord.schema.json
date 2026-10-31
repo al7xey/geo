@@ -1,0 +1,163 @@
+{
+  "$defs": {
+    "EvidenceFile": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "size_bytes": {
+          "minimum": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        },
+        "representation": {
+          "enum": [
+            "content_encoded",
+            "entity_bytes",
+            "decoded_text",
+            "attempt_observation"
+          ],
+          "title": "Representation",
+          "type": "string"
+        },
+        "complete": {
+          "title": "Complete",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "size_bytes",
+        "representation",
+        "complete"
+      ],
+      "title": "EvidenceFile",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "enum": [
+        "1.0.0",
+        "1.1.0"
+      ],
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "evidence_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Evidence Id",
+      "type": "string"
+    },
+    "attempt_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Attempt Id",
+      "type": "string"
+    },
+    "requested_url": {
+      "format": "uri",
+      "pattern": "^https?://",
+      "title": "Requested Url",
+      "type": "string"
+    },
+    "captured_at": {
+      "format": "date-time",
+      "title": "Captured At",
+      "type": "string"
+    },
+    "files": {
+      "items": {
+        "$ref": "#/$defs/EvidenceFile"
+      },
+      "minItems": 1,
+      "title": "Files",
+      "type": "array"
+    },
+    "declared_encoding": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Declared Encoding"
+    },
+    "applied_encoding": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Applied Encoding"
+    },
+    "replacement_characters": {
+      "minimum": 0,
+      "title": "Replacement Characters",
+      "type": "integer"
+    },
+    "sniffed_html": {
+      "title": "Sniffed Html",
+      "type": "boolean"
+    },
+    "classification_basis": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Classification Basis",
+      "type": "array"
+    },
+    "classification_confidence": {
+      "anyOf": [
+        {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Classification Confidence"
+    },
+    "redacted_headers": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Redacted Headers",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "evidence_id",
+    "attempt_id",
+    "requested_url",
+    "captured_at",
+    "files",
+    "declared_encoding",
+    "applied_encoding",
+    "replacement_characters",
+    "sniffed_html",
+    "classification_basis",
+    "classification_confidence",
+    "redacted_headers"
+  ],
+  "title": "EvidenceRecord",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:EvidenceRecord:1.1.0"
+}

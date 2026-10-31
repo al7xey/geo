@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.1.0",
+  "source_attempt_id": "fixture-req-01",
+  "source_url": "https://example.com/ru/?city=msk",
+  "status_code": 302,
+  "raw_location": "https://other.example/",
+  "target_url": "https://other.example/",
+  "decision": "needs_input",
+  "reason_code": "REDIRECT_EXTERNAL_HOST",
+  "observed_at": "2026-10-31T12:00:00Z",
+  "psl_sha256": null
+}

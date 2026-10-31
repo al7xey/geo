@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "geo-audit"
+version = "0.2.0"
+description = "GEO step 0 URL policies and bounded HTTP client with pinned connections"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["httpx==0.28.1", "httpcore==1.0.9", "anyio==4.15.1", "certifi==2026.10.23", "pydantic==2.12.3", "idna==3.11", "tzdata==2025.2"]
+
+[project.scripts]
+geo-audit = "geo_audit.cli:main"
+
+[dependency-groups]
+dev = ["pytest==8.4.2", "jsonschema==4.25.1", "mypy==1.18.2", "ruff==0.14.3", "trustme==1.2.1"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/geo_audit"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src/geo_audit"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]

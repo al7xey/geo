@@ -1,0 +1,158 @@
+{
+  "schema_version": "1.1.0",
+  "algorithm_version": "step0-1.1",
+  "config_version": "step0-config-1.1.0",
+  "config": {
+    "schema_version": "1.1.0",
+    "config_version": "step0-config-1.1.0",
+    "allow_http_fallback": true,
+    "allowed_hosts": [],
+    "allowed_extra_ports": [],
+    "path_scope": [],
+    "step0_deadline_seconds": 60.0,
+    "total_deadline_seconds": 300.0,
+    "step0_max_attempts": 15,
+    "total_max_attempts": 150,
+    "connect_timeout_seconds": 5.0,
+    "read_timeout_seconds": 15.0,
+    "write_timeout_seconds": 10.0,
+    "pool_timeout_seconds": 5.0,
+    "max_redirect_hops": 5,
+    "max_retries": 2,
+    "retry_delays_seconds": [
+      1.0,
+      2.0
+    ],
+    "retry_jitter_seconds": 0.2,
+    "max_encoded_bytes": 5242880,
+    "max_decoded_bytes": 5242880,
+    "sniff_bytes": 4096,
+    "min_host_interval_seconds": 1.0,
+    "user_agent": "GEOAudit/0.1",
+    "accept_language": "ru,en;q=0.8",
+    "source_timezone": "Europe/Moscow",
+    "tls_verify": true,
+    "trust_env": false,
+    "proxy_mode": "disabled",
+    "cookie_mode": "disabled",
+    "dns_policy": "public_only_pinned"
+  },
+  "config_sha256": "c1d1d4c01109e03323b6d35a7bb561bd91328927072ada08dd3df3da4362e7e3",
+  "run_id": "fixture-partial-suspicious_html-enter",
+  "parent_run_id": null,
+  "started_at": "2026-10-31T12:00:00Z",
+  "finished_at": "2026-10-31T12:00:01Z",
+  "source_timezone": "Europe/Moscow",
+  "input_url": "example.com/ru/?city=msk#prices",
+  "normalized_url": "https://example.com/ru/?city=msk",
+  "input_scheme_explicit": false,
+  "input_host_unicode": "example.com",
+  "effective_url": "https://example.com/ru/?city=msk",
+  "origin": "https://example.com",
+  "entry_path": "/ru/",
+  "allowed_hosts": [
+    "example.com"
+  ],
+  "path_scope": [],
+  "status": "partial",
+  "can_enter_step1": true,
+  "content_state": "suspicious_html",
+  "diagnostic_allowed": true,
+  "fallback_used": false,
+  "selected_evidence_id": "fixture-ev-01",
+  "final_attempt_id": "fixture-req-01",
+  "attempt_ids": [
+    "fixture-req-01"
+  ],
+  "attempts": [
+    {
+      "schema_version": "1.1.0",
+      "attempt_id": "fixture-req-01",
+      "parent_attempt_id": null,
+      "requested_url": "https://example.com/ru/?city=msk",
+      "purpose": "initial",
+      "request_sent": true,
+      "resolved_target": {
+        "host": "example.com",
+        "port": 443,
+        "addresses": [
+          "93.184.216.34"
+        ],
+        "connected_ip": "93.184.216.34",
+        "enforcement": "pinned"
+      },
+      "status_code": 200,
+      "response_headers": [
+        {
+          "name": "content-type",
+          "value": "text/html",
+          "redacted": false
+        }
+      ],
+      "started_at": "2026-10-31T12:00:00Z",
+      "elapsed_ms": 100.0,
+      "transport_error": null,
+      "tls_state": "verified",
+      "evidence_id": "fixture-ev-01",
+      "bytes_read": 80,
+      "decoded_bytes": 80,
+      "body_complete": true
+    }
+  ],
+  "redirect_chain": [],
+  "evidence": [
+    {
+      "schema_version": "1.1.0",
+      "evidence_id": "fixture-ev-01",
+      "attempt_id": "fixture-req-01",
+      "requested_url": "https://example.com/ru/?city=msk",
+      "captured_at": "2026-10-31T12:00:00Z",
+      "files": [
+        {
+          "path": "raw/entry.html",
+          "sha256": "8f8fe0b98492ec1d3a8ba1ea1a0d5efafa3e5798ae723b9e7067a9654c468798",
+          "size_bytes": 80,
+          "representation": "entity_bytes",
+          "complete": true
+        }
+      ],
+      "declared_encoding": "utf-8",
+      "applied_encoding": null,
+      "replacement_characters": 0,
+      "sniffed_html": false,
+      "classification_basis": [
+        "Synthetic fixture: explicitly authored HTML, no network observation."
+      ],
+      "classification_confidence": 1.0,
+      "redacted_headers": [
+        "set-cookie"
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": "CONTENT_SUSPICIOUS",
+      "category": "content",
+      "message": "Synthetic fixture reason.",
+      "retryable": false,
+      "attempt_id": null
+    }
+  ],
+  "reason_codes": [
+    "CONTENT_SUSPICIOUS"
+  ],
+  "proposed_target_url": null,
+  "next_action": "continue_step1",
+  "budget": {
+    "schema_version": "1.1.0",
+    "started_at": "2026-10-31T12:00:00Z",
+    "captured_at": "2026-10-31T12:00:01Z",
+    "step0_deadline_at": "2026-10-31T12:01:00Z",
+    "total_deadline_at": "2026-10-31T12:05:00Z",
+    "elapsed_seconds": 1.0,
+    "step0_attempts": 1,
+    "total_attempts": 1,
+    "step0_max_attempts": 15,
+    "total_max_attempts": 150
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.1.0",
+  "attempt_id": "fixture-req-01",
+  "parent_attempt_id": null,
+  "requested_url": "https://example.com/ru/?city=msk",
+  "purpose": "initial",
+  "request_sent": true,
+  "resolved_target": {
+    "host": "example.com",
+    "port": 443,
+    "addresses": [
+      "93.184.216.34"
+    ],
+    "connected_ip": "93.184.216.34",
+    "enforcement": "pinned"
+  },
+  "status_code": 200,
+  "response_headers": [
+    {
+      "name": "content-type",
+      "value": "text/html",
+      "redacted": false
+    }
+  ],
+  "started_at": "2026-10-31T12:00:00Z",
+  "elapsed_ms": 100.0,
+  "transport_error": null,
+  "tls_state": "verified",
+  "evidence_id": "fixture-ev-01",
+  "bytes_read": 80,
+  "decoded_bytes": 80,
+  "body_complete": true
+}

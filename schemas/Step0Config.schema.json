@@ -1,0 +1,206 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "default": "1.1.0",
+      "enum": [
+        "1.0.0",
+        "1.1.0"
+      ],
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "config_version": {
+      "default": "step0-config-1.1.0",
+      "enum": [
+        "step0-config-1.0.0",
+        "step0-config-1.1.0"
+      ],
+      "title": "Config Version",
+      "type": "string"
+    },
+    "allow_http_fallback": {
+      "default": true,
+      "title": "Allow Http Fallback",
+      "type": "boolean"
+    },
+    "allowed_hosts": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Allowed Hosts",
+      "type": "array"
+    },
+    "allowed_extra_ports": {
+      "default": [],
+      "items": {
+        "type": "integer"
+      },
+      "title": "Allowed Extra Ports",
+      "type": "array"
+    },
+    "path_scope": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Path Scope",
+      "type": "array"
+    },
+    "step0_deadline_seconds": {
+      "default": 60.0,
+      "exclusiveMinimum": 0,
+      "title": "Step0 Deadline Seconds",
+      "type": "number"
+    },
+    "total_deadline_seconds": {
+      "default": 300.0,
+      "exclusiveMinimum": 0,
+      "title": "Total Deadline Seconds",
+      "type": "number"
+    },
+    "step0_max_attempts": {
+      "default": 15,
+      "minimum": 1,
+      "title": "Step0 Max Attempts",
+      "type": "integer"
+    },
+    "total_max_attempts": {
+      "default": 150,
+      "minimum": 1,
+      "title": "Total Max Attempts",
+      "type": "integer"
+    },
+    "connect_timeout_seconds": {
+      "default": 5.0,
+      "exclusiveMinimum": 0,
+      "title": "Connect Timeout Seconds",
+      "type": "number"
+    },
+    "read_timeout_seconds": {
+      "default": 15.0,
+      "exclusiveMinimum": 0,
+      "title": "Read Timeout Seconds",
+      "type": "number"
+    },
+    "write_timeout_seconds": {
+      "default": 10.0,
+      "exclusiveMinimum": 0,
+      "title": "Write Timeout Seconds",
+      "type": "number"
+    },
+    "pool_timeout_seconds": {
+      "default": 5.0,
+      "exclusiveMinimum": 0,
+      "title": "Pool Timeout Seconds",
+      "type": "number"
+    },
+    "max_redirect_hops": {
+      "default": 5,
+      "minimum": 0,
+      "title": "Max Redirect Hops",
+      "type": "integer"
+    },
+    "max_retries": {
+      "default": 2,
+      "minimum": 0,
+      "title": "Max Retries",
+      "type": "integer"
+    },
+    "retry_delays_seconds": {
+      "default": [
+        1.0,
+        2.0
+      ],
+      "items": {
+        "exclusiveMinimum": 0,
+        "type": "number"
+      },
+      "title": "Retry Delays Seconds",
+      "type": "array"
+    },
+    "retry_jitter_seconds": {
+      "default": 0.2,
+      "minimum": 0,
+      "title": "Retry Jitter Seconds",
+      "type": "number"
+    },
+    "max_encoded_bytes": {
+      "default": 5242880,
+      "minimum": 1,
+      "title": "Max Encoded Bytes",
+      "type": "integer"
+    },
+    "max_decoded_bytes": {
+      "default": 5242880,
+      "minimum": 1,
+      "title": "Max Decoded Bytes",
+      "type": "integer"
+    },
+    "sniff_bytes": {
+      "default": 4096,
+      "maximum": 4096,
+      "minimum": 1,
+      "title": "Sniff Bytes",
+      "type": "integer"
+    },
+    "min_host_interval_seconds": {
+      "default": 1.0,
+      "exclusiveMinimum": 0,
+      "title": "Min Host Interval Seconds",
+      "type": "number"
+    },
+    "user_agent": {
+      "default": "GEOAudit/0.1",
+      "minLength": 1,
+      "title": "User Agent",
+      "type": "string"
+    },
+    "accept_language": {
+      "default": "ru,en;q=0.8",
+      "minLength": 1,
+      "title": "Accept Language",
+      "type": "string"
+    },
+    "source_timezone": {
+      "default": "Europe/Moscow",
+      "title": "Source Timezone",
+      "type": "string"
+    },
+    "tls_verify": {
+      "const": true,
+      "default": true,
+      "title": "Tls Verify",
+      "type": "boolean"
+    },
+    "trust_env": {
+      "const": false,
+      "default": false,
+      "title": "Trust Env",
+      "type": "boolean"
+    },
+    "proxy_mode": {
+      "const": "disabled",
+      "default": "disabled",
+      "title": "Proxy Mode",
+      "type": "string"
+    },
+    "cookie_mode": {
+      "const": "disabled",
+      "default": "disabled",
+      "title": "Cookie Mode",
+      "type": "string"
+    },
+    "dns_policy": {
+      "const": "public_only_pinned",
+      "default": "public_only_pinned",
+      "title": "Dns Policy",
+      "type": "string"
+    }
+  },
+  "title": "Step0Config",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:Step0Config:1.1.0"
+}

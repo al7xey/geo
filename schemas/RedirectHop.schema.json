@@ -1,0 +1,159 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "enum": [
+        "1.0.0",
+        "1.1.0"
+      ],
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_attempt_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Source Attempt Id",
+      "type": "string"
+    },
+    "source_url": {
+      "format": "uri",
+      "pattern": "^https?://",
+      "title": "Source Url",
+      "type": "string"
+    },
+    "status_code": {
+      "enum": [
+        301,
+        302,
+        303,
+        307,
+        308
+      ],
+      "title": "Status Code",
+      "type": "integer"
+    },
+    "raw_location": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Raw Location"
+    },
+    "target_url": {
+      "anyOf": [
+        {
+          "format": "uri",
+          "pattern": "^https?://",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Target Url"
+    },
+    "decision": {
+      "enum": [
+        "follow",
+        "allow_www_alias",
+        "needs_input",
+        "reject"
+      ],
+      "title": "Decision",
+      "type": "string"
+    },
+    "reason_code": {
+      "anyOf": [
+        {
+          "enum": [
+            "INPUT_URL_INVALID",
+            "INPUT_SCHEME_UNSUPPORTED",
+            "INPUT_CREDENTIALS_FORBIDDEN",
+            "INPUT_PORT_INVALID",
+            "INPUT_ARTIFACT_INVALID",
+            "TARGET_NOT_PUBLIC",
+            "TARGET_DNS_REBINDING",
+            "TARGET_PORT_FORBIDDEN",
+            "TARGET_PATH_FORBIDDEN",
+            "TARGET_SECURITY_UNAVAILABLE",
+            "DNS_NXDOMAIN",
+            "DNS_TEMPORARY",
+            "NETWORK_CONNECT_ERROR",
+            "NETWORK_READ_ERROR",
+            "NETWORK_TIMEOUT",
+            "NETWORK_CANCELLED",
+            "HTTPS_TLS_CERTIFICATE_ERROR",
+            "HTTPS_TLS_HANDSHAKE_ERROR",
+            "HTTPS_DOWNGRADE",
+            "REDIRECT_INVALID_LOCATION",
+            "REDIRECT_LOOP",
+            "REDIRECT_LIMIT",
+            "REDIRECT_EXTERNAL_HOST",
+            "FALLBACK_NO_USABLE_RESULT",
+            "FALLBACK_USED",
+            "HTTP_DENIED",
+            "HTTP_MISSING",
+            "HTTP_UNAVAILABLE",
+            "HTTP_UNEXPECTED_STATUS",
+            "CONTENT_EMPTY",
+            "CONTENT_NON_HTML",
+            "CONTENT_TOO_LARGE",
+            "CONTENT_INCOMPLETE",
+            "CONTENT_ENCODING_UNSUPPORTED",
+            "CONTENT_DECODE_ERROR",
+            "CONTENT_SUSPICIOUS",
+            "CONTENT_JS_CANDIDATE",
+            "ACCESS_LOGIN",
+            "ACCESS_CHALLENGE",
+            "BUDGET_DEADLINE",
+            "BUDGET_ATTEMPTS",
+            "RETRY_DEFERRED",
+            "OUTPUT_WRITE_FAILED",
+            "IMPLEMENTATION_NOT_AVAILABLE"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Reason Code"
+    },
+    "observed_at": {
+      "format": "date-time",
+      "title": "Observed At",
+      "type": "string"
+    },
+    "psl_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Psl Sha256"
+    }
+  },
+  "required": [
+    "schema_version",
+    "source_attempt_id",
+    "source_url",
+    "status_code",
+    "raw_location",
+    "target_url",
+    "decision",
+    "reason_code",
+    "observed_at",
+    "psl_sha256"
+  ],
+  "title": "RedirectHop",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:RedirectHop:1.1.0"
+}

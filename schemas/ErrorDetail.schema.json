@@ -1,0 +1,101 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "code": {
+      "enum": [
+        "INPUT_URL_INVALID",
+        "INPUT_SCHEME_UNSUPPORTED",
+        "INPUT_CREDENTIALS_FORBIDDEN",
+        "INPUT_PORT_INVALID",
+        "INPUT_ARTIFACT_INVALID",
+        "TARGET_NOT_PUBLIC",
+        "TARGET_DNS_REBINDING",
+        "TARGET_PORT_FORBIDDEN",
+        "TARGET_PATH_FORBIDDEN",
+        "TARGET_SECURITY_UNAVAILABLE",
+        "DNS_NXDOMAIN",
+        "DNS_TEMPORARY",
+        "NETWORK_CONNECT_ERROR",
+        "NETWORK_READ_ERROR",
+        "NETWORK_TIMEOUT",
+        "NETWORK_CANCELLED",
+        "HTTPS_TLS_CERTIFICATE_ERROR",
+        "HTTPS_TLS_HANDSHAKE_ERROR",
+        "HTTPS_DOWNGRADE",
+        "REDIRECT_INVALID_LOCATION",
+        "REDIRECT_LOOP",
+        "REDIRECT_LIMIT",
+        "REDIRECT_EXTERNAL_HOST",
+        "FALLBACK_NO_USABLE_RESULT",
+        "FALLBACK_USED",
+        "HTTP_DENIED",
+        "HTTP_MISSING",
+        "HTTP_UNAVAILABLE",
+        "HTTP_UNEXPECTED_STATUS",
+        "CONTENT_EMPTY",
+        "CONTENT_NON_HTML",
+        "CONTENT_TOO_LARGE",
+        "CONTENT_INCOMPLETE",
+        "CONTENT_ENCODING_UNSUPPORTED",
+        "CONTENT_DECODE_ERROR",
+        "CONTENT_SUSPICIOUS",
+        "CONTENT_JS_CANDIDATE",
+        "ACCESS_LOGIN",
+        "ACCESS_CHALLENGE",
+        "BUDGET_DEADLINE",
+        "BUDGET_ATTEMPTS",
+        "RETRY_DEFERRED",
+        "OUTPUT_WRITE_FAILED",
+        "IMPLEMENTATION_NOT_AVAILABLE"
+      ],
+      "title": "Code",
+      "type": "string"
+    },
+    "category": {
+      "enum": [
+        "input",
+        "target",
+        "transport",
+        "http",
+        "content",
+        "budget",
+        "output",
+        "implementation"
+      ],
+      "title": "Category",
+      "type": "string"
+    },
+    "message": {
+      "minLength": 1,
+      "title": "Message",
+      "type": "string"
+    },
+    "retryable": {
+      "title": "Retryable",
+      "type": "boolean"
+    },
+    "attempt_id": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Attempt Id"
+    }
+  },
+  "required": [
+    "code",
+    "category",
+    "message",
+    "retryable",
+    "attempt_id"
+  ],
+  "title": "ErrorDetail",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:ErrorDetail:1.1.0"
+}

@@ -1,0 +1,342 @@
+{
+  "$defs": {
+    "ErrorDetail": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "enum": [
+            "INPUT_URL_INVALID",
+            "INPUT_SCHEME_UNSUPPORTED",
+            "INPUT_CREDENTIALS_FORBIDDEN",
+            "INPUT_PORT_INVALID",
+            "INPUT_ARTIFACT_INVALID",
+            "TARGET_NOT_PUBLIC",
+            "TARGET_DNS_REBINDING",
+            "TARGET_PORT_FORBIDDEN",
+            "TARGET_PATH_FORBIDDEN",
+            "TARGET_SECURITY_UNAVAILABLE",
+            "DNS_NXDOMAIN",
+            "DNS_TEMPORARY",
+            "NETWORK_CONNECT_ERROR",
+            "NETWORK_READ_ERROR",
+            "NETWORK_TIMEOUT",
+            "NETWORK_CANCELLED",
+            "HTTPS_TLS_CERTIFICATE_ERROR",
+            "HTTPS_TLS_HANDSHAKE_ERROR",
+            "HTTPS_DOWNGRADE",
+            "REDIRECT_INVALID_LOCATION",
+            "REDIRECT_LOOP",
+            "REDIRECT_LIMIT",
+            "REDIRECT_EXTERNAL_HOST",
+            "FALLBACK_NO_USABLE_RESULT",
+            "FALLBACK_USED",
+            "HTTP_DENIED",
+            "HTTP_MISSING",
+            "HTTP_UNAVAILABLE",
+            "HTTP_UNEXPECTED_STATUS",
+            "CONTENT_EMPTY",
+            "CONTENT_NON_HTML",
+            "CONTENT_TOO_LARGE",
+            "CONTENT_INCOMPLETE",
+            "CONTENT_ENCODING_UNSUPPORTED",
+            "CONTENT_DECODE_ERROR",
+            "CONTENT_SUSPICIOUS",
+            "CONTENT_JS_CANDIDATE",
+            "ACCESS_LOGIN",
+            "ACCESS_CHALLENGE",
+            "BUDGET_DEADLINE",
+            "BUDGET_ATTEMPTS",
+            "RETRY_DEFERRED",
+            "OUTPUT_WRITE_FAILED",
+            "IMPLEMENTATION_NOT_AVAILABLE"
+          ],
+          "title": "Code",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "input",
+            "target",
+            "transport",
+            "http",
+            "content",
+            "budget",
+            "output",
+            "implementation"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "retryable": {
+          "title": "Retryable",
+          "type": "boolean"
+        },
+        "attempt_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Attempt Id"
+        }
+      },
+      "required": [
+        "code",
+        "category",
+        "message",
+        "retryable",
+        "attempt_id"
+      ],
+      "title": "ErrorDetail",
+      "type": "object"
+    },
+    "Header": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "enum": [
+            "content-type",
+            "content-length",
+            "content-encoding",
+            "location",
+            "retry-after",
+            "server",
+            "date",
+            "vary",
+            "cache-control",
+            "etag",
+            "last-modified"
+          ],
+          "title": "Name",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "redacted": {
+          "title": "Redacted",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "value",
+        "redacted"
+      ],
+      "title": "Header",
+      "type": "object"
+    },
+    "ResolvedTarget": {
+      "additionalProperties": false,
+      "properties": {
+        "host": {
+          "title": "Host",
+          "type": "string"
+        },
+        "port": {
+          "maximum": 65535,
+          "minimum": 1,
+          "title": "Port",
+          "type": "integer"
+        },
+        "addresses": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Addresses",
+          "type": "array"
+        },
+        "connected_ip": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Connected Ip"
+        },
+        "enforcement": {
+          "enum": [
+            "pinned",
+            "controlled_egress"
+          ],
+          "title": "Enforcement",
+          "type": "string"
+        }
+      },
+      "required": [
+        "host",
+        "port",
+        "addresses",
+        "connected_ip",
+        "enforcement"
+      ],
+      "title": "ResolvedTarget",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "enum": [
+        "1.0.0",
+        "1.1.0"
+      ],
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "attempt_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Attempt Id",
+      "type": "string"
+    },
+    "parent_attempt_id": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Parent Attempt Id"
+    },
+    "requested_url": {
+      "format": "uri",
+      "pattern": "^https?://",
+      "title": "Requested Url",
+      "type": "string"
+    },
+    "purpose": {
+      "enum": [
+        "initial",
+        "retry",
+        "http_fallback",
+        "redirect"
+      ],
+      "title": "Purpose",
+      "type": "string"
+    },
+    "request_sent": {
+      "title": "Request Sent",
+      "type": "boolean"
+    },
+    "resolved_target": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ResolvedTarget"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "status_code": {
+      "anyOf": [
+        {
+          "maximum": 599,
+          "minimum": 100,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Status Code"
+    },
+    "response_headers": {
+      "items": {
+        "$ref": "#/$defs/Header"
+      },
+      "title": "Response Headers",
+      "type": "array"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "elapsed_ms": {
+      "minimum": 0,
+      "title": "Elapsed Ms",
+      "type": "number"
+    },
+    "transport_error": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ErrorDetail"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "tls_state": {
+      "enum": [
+        "not_observed",
+        "not_applicable",
+        "verified",
+        "certificate_error",
+        "handshake_error"
+      ],
+      "title": "Tls State",
+      "type": "string"
+    },
+    "evidence_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Evidence Id",
+      "type": "string"
+    },
+    "bytes_read": {
+      "minimum": 0,
+      "title": "Bytes Read",
+      "type": "integer"
+    },
+    "decoded_bytes": {
+      "minimum": 0,
+      "title": "Decoded Bytes",
+      "type": "integer"
+    },
+    "body_complete": {
+      "title": "Body Complete",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "schema_version",
+    "attempt_id",
+    "parent_attempt_id",
+    "requested_url",
+    "purpose",
+    "request_sent",
+    "resolved_target",
+    "status_code",
+    "response_headers",
+    "started_at",
+    "elapsed_ms",
+    "transport_error",
+    "tls_state",
+    "evidence_id",
+    "bytes_read",
+    "decoded_bytes",
+    "body_complete"
+  ],
+  "title": "FetchAttempt",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:FetchAttempt:1.1.0"
+}

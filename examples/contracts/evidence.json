@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.1.0",
+  "evidence_id": "fixture-ev-01",
+  "attempt_id": "fixture-req-01",
+  "requested_url": "https://example.com/ru/?city=msk",
+  "captured_at": "2026-10-31T12:00:00Z",
+  "files": [
+    {
+      "path": "raw/entry.html",
+      "sha256": "8f8fe0b98492ec1d3a8ba1ea1a0d5efafa3e5798ae723b9e7067a9654c468798",
+      "size_bytes": 80,
+      "representation": "entity_bytes",
+      "complete": true
+    }
+  ],
+  "declared_encoding": "utf-8",
+  "applied_encoding": null,
+  "replacement_characters": 0,
+  "sniffed_html": false,
+  "classification_basis": [
+    "Synthetic fixture: explicitly authored HTML, no network observation."
+  ],
+  "classification_confidence": 1.0,
+  "redacted_headers": [
+    "set-cookie"
+  ]
+}
