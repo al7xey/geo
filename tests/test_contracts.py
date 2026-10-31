@@ -311,7 +311,7 @@ def test_publish_and_atomic_write_failure(tmp_path, monkeypatch):
     site = SiteValidationResult.model_validate_json(json.dumps(load()))
     store = EvidenceStore(tmp_path)
     store.prepare()
-    (tmp_path / "raw").mkdir()
+    (tmp_path / "raw").mkdir(exist_ok=True)
     (tmp_path / "raw/entry.html").write_bytes((EXAMPLES / "run/raw/entry.html").read_bytes())
     store.publish(site)
     assert (tmp_path / "manifest.json").exists()
@@ -327,21 +327,35 @@ def test_publish_and_atomic_write_failure(tmp_path, monkeypatch):
     assert not list(tmp_path.glob("*.tmp"))
 
 
-def test_unimplemented_api_and_cli_fail_explicitly_before_network(capsys):
-    with pytest.raises(GeoAuditError) as error:
-        asyncio.run(validate_site("example.com", Step0Config()))
-    assert error.value.detail.code == "IMPLEMENTATION_NOT_AVAILABLE"
-    assert main(["step0", "https://example.com/?secret=test"]) == 4
+def test_invalid_api_and_cli_fail_before_network(capsys, tmp_path, monkeypatch):
+    from geo_audit.http_client import SafeHttpClient
+
+    async def forbidden(*_args, **_kwargs):
+        pytest.fail("invalid URL attempted a network request")
+
+    monkeypatch.setattr(SafeHttpClient, "get", forbidden)
+    result = asyncio.run(validate_site("ftp://example.com", Step0Config(), output_dir=tmp_path))
+    assert result.status == "failed" and "INPUT_SCHEME_UNSUPPORTED" in result.reason_codes
+    assert (
+        main(
+            [
+                "step0",
+                "https://user:pass@example.com/?secret=test",
+                "--output-dir",
+                str(tmp_path / "cli"),
+            ]
+        )
+        == 1
+    )
     captured = capsys.readouterr()
-    assert captured.out == "" and "secret" not in captured.err
-    assert json.loads(captured.err)["category"] == "implementation"
+    assert "secret" not in captured.out + captured.err and "pass" not in captured.out + captured.err
 
 
 def test_cli_help_and_safe_validation_errors(tmp_path, capsys):
     completed = subprocess.run(
         [sys.executable, "-m", "geo_audit", "--help"], capture_output=True, text=True, check=True
     )
-    assert "live network runner not yet implemented" in completed.stdout
+    assert "validate a public site" in completed.stdout
     invalid = tmp_path / "invalid.json"
     invalid.write_text('{"input_url":"https://example.com/?secret=test"}', encoding="utf-8")
     assert main(["validate", "SiteValidationResult", str(invalid)]) == 2

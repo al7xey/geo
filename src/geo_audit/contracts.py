@@ -21,8 +21,8 @@ Identifier = Annotated[str, Field(pattern=r"^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$")]
 SHA256 = Annotated[str, Field(pattern=r"^[a-f0-9]{64}$")]
 NonNegativeInt = Annotated[int, Field(ge=0)]
 PositiveSeconds = Annotated[float, Field(gt=0)]
-SchemaVersion = Literal["1.0.0", "1.1.0"]
-AlgorithmVersion = Literal["step0-1.0", "step0-1.1"]
-ConfigVersion = Literal["step0-config-1.0.0", "step0-config-1.1.0"]
-CURRENT_SCHEMA_VERSION: Literal["1.1.0"] = "1.1.0"
-CURRENT_ALGORITHM_VERSION: Literal["step0-1.1"] = "step0-1.1"
+SchemaVersion = Literal["1.0.0", "1.1.0", "1.2.0"]
+AlgorithmVersion = Literal["step0-1.0", "step0-1.1", "step0-1.2"]
+ConfigVersion = Literal["step0-config-1.0.0", "step0-config-1.1.0", "step0-config-1.2.0"]
+CURRENT_SCHEMA_VERSION: Literal["1.2.0"] = "1.2.0"
+CURRENT_ALGORITHM_VERSION: Literal["step0-1.2"] = "step0-1.2"

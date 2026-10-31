@@ -124,6 +124,7 @@ def classify_result(
     fallback_used: bool = False,
     downgraded: bool = False,
     diagnostic_allowed: bool = False,
+    warning_codes: tuple[ErrorCode, ...] = (),
 ) -> StatusDecision:
     """Classify supplied observations only; never infer HTML from status 200."""
     if terminal_error and terminal_error.startswith(("INPUT_", "TARGET_", "OUTPUT_", "BUDGET_")):
@@ -174,6 +175,45 @@ def classify_result(
         if downgraded
         else "FALLBACK_USED"
         if fallback_used
+        else warning_codes[0]
+        if warning_codes
         else None
     )
     return StatusDecision("partial" if reason else "ok", True, reason)
+
+
+def next_action_for(
+    *,
+    status: str,
+    content_state: str,
+    reason_codes: tuple[ErrorCode, ...],
+    proposed_host: str | None = None,
+    can_enter_step1: bool = True,
+) -> str:
+    if status == "needs_input":
+        if proposed_host is None:
+            raise ValueError("needs_input requires an observed proposed host")
+        return f"rerun_step0 --allow-host {proposed_host}"
+    if (
+        can_enter_step1
+        and status in {"ok", "partial"}
+        and content_state in {"html", "js_candidate", "suspicious_html"}
+    ):
+        if content_state == "js_candidate":
+            return "continue_step1_js_diagnostics"
+        if content_state == "suspicious_html":
+            return "continue_step1_content_diagnostics"
+        return "continue_step1_with_warnings" if status == "partial" else "continue_step1"
+    if "OUTPUT_WRITE_FAILED" in reason_codes:
+        return "repair_storage_and_start_new_run"
+    if any(c.startswith("BUDGET_") or c == "RETRY_DEFERRED" for c in reason_codes):
+        return "start_new_run_with_budget"
+    if any(c.startswith("INPUT_") for c in reason_codes):
+        return "correct_input_url"
+    if content_state == "access_barrier":
+        return "resolve_access_barrier_or_choose_public_url"
+    if content_state in {"non_html", "empty"}:
+        return "provide_html_page_url"
+    if content_state == "http_missing":
+        return "correct_entry_path"
+    return "review_reasons_and_start_new_run"

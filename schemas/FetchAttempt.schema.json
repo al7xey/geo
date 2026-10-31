@@ -48,7 +48,8 @@
             "BUDGET_ATTEMPTS",
             "RETRY_DEFERRED",
             "OUTPUT_WRITE_FAILED",
-            "IMPLEMENTATION_NOT_AVAILABLE"
+            "IMPLEMENTATION_NOT_AVAILABLE",
+            "IMPLEMENTATION_BUG"
           ],
           "title": "Code",
           "type": "string"
@@ -193,7 +194,8 @@
     "schema_version": {
       "enum": [
         "1.0.0",
-        "1.1.0"
+        "1.1.0",
+        "1.2.0"
       ],
       "title": "Schema Version",
       "type": "string"
@@ -338,5 +340,5 @@
   "title": "FetchAttempt",
   "type": "object",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:geo-audit:FetchAttempt:1.1.0"
+  "$id": "urn:geo-audit:FetchAttempt:1.2.0"
 }

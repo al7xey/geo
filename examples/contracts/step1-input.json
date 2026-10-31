@@ -1,13 +1,13 @@
 {
-  "schema_version": "1.1.0",
+  "schema_version": "1.2.0",
   "source_step": 0,
   "site": {
-    "schema_version": "1.1.0",
-    "algorithm_version": "step0-1.1",
-    "config_version": "step0-config-1.1.0",
+    "schema_version": "1.2.0",
+    "algorithm_version": "step0-1.2",
+    "config_version": "step0-config-1.2.0",
     "config": {
-      "schema_version": "1.1.0",
-      "config_version": "step0-config-1.1.0",
+      "schema_version": "1.2.0",
+      "config_version": "step0-config-1.2.0",
       "allow_http_fallback": true,
       "allowed_hosts": [],
       "allowed_extra_ports": [],
@@ -40,7 +40,7 @@
       "cookie_mode": "disabled",
       "dns_policy": "public_only_pinned"
     },
-    "config_sha256": "c1d1d4c01109e03323b6d35a7bb561bd91328927072ada08dd3df3da4362e7e3",
+    "config_sha256": "cc5a909336e4d69681426385223c5409ea133fe46c5bfe7bc4a465146d394fe8",
     "run_id": "fixture-run-ok",
     "parent_run_id": null,
     "started_at": "2026-10-31T12:00:00Z",
@@ -69,7 +69,7 @@
     ],
     "attempts": [
       {
-        "schema_version": "1.1.0",
+        "schema_version": "1.2.0",
         "attempt_id": "fixture-req-01",
         "parent_attempt_id": null,
         "requested_url": "https://example.com/ru/?city=msk",
@@ -105,7 +105,7 @@
     "redirect_chain": [],
     "evidence": [
       {
-        "schema_version": "1.1.0",
+        "schema_version": "1.2.0",
         "evidence_id": "fixture-ev-01",
         "attempt_id": "fixture-req-01",
         "requested_url": "https://example.com/ru/?city=msk",
@@ -137,7 +137,7 @@
     "proposed_target_url": null,
     "next_action": "continue_step1",
     "budget": {
-      "schema_version": "1.1.0",
+      "schema_version": "1.2.0",
       "started_at": "2026-10-31T12:00:00Z",
       "captured_at": "2026-10-31T12:00:01Z",
       "step0_deadline_at": "2026-10-31T12:01:00Z",
@@ -150,7 +150,7 @@
     }
   },
   "selected_response": {
-    "schema_version": "1.1.0",
+    "schema_version": "1.2.0",
     "attempt_id": "fixture-req-01",
     "parent_attempt_id": null,
     "requested_url": "https://example.com/ru/?city=msk",
@@ -183,7 +183,7 @@
     "body_complete": true
   },
   "selected_evidence": {
-    "schema_version": "1.1.0",
+    "schema_version": "1.2.0",
     "evidence_id": "fixture-ev-01",
     "attempt_id": "fixture-req-01",
     "requested_url": "https://example.com/ru/?city=msk",
@@ -210,7 +210,7 @@
     ]
   },
   "budget": {
-    "schema_version": "1.1.0",
+    "schema_version": "1.2.0",
     "started_at": "2026-10-31T12:00:00Z",
     "captured_at": "2026-10-31T12:00:01Z",
     "step0_deadline_at": "2026-10-31T12:01:00Z",

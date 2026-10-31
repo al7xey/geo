@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.1.0",
+  "schema_version": "1.2.0",
   "evidence_id": "fixture-ev-01",
   "attempt_id": "fixture-req-01",
   "requested_url": "https://example.com/ru/?city=msk",

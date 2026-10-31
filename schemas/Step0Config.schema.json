@@ -2,19 +2,21 @@
   "additionalProperties": false,
   "properties": {
     "schema_version": {
-      "default": "1.1.0",
+      "default": "1.2.0",
       "enum": [
         "1.0.0",
-        "1.1.0"
+        "1.1.0",
+        "1.2.0"
       ],
       "title": "Schema Version",
       "type": "string"
     },
     "config_version": {
-      "default": "step0-config-1.1.0",
+      "default": "step0-config-1.2.0",
       "enum": [
         "step0-config-1.0.0",
-        "step0-config-1.1.0"
+        "step0-config-1.1.0",
+        "step0-config-1.2.0"
       ],
       "title": "Config Version",
       "type": "string"
@@ -202,5 +204,5 @@
   "title": "Step0Config",
   "type": "object",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:geo-audit:Step0Config:1.1.0"
+  "$id": "urn:geo-audit:Step0Config:1.2.0"
 }

@@ -7,7 +7,7 @@ and classifying HTML remain responsibilities of the future full step 0 runner.
 from typing import Literal, Protocol
 
 from .budget import Budget
-from .http_client import FetchTrace
+from .http_client import FetchTrace, HttpObserver
 from .models import ResolvedTarget
 from .scope import SiteScope
 
@@ -25,6 +25,7 @@ class Step0Client(Protocol):
         budget: Budget,
         step: Literal[0, 1] = 0,
         allow_http_fallback: bool = False,
+        observer: HttpObserver | None = None,
     ) -> FetchTrace:
         """Shared GET policy; caller commits its returned bytes before publishing site.json."""
         ...

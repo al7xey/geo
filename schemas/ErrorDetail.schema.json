@@ -46,7 +46,8 @@
         "BUDGET_ATTEMPTS",
         "RETRY_DEFERRED",
         "OUTPUT_WRITE_FAILED",
-        "IMPLEMENTATION_NOT_AVAILABLE"
+        "IMPLEMENTATION_NOT_AVAILABLE",
+        "IMPLEMENTATION_BUG"
       ],
       "title": "Code",
       "type": "string"
@@ -97,5 +98,5 @@
   "title": "ErrorDetail",
   "type": "object",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:geo-audit:ErrorDetail:1.1.0"
+  "$id": "urn:geo-audit:ErrorDetail:1.2.0"
 }

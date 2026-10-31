@@ -1,12 +1,11 @@
 """Sequential, reusable bounded GET client. No HTML classification or implicit crawling."""
 
 import asyncio
-import random
 import ssl
-import time
 import uuid
-from dataclasses import dataclass
-from datetime import UTC, datetime
+from collections.abc import Awaitable, Callable
+from dataclasses import dataclass, replace
+from datetime import datetime
 from typing import Literal, cast, get_args
 
 import anyio
@@ -28,7 +27,9 @@ from .errors import ErrorCode, ErrorDetail, GeoAuditError, problem
 from .models import Header, RedirectHop, TLSState
 from .policy import REDIRECT_STATUSES, choose_next_action, retry_after_seconds
 from .psl import PublicSuffixList, load_bundled_psl
+from .redaction import install_network_redaction, network_logging_scope
 from .scope import SiteScope, decide_redirect, scope_reason
+from .timing import TimeServices
 from .urls import NormalizedURL, normalize_input
 
 
@@ -62,7 +63,10 @@ class FetchTrace:
     error: ErrorDetail | None
     fallback_used: bool
     downgraded: bool
-    algorithm_version: Literal["step0-1.1"] = "step0-1.1"
+    algorithm_version: Literal["step0-1.2"] = "step0-1.2"
+
+
+HttpObserver = Callable[[HttpAttempt | RedirectHop], Awaitable[None]]
 
 
 def _detail(code: ErrorCode, attempt_id: str | None = None) -> ErrorDetail:
@@ -120,6 +124,7 @@ class SafeHttpClient:
         psl: PublicSuffixList | None = None,
         ssl_context: ssl.SSLContext | None = None,
         proxy: str | None = None,
+        timing: TimeServices | None = None,
     ):
         if proxy is not None:
             raise problem(
@@ -136,6 +141,9 @@ class SafeHttpClient:
         self.psl, self.ssl_context = psl or load_bundled_psl(), ssl_context
         self._last_started: dict[str, float] = {}
         self._lock = asyncio.Lock()
+        self.time = timing or TimeServices(sleep=asyncio.sleep)
+        self.last_trace: FetchTrace | None = None
+        install_network_redaction()
 
     async def get(
         self,
@@ -145,6 +153,7 @@ class SafeHttpClient:
         budget: Budget,
         step: Literal[0, 1] = 0,
         allow_http_fallback: bool = False,
+        observer: HttpObserver | None = None,
     ) -> FetchTrace:
         if budget.config != self.config:
             raise ValueError("client and shared budget must use the same configuration")
@@ -167,7 +176,7 @@ class SafeHttpClient:
                         if reason:
                             error = _detail(reason)
                             break
-                        await self._fetch_once(current, budget, step, attempts, purpose)
+                        await self._fetch_once(current, budget, step, attempts, purpose, observer)
                         last = attempts[-1]
                         if last.error is None and last.status_code in REDIRECT_STATUSES:
                             locations = [
@@ -186,10 +195,19 @@ class SafeHttpClient:
                             )
                             # Validate an external proposal too, but never issue its GET.
                             if decision.target is not None:
-                                await check_endpoint(decision.target, self.resolver)
+                                try:
+                                    await check_endpoint(decision.target, self.resolver)
+                                except GeoAuditError as blocked:
+                                    decision = replace(
+                                        decision,
+                                        action="reject",
+                                        scope=scope,
+                                        reason_code=blocked.detail.code,
+                                        psl_sha256=None,
+                                    )
                             hops.append(
                                 RedirectHop(
-                                    schema_version="1.1.0",
+                                    schema_version="1.2.0",
                                     source_attempt_id=last.attempt_id,
                                     source_url=current.url,
                                     status_code=cast(
@@ -199,17 +217,20 @@ class SafeHttpClient:
                                     target_url=decision.target.url if decision.target else None,
                                     decision=decision.action,
                                     reason_code=decision.reason_code,
-                                    observed_at=datetime.now(UTC),
+                                    observed_at=self.time.utcnow(),
                                     psl_sha256=decision.psl_sha256,
                                 )
                             )
+                            if observer is not None:
+                                await observer(hops[-1])
                             if decision.action in {"reject", "needs_input"}:
                                 error = _detail(
                                     decision.reason_code or "REDIRECT_INVALID_LOCATION",
                                     last.attempt_id,
                                 )
                                 break
-                            assert decision.target is not None
+                            if decision.target is None:
+                                raise RuntimeError("Redirect decision omitted its destination")
                             current, scope = decision.target, decision.scope
                             visited.add(current.url)
                             downgraded |= decision.downgrade
@@ -240,16 +261,17 @@ class SafeHttpClient:
                                 h.value for h in last.response_headers if h.name == "retry-after"
                             ]
                             retry_after = retry_after_seconds(
-                                values[0] if len(values) == 1 else None, now=datetime.now(UTC)
+                                values[0] if len(values) == 1 else None, now=self.time.utcnow()
                             )
                             delay = max(
-                                delay + random.uniform(0, self.config.retry_jitter_seconds),
+                                delay + self.time.jitter(0, self.config.retry_jitter_seconds),
                                 retry_after or 0.0,
                             )
                             if delay >= budget.remaining_seconds(step=step):
                                 error = _detail("RETRY_DEFERRED", last.attempt_id)
                                 break
-                            await asyncio.sleep(delay)
+                            await self.time.sleep(delay)
+                            budget.check(step=step)
                             retry_count += 1
                             purpose = "retry"
                             continue
@@ -275,8 +297,22 @@ class SafeHttpClient:
             error = _detail("BUDGET_DEADLINE", attempts[-1].attempt_id if attempts else None)
         except GeoAuditError as caught:
             error = caught.detail
+        except asyncio.CancelledError:
+            self.last_trace = FetchTrace(
+                url,
+                tuple(attempts),
+                tuple(hops),
+                scope,
+                _detail("NETWORK_CANCELLED", attempts[-1].attempt_id if attempts else None),
+                fallback,
+                downgraded,
+            )
+            raise
         # Explicit cancellation propagates to the caller; _fetch_once still closes all resources.
-        return FetchTrace(url, tuple(attempts), tuple(hops), scope, error, fallback, downgraded)
+        self.last_trace = FetchTrace(
+            url, tuple(attempts), tuple(hops), scope, error, fallback, downgraded
+        )
+        return self.last_trace
 
     async def _fetch_once(
         self,
@@ -285,8 +321,9 @@ class SafeHttpClient:
         step: Literal[0, 1],
         attempts: list[HttpAttempt],
         purpose: Literal["initial", "retry", "http_fallback", "redirect"],
+        observer: HttpObserver | None = None,
     ) -> None:
-        stamp, started = datetime.now(UTC), time.monotonic()
+        stamp, started = self.time.utcnow(), self.time.monotonic()
         attempt_id = "req-" + uuid.uuid4().hex
         parent = attempts[-1].attempt_id if attempts else None
         endpoint: CheckedEndpoint | None = None
@@ -297,16 +334,17 @@ class SafeHttpClient:
         body: LimitedBody | None = None
         sent, complete = False, False
         error: ErrorDetail | None = None
+        log_scope = network_logging_scope.set(True)
         try:
             budget.check(step=step)
             endpoint = await check_endpoint(url, self.resolver)
             delay = self.config.min_host_interval_seconds - (
-                time.monotonic() - self._last_started.get(url.host_ascii, float("-inf"))
+                self.time.monotonic() - self._last_started.get(url.host_ascii, float("-inf"))
             )
             if delay > 0:
-                await asyncio.sleep(delay)
+                await self.time.sleep(delay)
             budget.reserve_attempt(step=step)
-            self._last_started[url.host_ascii] = time.monotonic()
+            self._last_started[url.host_ascii] = self.time.monotonic()
             sent = True
             backend = PinnedBackend(endpoint)
             transport = PinnedTransport(backend, ssl_context=self.ssl_context)
@@ -365,9 +403,12 @@ class SafeHttpClient:
             error = _detail("NETWORK_CANCELLED", attempt_id)
             raise
         finally:
-            if transport is not None:
-                with anyio.CancelScope(shield=True):
-                    await transport.aclose()
+            try:
+                if transport is not None:
+                    with anyio.CancelScope(shield=True):
+                        await transport.aclose()
+            finally:
+                network_logging_scope.reset(log_scope)
             tls_state: TLSState = "not_applicable" if url.scheme == "http" else "not_observed"
             if url.scheme == "https":
                 if backend and any(s.tls_verified for s in backend.streams):
@@ -383,7 +424,7 @@ class SafeHttpClient:
                     purpose,
                     url.url,
                     stamp,
-                    (time.monotonic() - started) * 1000,
+                    (self.time.monotonic() - started) * 1000,
                     sent,
                     endpoint,
                     backend.connected_ip if backend else None,
@@ -397,3 +438,6 @@ class SafeHttpClient:
                     error,
                 )
             )
+            if observer is not None:
+                with anyio.CancelScope(shield=True):
+                    await observer(attempts[-1])

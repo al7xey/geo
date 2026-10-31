@@ -31,7 +31,7 @@ def schema_for(name: str) -> dict[str, object]:
     schema = MODELS[name].model_json_schema(mode="validation")
     schema["$schema"] = "https://json-schema.org/draft/2020-12/schema"
     # A stable URN, not a promise that a web-hosted schema registry exists.
-    schema["$id"] = f"urn:geo-audit:{name}:1.1.0"
+    schema["$id"] = f"urn:geo-audit:{name}:1.2.0"
     return schema
 
 

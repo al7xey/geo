@@ -1,13 +1,14 @@
 """Persisted contracts. Required nullable fields distinguish unknown from absent keys."""
 
-import ipaddress
+import re
 from pathlib import PurePosixPath
 from typing import Annotated, Literal, Self
 from urllib.parse import urlsplit
 
-from pydantic import AfterValidator, Field, field_validator, model_validator
+from pydantic import AfterValidator, Field, PrivateAttr, field_validator, model_validator
 
 from .config import Step0Config
+from .connection import is_public_address
 from .contracts import (
     SHA256,
     AlgorithmVersion,
@@ -92,9 +93,7 @@ class ResolvedTarget(Contract):
         if normalize_host(self.host) != self.host:
             raise ValueError("target host must be canonical")
         for value in self.addresses:
-            address = ipaddress.ip_address(value)
-            mapped = getattr(address, "ipv4_mapped", None)
-            if not address.is_global or (mapped is not None and not mapped.is_global):
+            if not is_public_address(value):
                 raise ValueError("resolved target must contain public IPs only")
         if self.connected_ip is not None and self.connected_ip not in self.addresses:
             raise ValueError("connected IP differs from checked addresses")
@@ -160,7 +159,7 @@ class FetchAttempt(Contract):
         ):
             raise ValueError("response data without an HTTP response")
         if self.transport_error is not None:
-            if self.transport_error.category not in {"transport", "target", "budget"}:
+            if self.transport_error.category not in {"transport", "target", "budget", "content"}:
                 raise ValueError("HTTP/content errors are not transport errors")
             if self.transport_error.attempt_id != self.attempt_id:
                 raise ValueError("transport error must identify its attempt")
@@ -225,6 +224,21 @@ class EvidenceFile(Contract):
             or path.as_posix() != value
         ):
             raise ValueError("evidence path must be canonical and relative to run directory")
+        devices = {
+            "CON",
+            "PRN",
+            "AUX",
+            "NUL",
+            *(f"COM{i}" for i in range(1, 10)),
+            *(f"LPT{i}" for i in range(1, 10)),
+        }
+        if any(
+            not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,150}", part)
+            or part.endswith(".")
+            or part.split(".")[0].upper() in devices
+            for part in path.parts
+        ):
+            raise ValueError("invalid artifact component")
         return value
 
 
@@ -256,6 +270,14 @@ class EvidenceRecord(Contract):
 
 
 class SiteValidationResult(Contract):
+    _fetch_result: object = PrivateAttr(default=None)
+    _live_budget: object = PrivateAttr(default=None)
+    _run_directory: object = PrivateAttr(default=None)
+
+    def __eq__(self, other: object) -> bool:
+        # Runtime handles/caches are outside serialized contract equality.
+        return isinstance(other, SiteValidationResult) and self.__dict__ == other.__dict__
+
     schema_version: SchemaVersion
     algorithm_version: AlgorithmVersion
     config_version: ConfigVersion
@@ -342,7 +364,11 @@ class SiteValidationResult(Contract):
         ids = tuple(a.attempt_id for a in self.attempts)
         if self.attempt_ids != ids or len(set(ids)) != len(ids):
             raise ValueError("attempt IDs must be unique and match attempts in order")
-        if sum(a.request_sent for a in self.attempts) != self.budget.step0_attempts:
+        observed_count = sum(a.request_sent for a in self.attempts)
+        output_failure = self.status == "failed" and "OUTPUT_WRITE_FAILED" in self.reason_codes
+        if observed_count != self.budget.step0_attempts and not (
+            output_failure and observed_count <= self.budget.step0_attempts
+        ):
             raise ValueError("attempt count differs from transport starts")
         if self.budget.step0_max_attempts != self.config.step0_max_attempts:
             raise ValueError("budget limit differs from config")
@@ -415,6 +441,8 @@ class SiteValidationResult(Contract):
             or self.diagnostic_allowed
         ):
             raise ValueError("ok requires unrestricted usable HTML")
+        if self.config_version != self.config.config_version:
+            raise ValueError("configuration version mismatch")
         if self.status == "partial" and not self.reason_codes:
             raise ValueError("partial requires explicit reason")
         final = next((a for a in self.attempts if a.attempt_id == self.final_attempt_id), None)
@@ -502,6 +530,22 @@ class SiteValidationResult(Contract):
         if self.proposed_target_url is not None:
             if normalize_input(self.proposed_target_url).host_ascii in self.allowed_hosts:
                 raise ValueError("proposed host is already allowed")
+        if self.algorithm_version == "step0-1.2":
+            from .policy import next_action_for
+
+            host = (
+                normalize_input(self.proposed_target_url).host_ascii
+                if self.proposed_target_url
+                else None
+            )
+            if self.next_action != next_action_for(
+                status=self.status,
+                content_state=self.content_state,
+                reason_codes=self.reason_codes,
+                proposed_host=host,
+                can_enter_step1=self.can_enter_step1,
+            ):
+                raise ValueError("next_action contradicts the terminal state")
         return self
 
 

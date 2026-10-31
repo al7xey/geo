@@ -12,8 +12,8 @@ from .urls import normalize_host
 
 
 class Step0Config(Contract):
-    schema_version: SchemaVersion = "1.1.0"
-    config_version: ConfigVersion = "step0-config-1.1.0"
+    schema_version: SchemaVersion = "1.2.0"
+    config_version: ConfigVersion = "step0-config-1.2.0"
     allow_http_fallback: bool = True
     allowed_hosts: tuple[str, ...] = ()
     allowed_extra_ports: tuple[int, ...] = ()

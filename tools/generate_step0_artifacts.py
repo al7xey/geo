@@ -19,7 +19,9 @@ from geo_audit import (
 )
 from geo_audit.errors import ErrorDetail
 from geo_audit.models import EvidenceFile, Header, RedirectHop, ResolvedTarget
+from geo_audit.policy import next_action_for
 from geo_audit.schemas import MODELS, schema_for
+from geo_audit.urls import normalize_input
 
 ROOT = Path(__file__).resolve().parents[1]
 STAMP = datetime(2026, 10, 31, 12, 0, tzinfo=UTC)
@@ -33,7 +35,7 @@ def document(value):
 def artifacts():
     config = Step0Config()
     budget = BudgetSnapshot(
-        schema_version="1.1.0",
+        schema_version="1.2.0",
         started_at=STAMP,
         captured_at=STAMP + timedelta(seconds=1),
         step0_deadline_at=STAMP + timedelta(seconds=60),
@@ -52,7 +54,7 @@ def artifacts():
         complete=True,
     )
     evidence = EvidenceRecord(
-        schema_version="1.1.0",
+        schema_version="1.2.0",
         evidence_id="fixture-ev-01",
         attempt_id="fixture-req-01",
         requested_url="https://example.com/ru/?city=msk",
@@ -69,7 +71,7 @@ def artifacts():
         redacted_headers=("set-cookie",),
     )
     attempt = FetchAttempt(
-        schema_version="1.1.0",
+        schema_version="1.2.0",
         attempt_id="fixture-req-01",
         parent_attempt_id=None,
         requested_url=evidence.requested_url,
@@ -94,8 +96,8 @@ def artifacts():
         body_complete=True,
     )
     site = SiteValidationResult(
-        schema_version="1.1.0",
-        algorithm_version="step0-1.1",
+        schema_version="1.2.0",
+        algorithm_version="step0-1.2",
         config_version=config.config_version,
         config=config,
         config_sha256=config.fingerprint(),
@@ -131,7 +133,7 @@ def artifacts():
         budget=budget,
     )
     step1 = Step1Input(
-        schema_version="1.1.0",
+        schema_version="1.2.0",
         source_step=0,
         site=site,
         selected_response=attempt,
@@ -151,6 +153,15 @@ def artifacts():
     def case(name, updates):
         data = site.model_dump(mode="json")
         data.update(updates)
+        data["next_action"] = next_action_for(
+            status=data["status"],
+            content_state=data["content_state"],
+            reason_codes=tuple(data["reason_codes"]),
+            can_enter_step1=data["can_enter_step1"],
+            proposed_host=normalize_input(data["proposed_target_url"]).host_ascii
+            if data["proposed_target_url"]
+            else None,
+        )
         data["run_id"] = "fixture-" + name
         result = SiteValidationResult.model_validate_json(json.dumps(data))
         examples[name] = result
@@ -227,7 +238,7 @@ def artifacts():
         },
     )
     hop = RedirectHop(
-        schema_version="1.1.0",
+        schema_version="1.2.0",
         source_attempt_id=attempt.attempt_id,
         source_url=attempt.requested_url,
         status_code=302,

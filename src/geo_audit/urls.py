@@ -13,6 +13,8 @@ from .errors import ErrorCode, GeoAuditError, problem
 
 
 def normalize_host(host: str) -> str:
+    if len(host) > 253:
+        raise ValueError("host exceeds the pre-IDNA length limit")
     if not host or any(
         unicodedata.category(c) in {"Cc", "Cf", "Cs"} or c.isspace() or c in "%/@\\?#[]"
         for c in host
@@ -62,6 +64,8 @@ class NormalizedURL:
 
 
 def normalize_input(input_url: str) -> NormalizedURL:
+    if len(input_url) > 16384:
+        raise problem("INPUT_URL_INVALID", "input", "URL exceeds the 16 KiB input limit.")
     if any(unicodedata.category(c) in {"Cc", "Cf", "Cs"} for c in input_url):
         raise problem("INPUT_URL_INVALID", "input", "Control characters are forbidden.")
     raw = input_url.strip(" ")

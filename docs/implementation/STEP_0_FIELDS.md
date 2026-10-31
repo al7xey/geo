@@ -9,8 +9,8 @@ JSON Schema описывает форму; межполевые инвариан
 
 | Поле | Обязательно | null | Тип / ограничения |
 |---|---|---|---|
-| schema_version | нет | нет | `{"default": "1.1.0", "enum": ["1.0.0", "1.1.0"], "type": "string"}` |
-| config_version | нет | нет | `{"default": "step0-config-1.1.0", "enum": ["step0-config-1.0.0", "step0-config-1.1.0"], "type": "string"}` |
+| schema_version | нет | нет | `{"default": "1.2.0", "enum": ["1.0.0", "1.1.0", "1.2.0"], "type": "string"}` |
+| config_version | нет | нет | `{"default": "step0-config-1.2.0", "enum": ["step0-config-1.0.0", "step0-config-1.1.0", "step0-config-1.2.0"], "type": "string"}` |
 | allow_http_fallback | нет | нет | `{"default": true, "type": "boolean"}` |
 | allowed_hosts | нет | нет | `{"default": [], "items": {"type": "string"}, "type": "array"}` |
 | allowed_extra_ports | нет | нет | `{"default": [], "items": {"type": "integer"}, "type": "array"}` |
@@ -44,9 +44,9 @@ JSON Schema описывает форму; межполевые инвариан
 
 | Поле | Обязательно | null | Тип / ограничения |
 |---|---|---|---|
-| schema_version | да | нет | `{"enum": ["1.0.0", "1.1.0"], "type": "string"}` |
-| algorithm_version | да | нет | `{"enum": ["step0-1.0", "step0-1.1"], "type": "string"}` |
-| config_version | да | нет | `{"enum": ["step0-config-1.0.0", "step0-config-1.1.0"], "type": "string"}` |
+| schema_version | да | нет | `{"enum": ["1.0.0", "1.1.0", "1.2.0"], "type": "string"}` |
+| algorithm_version | да | нет | `{"enum": ["step0-1.0", "step0-1.1", "step0-1.2"], "type": "string"}` |
+| config_version | да | нет | `{"enum": ["step0-config-1.0.0", "step0-config-1.1.0", "step0-config-1.2.0"], "type": "string"}` |
 | config | да | нет | `{"$ref": "#/$defs/Step0Config"}` |
 | config_sha256 | да | нет | `{"pattern": "^[a-f0-9]{64}$", "type": "string"}` |
 | run_id | да | нет | `{"pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$", "type": "string"}` |
@@ -75,7 +75,7 @@ JSON Schema описывает форму; межполевые инвариан
 | redirect_chain | да | нет | `{"items": {"$ref": "#/$defs/RedirectHop"}, "type": "array"}` |
 | evidence | да | нет | `{"items": {"$ref": "#/$defs/EvidenceRecord"}, "type": "array"}` |
 | errors | да | нет | `{"items": {"$ref": "#/$defs/ErrorDetail"}, "type": "array"}` |
-| reason_codes | да | нет | `{"items": {"enum": ["INPUT_URL_INVALID", "INPUT_SCHEME_UNSUPPORTED", "INPUT_CREDENTIALS_FORBIDDEN", "INPUT_PORT_INVALID", "INPUT_ARTIFACT_INVALID", "TARGET_NOT_PUBLIC", "TARGET_DNS_REBINDING", "TARGET_PORT_FORBIDDEN", "TARGET_PATH_FORBIDDEN", "TARGET_SECURITY_UNAVAILABLE", "DNS_NXDOMAIN", "DNS_TEMPORARY", "NETWORK_CONNECT_ERROR", "NETWORK_READ_ERROR", "NETWORK_TIMEOUT", "NETWORK_CANCELLED", "HTTPS_TLS_CERTIFICATE_ERROR", "HTTPS_TLS_HANDSHAKE_ERROR", "HTTPS_DOWNGRADE", "REDIRECT_INVALID_LOCATION", "REDIRECT_LOOP", "REDIRECT_LIMIT", "REDIRECT_EXTERNAL_HOST", "FALLBACK_NO_USABLE_RESULT", "FALLBACK_USED", "HTTP_DENIED", "HTTP_MISSING", "HTTP_UNAVAILABLE", "HTTP_UNEXPECTED_STATUS", "CONTENT_EMPTY", "CONTENT_NON_HTML", "CONTENT_TOO_LARGE", "CONTENT_INCOMPLETE", "CONTENT_ENCODING_UNSUPPORTED", "CONTENT_DECODE_ERROR", "CONTENT_SUSPICIOUS", "CONTENT_JS_CANDIDATE", "ACCESS_LOGIN", "ACCESS_CHALLENGE", "BUDGET_DEADLINE", "BUDGET_ATTEMPTS", "RETRY_DEFERRED", "OUTPUT_WRITE_FAILED", "IMPLEMENTATION_NOT_AVAILABLE"], "type": "string"}, "type": "array"}` |
+| reason_codes | да | нет | `{"items": {"enum": ["INPUT_URL_INVALID", "INPUT_SCHEME_UNSUPPORTED", "INPUT_CREDENTIALS_FORBIDDEN", "INPUT_PORT_INVALID", "INPUT_ARTIFACT_INVALID", "TARGET_NOT_PUBLIC", "TARGET_DNS_REBINDING", "TARGET_PORT_FORBIDDEN", "TARGET_PATH_FORBIDDEN", "TARGET_SECURITY_UNAVAILABLE", "DNS_NXDOMAIN", "DNS_TEMPORARY", "NETWORK_CONNECT_ERROR", "NETWORK_READ_ERROR", "NETWORK_TIMEOUT", "NETWORK_CANCELLED", "HTTPS_TLS_CERTIFICATE_ERROR", "HTTPS_TLS_HANDSHAKE_ERROR", "HTTPS_DOWNGRADE", "REDIRECT_INVALID_LOCATION", "REDIRECT_LOOP", "REDIRECT_LIMIT", "REDIRECT_EXTERNAL_HOST", "FALLBACK_NO_USABLE_RESULT", "FALLBACK_USED", "HTTP_DENIED", "HTTP_MISSING", "HTTP_UNAVAILABLE", "HTTP_UNEXPECTED_STATUS", "CONTENT_EMPTY", "CONTENT_NON_HTML", "CONTENT_TOO_LARGE", "CONTENT_INCOMPLETE", "CONTENT_ENCODING_UNSUPPORTED", "CONTENT_DECODE_ERROR", "CONTENT_SUSPICIOUS", "CONTENT_JS_CANDIDATE", "ACCESS_LOGIN", "ACCESS_CHALLENGE", "BUDGET_DEADLINE", "BUDGET_ATTEMPTS", "RETRY_DEFERRED", "OUTPUT_WRITE_FAILED", "IMPLEMENTATION_NOT_AVAILABLE", "IMPLEMENTATION_BUG"], "type": "string"}, "type": "array"}` |
 | proposed_target_url | да | да | `{"anyOf": [{"format": "uri", "pattern": "^https?://", "type": "string"}, {"type": "null"}]}` |
 | next_action | да | нет | `{"minLength": 1, "type": "string"}` |
 | budget | да | нет | `{"$ref": "#/$defs/BudgetSnapshot"}` |
@@ -84,7 +84,7 @@ JSON Schema описывает форму; межполевые инвариан
 
 | Поле | Обязательно | null | Тип / ограничения |
 |---|---|---|---|
-| schema_version | да | нет | `{"enum": ["1.0.0", "1.1.0"], "type": "string"}` |
+| schema_version | да | нет | `{"enum": ["1.0.0", "1.1.0", "1.2.0"], "type": "string"}` |
 | started_at | да | нет | `{"format": "date-time", "type": "string"}` |
 | captured_at | да | нет | `{"format": "date-time", "type": "string"}` |
 | step0_deadline_at | да | нет | `{"format": "date-time", "type": "string"}` |
@@ -99,7 +99,7 @@ JSON Schema описывает форму; межполевые инвариан
 
 | Поле | Обязательно | null | Тип / ограничения |
 |---|---|---|---|
-| code | да | нет | `{"enum": ["INPUT_URL_INVALID", "INPUT_SCHEME_UNSUPPORTED", "INPUT_CREDENTIALS_FORBIDDEN", "INPUT_PORT_INVALID", "INPUT_ARTIFACT_INVALID", "TARGET_NOT_PUBLIC", "TARGET_DNS_REBINDING", "TARGET_PORT_FORBIDDEN", "TARGET_PATH_FORBIDDEN", "TARGET_SECURITY_UNAVAILABLE", "DNS_NXDOMAIN", "DNS_TEMPORARY", "NETWORK_CONNECT_ERROR", "NETWORK_READ_ERROR", "NETWORK_TIMEOUT", "NETWORK_CANCELLED", "HTTPS_TLS_CERTIFICATE_ERROR", "HTTPS_TLS_HANDSHAKE_ERROR", "HTTPS_DOWNGRADE", "REDIRECT_INVALID_LOCATION", "REDIRECT_LOOP", "REDIRECT_LIMIT", "REDIRECT_EXTERNAL_HOST", "FALLBACK_NO_USABLE_RESULT", "FALLBACK_USED", "HTTP_DENIED", "HTTP_MISSING", "HTTP_UNAVAILABLE", "HTTP_UNEXPECTED_STATUS", "CONTENT_EMPTY", "CONTENT_NON_HTML", "CONTENT_TOO_LARGE", "CONTENT_INCOMPLETE", "CONTENT_ENCODING_UNSUPPORTED", "CONTENT_DECODE_ERROR", "CONTENT_SUSPICIOUS", "CONTENT_JS_CANDIDATE", "ACCESS_LOGIN", "ACCESS_CHALLENGE", "BUDGET_DEADLINE", "BUDGET_ATTEMPTS", "RETRY_DEFERRED", "OUTPUT_WRITE_FAILED", "IMPLEMENTATION_NOT_AVAILABLE"], "type": "string"}` |
+| code | да | нет | `{"enum": ["INPUT_URL_INVALID", "INPUT_SCHEME_UNSUPPORTED", "INPUT_CREDENTIALS_FORBIDDEN", "INPUT_PORT_INVALID", "INPUT_ARTIFACT_INVALID", "TARGET_NOT_PUBLIC", "TARGET_DNS_REBINDING", "TARGET_PORT_FORBIDDEN", "TARGET_PATH_FORBIDDEN", "TARGET_SECURITY_UNAVAILABLE", "DNS_NXDOMAIN", "DNS_TEMPORARY", "NETWORK_CONNECT_ERROR", "NETWORK_READ_ERROR", "NETWORK_TIMEOUT", "NETWORK_CANCELLED", "HTTPS_TLS_CERTIFICATE_ERROR", "HTTPS_TLS_HANDSHAKE_ERROR", "HTTPS_DOWNGRADE", "REDIRECT_INVALID_LOCATION", "REDIRECT_LOOP", "REDIRECT_LIMIT", "REDIRECT_EXTERNAL_HOST", "FALLBACK_NO_USABLE_RESULT", "FALLBACK_USED", "HTTP_DENIED", "HTTP_MISSING", "HTTP_UNAVAILABLE", "HTTP_UNEXPECTED_STATUS", "CONTENT_EMPTY", "CONTENT_NON_HTML", "CONTENT_TOO_LARGE", "CONTENT_INCOMPLETE", "CONTENT_ENCODING_UNSUPPORTED", "CONTENT_DECODE_ERROR", "CONTENT_SUSPICIOUS", "CONTENT_JS_CANDIDATE", "ACCESS_LOGIN", "ACCESS_CHALLENGE", "BUDGET_DEADLINE", "BUDGET_ATTEMPTS", "RETRY_DEFERRED", "OUTPUT_WRITE_FAILED", "IMPLEMENTATION_NOT_AVAILABLE", "IMPLEMENTATION_BUG"], "type": "string"}` |
 | category | да | нет | `{"enum": ["input", "target", "transport", "http", "content", "budget", "output", "implementation"], "type": "string"}` |
 | message | да | нет | `{"minLength": 1, "type": "string"}` |
 | retryable | да | нет | `{"type": "boolean"}` |
@@ -119,7 +119,7 @@ JSON Schema описывает форму; межполевые инвариан
 
 | Поле | Обязательно | null | Тип / ограничения |
 |---|---|---|---|
-| schema_version | да | нет | `{"enum": ["1.0.0", "1.1.0"], "type": "string"}` |
+| schema_version | да | нет | `{"enum": ["1.0.0", "1.1.0", "1.2.0"], "type": "string"}` |
 | evidence_id | да | нет | `{"pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$", "type": "string"}` |
 | attempt_id | да | нет | `{"pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$", "type": "string"}` |
 | requested_url | да | нет | `{"format": "uri", "pattern": "^https?://", "type": "string"}` |
@@ -137,7 +137,7 @@ JSON Schema описывает форму; межполевые инвариан
 
 | Поле | Обязательно | null | Тип / ограничения |
 |---|---|---|---|
-| schema_version | да | нет | `{"enum": ["1.0.0", "1.1.0"], "type": "string"}` |
+| schema_version | да | нет | `{"enum": ["1.0.0", "1.1.0", "1.2.0"], "type": "string"}` |
 | attempt_id | да | нет | `{"pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$", "type": "string"}` |
 | parent_attempt_id | да | да | `{"anyOf": [{"pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$", "type": "string"}, {"type": "null"}]}` |
 | requested_url | да | нет | `{"format": "uri", "pattern": "^https?://", "type": "string"}` |
@@ -167,14 +167,14 @@ JSON Schema описывает форму; межполевые инвариан
 
 | Поле | Обязательно | null | Тип / ограничения |
 |---|---|---|---|
-| schema_version | да | нет | `{"enum": ["1.0.0", "1.1.0"], "type": "string"}` |
+| schema_version | да | нет | `{"enum": ["1.0.0", "1.1.0", "1.2.0"], "type": "string"}` |
 | source_attempt_id | да | нет | `{"pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$", "type": "string"}` |
 | source_url | да | нет | `{"format": "uri", "pattern": "^https?://", "type": "string"}` |
 | status_code | да | нет | `{"enum": [301, 302, 303, 307, 308], "type": "integer"}` |
 | raw_location | да | да | `{"anyOf": [{"type": "string"}, {"type": "null"}]}` |
 | target_url | да | да | `{"anyOf": [{"format": "uri", "pattern": "^https?://", "type": "string"}, {"type": "null"}]}` |
 | decision | да | нет | `{"enum": ["follow", "allow_www_alias", "needs_input", "reject"], "type": "string"}` |
-| reason_code | да | да | `{"anyOf": [{"enum": ["INPUT_URL_INVALID", "INPUT_SCHEME_UNSUPPORTED", "INPUT_CREDENTIALS_FORBIDDEN", "INPUT_PORT_INVALID", "INPUT_ARTIFACT_INVALID", "TARGET_NOT_PUBLIC", "TARGET_DNS_REBINDING", "TARGET_PORT_FORBIDDEN", "TARGET_PATH_FORBIDDEN", "TARGET_SECURITY_UNAVAILABLE", "DNS_NXDOMAIN", "DNS_TEMPORARY", "NETWORK_CONNECT_ERROR", "NETWORK_READ_ERROR", "NETWORK_TIMEOUT", "NETWORK_CANCELLED", "HTTPS_TLS_CERTIFICATE_ERROR", "HTTPS_TLS_HANDSHAKE_ERROR", "HTTPS_DOWNGRADE", "REDIRECT_INVALID_LOCATION", "REDIRECT_LOOP", "REDIRECT_LIMIT", "REDIRECT_EXTERNAL_HOST", "FALLBACK_NO_USABLE_RESULT", "FALLBACK_USED", "HTTP_DENIED", "HTTP_MISSING", "HTTP_UNAVAILABLE", "HTTP_UNEXPECTED_STATUS", "CONTENT_EMPTY", "CONTENT_NON_HTML", "CONTENT_TOO_LARGE", "CONTENT_INCOMPLETE", "CONTENT_ENCODING_UNSUPPORTED", "CONTENT_DECODE_ERROR", "CONTENT_SUSPICIOUS", "CONTENT_JS_CANDIDATE", "ACCESS_LOGIN", "ACCESS_CHALLENGE", "BUDGET_DEADLINE", "BUDGET_ATTEMPTS", "RETRY_DEFERRED", "OUTPUT_WRITE_FAILED", "IMPLEMENTATION_NOT_AVAILABLE"], "type": "string"}, {"type": "null"}]}` |
+| reason_code | да | да | `{"anyOf": [{"enum": ["INPUT_URL_INVALID", "INPUT_SCHEME_UNSUPPORTED", "INPUT_CREDENTIALS_FORBIDDEN", "INPUT_PORT_INVALID", "INPUT_ARTIFACT_INVALID", "TARGET_NOT_PUBLIC", "TARGET_DNS_REBINDING", "TARGET_PORT_FORBIDDEN", "TARGET_PATH_FORBIDDEN", "TARGET_SECURITY_UNAVAILABLE", "DNS_NXDOMAIN", "DNS_TEMPORARY", "NETWORK_CONNECT_ERROR", "NETWORK_READ_ERROR", "NETWORK_TIMEOUT", "NETWORK_CANCELLED", "HTTPS_TLS_CERTIFICATE_ERROR", "HTTPS_TLS_HANDSHAKE_ERROR", "HTTPS_DOWNGRADE", "REDIRECT_INVALID_LOCATION", "REDIRECT_LOOP", "REDIRECT_LIMIT", "REDIRECT_EXTERNAL_HOST", "FALLBACK_NO_USABLE_RESULT", "FALLBACK_USED", "HTTP_DENIED", "HTTP_MISSING", "HTTP_UNAVAILABLE", "HTTP_UNEXPECTED_STATUS", "CONTENT_EMPTY", "CONTENT_NON_HTML", "CONTENT_TOO_LARGE", "CONTENT_INCOMPLETE", "CONTENT_ENCODING_UNSUPPORTED", "CONTENT_DECODE_ERROR", "CONTENT_SUSPICIOUS", "CONTENT_JS_CANDIDATE", "ACCESS_LOGIN", "ACCESS_CHALLENGE", "BUDGET_DEADLINE", "BUDGET_ATTEMPTS", "RETRY_DEFERRED", "OUTPUT_WRITE_FAILED", "IMPLEMENTATION_NOT_AVAILABLE", "IMPLEMENTATION_BUG"], "type": "string"}, {"type": "null"}]}` |
 | observed_at | да | нет | `{"format": "date-time", "type": "string"}` |
 | psl_sha256 | да | да | `{"anyOf": [{"pattern": "^[a-f0-9]{64}$", "type": "string"}, {"type": "null"}]}` |
 
@@ -192,7 +192,7 @@ JSON Schema описывает форму; межполевые инвариан
 
 | Поле | Обязательно | null | Тип / ограничения |
 |---|---|---|---|
-| schema_version | да | нет | `{"enum": ["1.0.0", "1.1.0"], "type": "string"}` |
+| schema_version | да | нет | `{"enum": ["1.0.0", "1.1.0", "1.2.0"], "type": "string"}` |
 | source_step | да | нет | `{"const": 0, "type": "integer"}` |
 | site | да | нет | `{"$ref": "#/$defs/SiteValidationResult"}` |
 | selected_response | да | нет | `{"$ref": "#/$defs/FetchAttempt"}` |

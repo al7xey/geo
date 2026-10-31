@@ -120,9 +120,25 @@ class _GuardedStream(httpcore.AsyncNetworkStream):
             self.stream = await self.stream.start_tls(ssl_context, server_hostname, timeout)
             self.tls_verified = True
             return self
-        except BaseException:
+        except BaseException as error:
             with anyio.CancelScope(shield=True):
                 await self.aclose()
+            # Preserve classification before the pool can clear exception causes.
+            cause: BaseException | None = error
+            seen: set[int] = set()
+            while cause is not None and id(cause) not in seen:
+                seen.add(id(cause))
+                if isinstance(cause, ssl.SSLCertVerificationError):
+                    raise problem(
+                        "HTTPS_TLS_CERTIFICATE_ERROR",
+                        "transport",
+                        "TLS certificate verification failed.",
+                    ) from None
+                if isinstance(cause, ssl.SSLError):
+                    raise problem(
+                        "HTTPS_TLS_HANDSHAKE_ERROR", "transport", "TLS handshake failed."
+                    ) from None
+                cause = cause.__cause__ or cause.__context__
             raise
 
 

@@ -51,6 +51,7 @@ ErrorCode = Literal[
     "RETRY_DEFERRED",
     "OUTPUT_WRITE_FAILED",
     "IMPLEMENTATION_NOT_AVAILABLE",
+    "IMPLEMENTATION_BUG",
 ]
 
 
@@ -113,4 +114,34 @@ def problem(code: ErrorCode, category: str, message: str) -> GeoAuditError:
                 "attempt_id": None,
             }
         )
+    )
+
+
+def error_detail(
+    code: ErrorCode, *, attempt_id: str | None = None, message: str | None = None
+) -> ErrorDetail:
+    category = {
+        "INPUT": "input",
+        "TARGET": "target",
+        "DNS": "transport",
+        "NETWORK": "transport",
+        "HTTPS": "transport",
+        "HTTP": "http",
+        "REDIRECT": "http",
+        "FALLBACK": "transport",
+        "CONTENT": "content",
+        "ACCESS": "content",
+        "BUDGET": "budget",
+        "RETRY": "budget",
+        "OUTPUT": "output",
+        "IMPLEMENTATION": "implementation",
+    }[code.split("_", 1)[0]]
+    return ErrorDetail.model_validate(
+        {
+            "code": code,
+            "category": category,
+            "attempt_id": attempt_id,
+            "message": message or "Step 0 observation: " + code,
+            "retryable": False,
+        }
     )
