@@ -1,4 +1,4 @@
-"""Small standard-library CLI. JSON on stdout, safe structured errors on stderr."""
+"""CLI with JSON commands and a separate human-facing interactive checker."""
 
 import argparse
 import asyncio
@@ -13,6 +13,7 @@ from .api import validate_site
 from .config import Step0Config
 from .errors import ErrorDetail, GeoAuditError, error_detail
 from .handoff import load_step1_input
+from .interactive import run_interactive
 from .models import Step1Input
 from .redaction import public_summary
 from .schemas import MODELS, schema_for, write_schemas
@@ -50,16 +51,20 @@ def parser() -> argparse.ArgumentParser:
     load.add_argument("run_dir", type=Path)
     run = sub.add_parser("step0", help="Run bounded site validation; no paid APIs or step 1 crawl")
     run.add_argument("url")
-    run.add_argument("--config", type=Path)
-    run.add_argument("--output-dir", type=Path, default=Path("output/runs"))
-    run.add_argument("--http-fallback", action=argparse.BooleanOptionalAction, default=None)
     run.add_argument("--parent-run-id")
-    run.add_argument(
-        "--allow-host",
-        action="append",
-        default=[],
-        help="Exact explicitly allowed host; does not permit private IPs or other subdomains",
+    interactive = sub.add_parser(
+        "try-step0", help="Interactively check multiple sites, one independent run per URL"
     )
+    for command in (run, interactive):
+        command.add_argument("--config", type=Path)
+        command.add_argument("--output-dir", type=Path, default=Path("output/runs"))
+        command.add_argument("--http-fallback", action=argparse.BooleanOptionalAction, default=None)
+        command.add_argument(
+            "--allow-host",
+            action="append",
+            default=[],
+            help="Exact explicitly allowed host; does not permit private IPs or other subdomains",
+        )
     return result
 
 
@@ -101,7 +106,7 @@ def main(argv: list[str] | None = None) -> int:
                     }
                 )
             )
-        elif args.command == "step0":
+        elif args.command in {"step0", "try-step0"}:
             config = (
                 Step0Config.model_validate_json(args.config.read_bytes())
                 if args.config
@@ -119,6 +124,8 @@ def main(argv: list[str] | None = None) -> int:
                 data = config.model_dump(mode="json")
                 data["allow_http_fallback"] = args.http_fallback
                 config = Step0Config.model_validate_json(json.dumps(data))
+            if args.command == "try-step0":
+                return run_interactive(config, args.output_dir)
             result = asyncio.run(
                 validate_site(
                     args.url, config, output_dir=args.output_dir, parent_run_id=args.parent_run_id
