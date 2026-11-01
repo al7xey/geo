@@ -133,17 +133,30 @@ uv lock --check
 uv pip check
 uv run --locked pytest -q -ra
 uv run --locked mypy
-uv run --locked ruff check src tests tools/benchmark_step0.py tools/generate_step0_artifacts.py
+uv run --locked ruff check src tests tools
 uv run --locked python tools/generate_step0_artifacts.py --check
-uv run --locked bandit -r src -f json -o tmp/bandit.json
+uv run --locked bandit -r src tools -f json -o tmp/bandit.json
 uv export --locked --no-emit-project --format requirements-txt --output-file tmp/audit-requirements.txt --quiet
 uv run --locked pip-audit --require-hashes -r tmp/audit-requirements.txt
 uv run --locked python -m tools.benchmark_step0 --output tmp/step0-benchmark.json --repeats 3
+uv build --out-dir tmp/package
+uv run --locked python tools/check_distribution.py tmp/package
 ```
 
 pip-audit требует доступа к базе уязвимостей. Недоступность сервиса не означает успех.
 `validate` проверяет контракт; `load-step1` дополнительно проверяет файлы/хэши и свежесть.
 Синтетические примеры имеют фиксированное время и не являются действующим handoff.
+
+Для независимого воспроизведения используйте новый clone и `uv --no-cache sync --locked
+--python 3.12`, затем те же команды. Приложение и тесты не требуют `.bootstrap`, старого
+venv, локальных PDF-рендеров или benchmark JSON. Эти материалы игнорируются Git.
+Wheel содержит только пакет/PSL/py.typed и метаданные; sdist — runtime source, README,
+pyproject/lock и метаданные, без tests/docs/PDF/audit data. Полный checkout нужен для тестов.
+
+Три PDF-инструмента в tools сохранены для происхождения документов; Ruff/compileall/Bandit
+проверяют и их. Их повторный запуск требует отдельного документального окружения
+(ReportLab, pdfplumber, pypdf, Pillow), Windows fonts и для QA — подготовленных рендеров.
+Это исторический workflow подготовки PDF, не зависимость и не команда приёмки шага 0.
 
 Документы: [архитектура](docs/implementation/STEP_0_ARCHITECTURE.md),
 [матрица требований](docs/implementation/STEP_0_REQUIREMENTS.md),

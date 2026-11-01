@@ -127,7 +127,8 @@ def measure(name):
         elapsed = time.perf_counter() - started
         _, peak = tracemalloc.get_traced_memory()
         tracemalloc.stop()
-        assert result.can_enter_step1, result.reason_codes
+        if not result.can_enter_step1:
+            raise RuntimeError(f"Benchmark did not produce usable input: {result.reason_codes}")
     return {
         "wall_ms": round(elapsed * 1000, 3),
         "peak_mib": round(peak / 2**20, 3),

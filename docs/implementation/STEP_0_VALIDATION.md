@@ -26,15 +26,15 @@ README/контекст/матрица отставали от кода и на�
 | uv sync --locked; lock --check; pip check | Установка по lock, 59 packages в resolution, зависимости совместимы |
 | pytest -q -ra | **332 passed, 1 skipped**; единственный skip — реальный file symlink, Windows WinError 1314 |
 | mypy 1.18.2, strict | Success, 24 source files |
-| Ruff 0.14.3 (src/tests/benchmark/генератор) | All checks passed |
+| Ruff 0.14.3 (все src/tests/tools) | All checks passed; область расширена при проверке чистоты |
 | python tools/generate_step0_artifacts.py --check | 32 воспроизводимых артефакта, без сети |
 | Примеры Python + Draft 2020-12/FormatChecker | Все проходят; архивный 1.0 читается |
-| Bandit 1.9.4, -r src -f json | 0 findings, без массовых исключений |
+| Bandit 1.9.4, -r src tools -f json | 0 findings, без массовых исключений |
 | pip-audit 2.10.1 --require-hashes по uv export | 56 зависимостей, 0 известных vulnerabilities, 0 skip; база доступна |
 | compileall src/geo_audit | Успех |
 | uv build --wheel | geo_audit-0.3.0-py3-none-any.whl собран |
 | Wheel в отдельном tmp/wheel-smoke venv с runtime pins/hashes | Установлен; -I/-B import из site-packages, schema config/PSL hash и CLI --help проходят |
-| Пять benchmark-сценариев before/after, по 3 повтора | Samples сохранены; HTTP/delays неизменны, DNS/copies уменьшены |
+| Пять benchmark-сценариев before/after, по 3 повтора | Агрегаты в Git, сырые samples локально; HTTP/delays неизменны, DNS/copies уменьшены |
 | Проверка всех 4 PDF по git baseline | Побайтово совпадают, hashes ниже |
 
 Артефакты scanner/venv/build и незавершённые тестовые каталоги находятся в игнорируемом tmp,
@@ -131,3 +131,91 @@ Junction/hardlink/directory race реально выполнены. Production s
 
 Следующий отдельный этап — реализация шага 1 по его алгоритму. В этой приёмке robots,
 очередь URL, анализ бизнеса и платные этапы неприменимы: явно исключены поручением.
+
+## Инвентаризация, чистота и повторная изолированная проверка
+
+Дополнительное поручение 11–12 от 01.11.2026. Старт: main=c786373, чистый git status,
+посторонних изменённых/неотслеживаемых файлов нет. Изменения этой задачи отдельные.
+В итоговом дереве 100 файлов (без удаления полезных данных):
+
+| Группа | Файлов | Назначение / решение |
+|---|---:|---|
+| Корень | 7 | .gitattributes/.gitignore/.python-version, AGENTS, README, pyproject, uv.lock |
+| src | 27 | 24 Python-модуля, py.typed, PSL и README с upstream/version/hash/MPL-2.0 |
+| tests | 8 | Содержательные контрактные, transport, real TCP/TLS, handoff и acceptance сценарии |
+| examples/contracts | 24 | Генерируемые синтетические контракты/представления и архивный 1.0; не живой аудит |
+| schemas | 8 | Генерация из актуальных моделей; Python-инварианты проверяются дополнительно |
+| docs | 17 | Алгоритмы, исходный PDF/извлечение, промпты, актуальные отчёты/поля; черновики помечены историческими |
+| output/pdf | 3 | Согласованные PDF шагов 0/1 и восьми промптов; сохранены побайтово |
+| tools | 6 | Генерация контрактов, benchmark, проверка archives, три исторических PDF-инструмента |
+
+Локальные игнорируемые группы до нового export: .venv (5483 файла), .bootstrap (878),
+pytest/mypy/Ruff caches (1171), tmp (1348). Это рабочая среда, рендеры, тестовые среды,
+аудиторские/benchmark логи и сборки, а не исходники. Во время проверки tmp вырос за счёт
+новой изолированной среды и архивов. Они не удалялись и не включаются в Git.
+Новый tools/check_distribution.py — единственный новый исходник этой задачи, включён осознанно.
+Неизвестных неотслеживаемых файлов при инвентаризации не обнаружено.
+
+Из текущего индекса исключены два ранее отслеживаемых сырых benchmark JSON:
+step0-benchmark-before.json и step0-benchmark-after.json. `git rm --cached` оставил их
+локально; история не переписывалась. Агрегаты/методика в STEP_0_PERFORMANCE.md и инструмент
+сохранены. Это требование чистоты, не отказ от результатов измерений.
+Прочих отслеживаемых caches/venv/installers/audit pages/секретов/случайных backup не найдено.
+PSL, fixtures (включая одинаковые байты разных representations), lock, py.typed,
+схемы и PDF проверены по назначению и сохранены. Рекурсивное удаление/git clean не применялись.
+
+.gitignore расширен: build/dist/install artifacts, env/IDE/cache, coverage/profiles,
+benchmark logs, .env/keys, backups/tmp и run outputs. Проверены representative paths
+через git check-ignore, а не только наличие строк. Модель хранения: временные рендеры,
+screenshots и контактные листы размещаются в tmp либо output/renders/screenshots.
+Сканирование текущих отслеживаемых файлов на private-key/GitHub-token/AWS-key patterns
+дало 0 совпадений; это ограниченная проверка, не forensic аудит истории и не доказательство
+отсутствия любого возможного секрета.
+
+### Состав установочных архивов
+
+У исходного default sdist было 102 файла, включая docs/PDF/tests/benchmark logs.
+Wheel был чистым. Добавлен явный sdist include в pyproject по официальной конфигурации
+[Hatch](https://hatch.pypa.io/latest/config/build/).
+Теперь wheel — 31 файл, sdist — 33. Содержат только runtime Python, py.typed, PSL/provenance,
+метаданные; sdist также README, pyproject, uv.lock, .python-version и автоматически включённый
+.gitignore/PKG-INFO. Нет tmp, tests, test certificates, docs/PDF или audit/benchmark results.
+`python tools/check_distribution.py DIR` проверяет состав и обязательные файлы без extraction.
+
+Сборки из рабочей папки и чистой копии совпали побайтово:
+
+- wheel SHA-256: 6558da5dd9335c36c7fc09803cb112c96d2dcba6b8ac5881c0c04f34b133a6a6;
+- sdist SHA-256: ce8dfe83f7d60d1e982349dc0b839323f0345eeef8b3701a6580d856566df296.
+
+Эти hashes относятся к версии README/pyproject этой задачи; сами бинарные архивы в Git
+не включаются. Изменения только последующих отчётов не влияют на их содержимое.
+
+### Проверка только из версионируемых исходников
+
+Создан новый каталог tmp/geo-clean-856e4i93 из 99 текущих tracked файлов и нового
+check_distribution.py, который включается в этот коммит. Не копировались .git, .bootstrap,
+.venv, caches, tmp, benchmark samples или скачанные страницы. В новой папке:
+
+- `uv --no-cache sync --locked --python 3.12`: 59 пакетов заново подготовлены/установлены,
+  download/build без uv-кэша, 20.62 s preparation + 1.98 s install;
+- `python -m pytest -q -ra`: **332 passed, 1 skipped за 91.54 s**. File symlink skip
+  обусловлен WinError 1314; реальный TCP/TLS и новый процесс handoff действительно выполнены;
+- mypy strict (24 source files), Ruff `src tests tools`, Bandit `src tools`: проходят;
+- генератор --check: 32 артефакта; compileall src/tests/tools; lock --check / pip check: проходят;
+- pip-audit --require-hashes с новым --cache-dir tmp/audit-cache: 56 зависимостей,
+  0 vulnerabilities, база реально доступна, старый cache не использовался;
+- `uv --no-cache build`, archive checker, CLI --help, validate Step1Input: проходят;
+- benchmark smoke по всем 5 сценариям, один повтор каждого, завершён; HTTP/DNS/identity-copy
+  показатели согласованы. Это smoke, не новая серия before/after и не новый cold-start SLA.
+
+Wheel затем установлен вместо editable-пакета; импорт -I/-B подтверждает site-packages,
+PSL hash и версию config. Отдельные шесть real-runner/new-process handoff cases повторены
+на установленном wheel. Генераторы PDF не запускались и исходные PDF не перезаписывались.
+Их код включён в Ruff/compileall/Bandit; исторический workflow требует отдельного окружения
+и рендеров, как явно указано в README.
+
+Расширенный Ruff обнаружил 39 замечаний в старых PDF-tools: форматирование/imports исправлены.
+Bandit по tools обнаружил 9 low B101 (assert в проверяющих инструментах). Они заменены
+явными raise ValueError/RuntimeError, чтобы проверки действовали также при python -O.
+Предупреждения не скрывались nosec/массовыми исключениями. Поведение runtime шага 0,
+контракт handoff и лимиты этой задачей не менялись.

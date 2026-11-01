@@ -2,8 +2,9 @@
 
 01.11.2026. Python 3.12.10, Windows 11 22631, uv 0.9.7. Код до: 0fa9d78
 (чистое исходное дерево с уже существующим runner). После: пакет 0.3.0, исправления приёмки.
-Инструмент tools/benchmark_step0.py, по 3 повтора каждого сценария; полные samples:
-[до](step0-benchmark-before.json), [после](step0-benchmark-after.json).
+Инструмент tools/benchmark_step0.py, по 3 повтора каждого сценария. Полные сырые samples
+оставлены локально в игнорируемых step0-benchmark-before/after.json; в Git сохраняются
+агрегаты ниже и инструмент воспроизведения, согласно последующему требованию о чистоте.
 Первичные замеры выполнены до оптимизаций. Для окончательного сравнения baseline повторён
 из git archive 0fa9d78 с тем же инструментом через отдельный PYTHONPATH; рабочий код не откатывался.
 Runtime-зависимости одинаковы; обновление pytest не участвует в runtime benchmark.
@@ -20,7 +21,7 @@ Wall time — perf_counter, без удаления временного кат�
 измеряемого прохода. Это Python allocations, не RSS, не память SSL/ядра и не весь процесс.
 Fixture body создаётся до измерения. После тёплого PSL cache его ранее выделенная память
 не входит в per-run tracemalloc peak. Поэтому memory small-case нельзя читать как RSS.
-Первый sample HTTPS включает cold PSL; cold samples сохранены отдельно от медиан.
+Первый sample HTTPS включает cold PSL; cold показатели приведены отдельно от медиан.
 
 Счётчики фиксируют DNS/connect (HTTP attempts), вызовы SHA-256/file_digest и объём данных,
 переданных на hashing, число classifications/входных bytes, SSLContext creation.

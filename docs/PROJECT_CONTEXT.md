@@ -59,8 +59,9 @@ config step0-config-1.2.0 и config_sha256. Смешанные/неизвест�
 - implementation/STEP_0_VALIDATION.md — исходное состояние, финальные проверки, PDF hashes.
 - implementation/STEP_0_SECURITY_REVIEW.md — независимая модель угроз, подтверждённые
   дефекты и исправления, scanner versions/results, ограничения.
-- implementation/STEP_0_PERFORMANCE.md и step0-benchmark-before/after.json — методика,
-  исходные samples и сравнение пяти сценариев. Benchmark-инструмент сохранён.
+- implementation/STEP_0_PERFORMANCE.md — методика и агрегаты сравнения пяти сценариев.
+  Benchmark-инструмент сохранён; сырые samples оставлены локально и исключены из Git
+  последующим требованием пользователя о чистоте репозитория.
 - implementation/STEP_0_NETWORK_AND_POLICY.md и STEP_0_NETWORK_VALIDATION.md — исторический
   сетевой этап 0.2.0; его формулировки о незавершённом runner более не актуальны.
 
@@ -75,6 +76,14 @@ Success/partial/denied/corrupt/unknown version/expired проверены; GET �
 Mypy strict, Ruff, Bandit, lock/pip check, генерация контрактов и wheel smoke выполняются
 по командам README. pip-audit после исправления pytest: 56 зависимостей, 0 известных
 уязвимостей, 0 skip. Отсутствие scanner findings не означает полной безопасности.
+
+Дополнительная приёмка чистоты: 100 необходимых файлов; полная инвентаризация в
+STEP_0_VALIDATION.md. .gitignore расширен, два сырых benchmark JSON сняты с учёта и
+оставлены локально. Все tools включены в Ruff/compileall/Bandit. Явный sdist include
+уменьшил его с 102 до 33 файлов; wheel содержит 31 файл. В отдельной копии только из
+версионируемых исходников установка uv --no-cache sync --locked и полный suite повторены:
+332 passed, 1 skipped. Новый audit cache: 56 зависимостей/0 vulnerabilities. Архивы
+рабочей и чистой копии побайтово одинаковы; handoff проверен также из установленного wheel.
 
 ## Принятые решения и уточнения
 
@@ -95,6 +104,7 @@ Mypy strict, Ruff, Bandit, lock/pip check, генерация контракто
 | 01.11.2026 | pytest 9.0.3 вместо 8.4.2, точные pins и lock | pip-audit обнаружил Unix temp-dir advisory в dev dependency |
 | 01.11.2026 | Immutable PSL cache на процесс, SSLContext на client, один identity buffer, убрать лишний redirect DNS | Измеренные издержки; HTTP count/delays/защита неизменны |
 | 01.11.2026 | Удалить неиспользуемые Protocol, сохранить benchmark/документальные инструменты | Минимальная понятная архитектура без потери воспроизводимости |
+| 01.11.2026 | Исключить сырые benchmark samples из Git, сохранить агрегаты и инструмент; явный sdist include; Ruff/Bandit на все tools | Дополнительная приёмка чистоты и воспроизводимости, без удаления fixtures/PSL/PDF |
 
 Это реализационные уточнения текущей редакции, а не изменение исходного PDF.
 Каталоги незавершённой реализации без полных evidence не мигрируются выдуманными данными:

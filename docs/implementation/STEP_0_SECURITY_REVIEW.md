@@ -83,6 +83,10 @@ Atomic replace не равен fsync транзакции всей папки п
 [pip-audit README](https://github.com/pypa/pip-audit#usage).
 
 - Bandit **1.9.4**, `python -m bandit -r src -f json`: 0 findings, без nosec/массовых skip.
+- Дополнительная проверка чистоты расширила Bandit на `src tools`: 9 low B101 в старых
+  проверяющих инструментах заменены явными raise, итог 0 findings без подавления предупреждений.
+  Ruff также проверяет все `src tests tools`. В новом изолированном окружении и с новым
+  pip-audit cache повторены 332 passed/1 skipped и аудит 56 зависимостей/0 vulnerabilities.
 - pip-audit **2.10.1**, сначала --no-deps по pinned export; после исправления
   --require-hashes по полному uv export: **56 dependencies, 0 vulnerabilities, 0 skipped**.
   База была доступна. Предупреждение short/Unicode пути временного venv проверено:

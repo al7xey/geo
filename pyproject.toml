@@ -35,6 +35,9 @@ dev = [
 [tool.hatch.build.targets.wheel]
 packages = ["src/geo_audit"]
 
+[tool.hatch.build.targets.sdist]
+include = ["/src/geo_audit", "/pyproject.toml", "/README.md", "/uv.lock", "/.python-version"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 
