@@ -76,7 +76,9 @@ run-<uuid>/
 
 `content_encoded` — тело до content decoding, после удаления HTTP transfer framing;
 `entity_bytes` — распакованное содержимое; `decoded_text` — текст в UTF-8 с записанной
-исходной/применённой кодировкой. Это не захват TLS/HTTP wire-трафика. При identity
+исходной/применённой кодировкой. Общие лимиты публикации и загрузки: 64 MiB
+на evidence-файл, 256 MiB на уникальные evidence-файлы запуска; сетевые caps отдельно.
+Превышение запрещает положительную публикацию. Это не захват TLS/HTTP wire-трафика. При identity
 байты совпадают, но происхождение представлений остаётся явным.
 
 Синтетический stdout CLI (полный контракт: [site-ok.json](examples/contracts/site-ok.json)):
@@ -154,7 +156,8 @@ New-Item -ItemType Directory -Force tmp | Out-Null
 uv lock --check
 uv pip check
 uv run --locked pytest -q -ra
-uv run --locked mypy
+uv run --locked mypy --platform linux
+uv run --locked mypy --platform win32
 uv run --locked ruff check src tests tools
 uv run --locked python tools/generate_step0_artifacts.py --check
 uv run --locked bandit -r src tools -f json -o tmp/bandit.json
@@ -194,8 +197,9 @@ read-only token, actions закреплены SHA, caches отключены, в
 Ограничения: прямое соединение без proxy/keepalive/HTTP2; первый проверенный IP;
 identity/gzip/zlib-deflate; эвристики без исполнения JS; ограниченные тела в памяти.
 SHA-256 подтверждает целостность, но не подлинность против владельца, способного
-переписать каталог и хэши. Windows проверен фактически; POSIX требует отдельной
-интеграционной приёмки. Живые проверки шага 0 выполнены 01.11.2026: example.com
+переписать каталог и хэши. Windows и Ubuntu проверены в CI, включая настоящие
+файловые symlink, FIFO и directory-swap; локальный Windows требует symlink privilege.
+Живые проверки шага 0 выполнены 01.11.2026: example.com
 по HTTP/HTTPS и www.python.org дали ok; expired.badssl.com при отключённом fallback
 дал ожидаемую ошибку сертификата. Эти результаты являются наблюдениями одного запуска,
 а не обещанием доступности тех же сайтов в другой момент или среде.

@@ -1,7 +1,8 @@
 # Финальная приёмка шага 0
 
 01.11.2026. Область: только шаг 0 и вход шага 1. Windows 11 22631/NTFS,
-Python 3.12.10, uv 0.9.7; пакет 0.3.1. Промпты/алгоритмы сверены по составным требованиям:
+Python 3.12.10, uv 0.9.7; пакет 0.3.2. Дополнительно фактически проверены
+Windows 2025 и Ubuntu 24.04 в fresh CI checkout. Промпты/алгоритмы сверены по составным требованиям:
 [матрица](STEP_0_REQUIREMENTS.md). Исходные документы не подменены реализацией.
 
 ## Исходное состояние и происхождение изменений
@@ -24,15 +25,15 @@ README/контекст/матрица отставали от кода и на�
 | Проверка | Фактический результат |
 |---|---|
 | uv sync --locked; lock --check; pip check | Установка по lock, 59 packages в resolution, зависимости совместимы |
-| pytest -q -ra | **339 passed, 1 skipped**; единственный skip — реальный file symlink, Windows WinError 1314 |
-| mypy 1.18.2, strict | Success, 24 source files |
+| pytest -q -ra | Локально **351 passed / 3 skipped**, 122.56 s; CI Windows **352/2**, 41.36 s; Ubuntu **352/2**, 12.12 s |
+| mypy 1.18.2, strict --platform linux и --platform win32 | Success, 25 source files для обоих targets на обеих ОС |
 | Ruff 0.14.3 (все src/tests/tools) | All checks passed; область расширена при проверке чистоты |
 | python tools/generate_step0_artifacts.py --check | 32 воспроизводимых артефакта, без сети |
 | Примеры Python + Draft 2020-12/FormatChecker | Все проходят; архивный 1.0 читается |
 | Bandit 1.9.4, -r src tools -f json | 0 findings, без массовых исключений |
 | pip-audit 2.10.1 --require-hashes по uv export | 56 зависимостей, 0 известных vulnerabilities, 0 skip; база доступна |
 | compileall src/geo_audit | Успех |
-| uv build --wheel | geo_audit-0.3.1-py3-none-any.whl собран |
+| uv build --wheel | geo_audit-0.3.2-py3-none-any.whl собран |
 | Wheel в отдельном tmp/wheel-smoke venv с runtime pins/hashes | Установлен; -I/-B import из site-packages, schema config/PSL hash и CLI --help проходят |
 | Пять benchmark-сценариев before/after, по 3 повтора | Агрегаты в Git, сырые samples локально; HTTP/delays неизменны, DNS/copies уменьшены |
 | Проверка всех 4 PDF по git baseline | Побайтово совпадают, hashes ниже |
@@ -118,10 +119,12 @@ Python-процесс. В нём DNS/connect API запрещены; число 
 
 ## Явные ограничения приёмки
 
-Не проведены: POSIX filesystem integration, file symlink без Windows privilege,
-живой smoke на публичном сайте, аппаратный power loss, враждебный маршрутизатор,
-полный forensic secret scan Git history. Symlink skip не засчитан как pass.
-Junction/hardlink/directory race реально выполнены. Production security не отключалась.
+Не проведены: аппаратный power loss, враждебный маршрутизатор, полный forensic
+secret scan Git history. POSIX FIFO/directory-FD race и file symlink приняты по
+фактическому CI. Локальный symlink skip из-за WinError 1314 не засчитан как pass:
+тест выполнен отдельно на обеих CI ОС с обязательным no-skip gate. Junction/hardlink/
+directory race проверены реально; public smoke ниже — датированные наблюдения.
+Production security не отключалась.
 
 Монотонный budget — последовательный, не межпроцессная конкурентная квота. UTC часы доверенные.
 Атомарность файла не обещает аппаратную транзакцию каталога. SHA-256 не подписывает происхождение.
@@ -308,13 +311,13 @@ Raw/site результаты оставлены в output/runs, в Git не д�
 (0 findings) и генератор --check (32) прошли. pip-audit: 56 dependencies,
 0 известных vulnerabilities. Wheel/sdist собраны и проверены: 32/34 файла соответственно,
 добавлен только runtime-модуль интерактивного CLI. Это не новая полная security-сертификация:
-ограничения предыдущего security review и непроверенной POSIX-интеграции сохраняются.
+ограничения security review сохраняются; прежний пробел POSIX закрыт следующим CI.
 
 Финальный полный прогон после завершения параллельных правок: 346 passed, 1 skipped
 за 90.26 s. Единственный skip — существующее ограничение права file symlink в Windows.
 Повторные Ruff и mypy прошли; git diff --check не обнаружил ошибок whitespace.
 
-## Исправления по первой Windows/Linux проверке
+## История исправлений по первой Windows/Linux проверке
 
 Run 41308165433, commit 4fc456e: Windows 2025 successful, 340 passed за 27.39 s,
 file symlink 1 passed без skip; Linux — 1 failed / 337 passed / 2 Windows-only skipped.
@@ -327,4 +330,48 @@ file symlink 1 passed без skip; Linux — 1 failed / 337 passed / 2 Windows-o
 Mypy 24 runtime files, Ruff src/tests/tools, Bandit и 32 generated artifacts проходят.
 Это отдельный worktree: параллельные правки CLI/content/interactive из основного C:/GEO
 не копировались, не перезаписывались и в данный коммит не включаются.
-Новые Linux-сценарии до второго CI-прогона остаются ожидающими фактической проверки.
+На момент этого отдельного коммита Linux-сценарии ещё ожидали CI.
+После принятого параллельного коммита b7fa27e изменения объединены обычным merge af27b2c,
+без перезаписи чужой работы и истории. Итоговые проверки объединённого кода — ниже.
+
+## Итог платформенной приёмки 0.3.2
+
+[CI run 41310258426](https://github.com/al7xey/geo/actions/runs/41310258426), code commit
+88d3c1bb5c9e3fb0ba473587a2ef0513f38de007: обе job completed/success. Windows и Linux
+установили lock в новом checkout с UV_NO_CACHE=1. По 352 passed / 2 skipped;
+Windows skips — два POSIX-only сценария, Ubuntu skips — Windows-only сценарии.
+Ни один обязательный сценарий не остался непроверенным из-за локального WinError 1314:
+отдельный file-symlink тест прошёл на обеих ОС, JUnit gate tests=1 / stopped=0.
+Реальные TCP/TLS IPv4/IPv6, symlink/hardlink/junction, FIFO и directory-FD race выполнены.
+
+Полный CI включает uv sync --locked, lock --check, pip check, pytest, strict mypy
+для обоих platform targets, Ruff src/tests/tools, Bandit src/tools, генератор --check,
+pip-audit --require-hashes с новым cache (база доступна, 0 vulnerabilities), build,
+archive checker (wheel 32 / sdist 34), CLI --help. Локальные команды повторены;
+compileall прошёл; wheel 0.3.2 установлен в новый venv по hashed export:
+-I/-B import из site-packages и 6 real-runner/new-process handoff cases прошли (15.19 s).
+README перечисляет
+команды воспроизведения. 32 generated contracts остались неизменными, schema/algorithm/config 1.2.
+
+Первая Linux job была красной по fixture kwargs (исправлено); следующая выполнила runtime
+tests, но обнаружила 12 mypy platform attr ошибок. os.name guards заменены на sys.platform,
+без ignore или отключения безопасности; оба targets теперь обязательны в CI. Эти неудачные
+прогоны не объявлены успешными и сохранены в Actions.
+
+Новые исправления: bounded hash-read растущего файла (S07), nonblocking FIFO rejection (S08),
+единые producer/consumer evidence caps (S09). Последний дефект проверен четырьмя сценариями:
+нет положительного commit/дополнительного GET/открытия oversized evidence/увеличения бюджета.
+Наблюдения при ошибке публикации остаются, отсутствующий HTML не подставляется.
+
+Сквозной тест test_real_runner_saved_input_in_new_process_without_get запускает настоящий
+runner/TLS fixture, пишет run и передаёт его новому процессу. Проверены success, допустимый
+partial, denied, corrupt, unknown_version, expired; GET остаётся 1, DNS/socket consumer запрещены.
+UTC deadline и counters сохранены; монотонный timestamp не переносится между процессами,
+истёкший запуск требует нового run. crawl_permission=unknown, robots-разрешение не выводится.
+
+Текущая инвентаризация: 103 tracked файла — root 7, .github 1, src 28 (25 Python), tests 9,
+examples 24, schemas 8, docs 17, output/pdf 3, tools 6. Текущие venv/cache/tmp/build,
+сырые benchmark JSON и live runs игнорируются, не попадают в Git. Четыре исходных PDF
+побайтово совпали с 0fa9d78; hashes выше актуальны. Неизвестных untracked исходников нет.
+Параллельный interactive CLI сохранён; библиотека input() не вызывает, ввод — только CLI.
+Исторические результаты 0.3.0/0.3.1 выше не подменяют эти итоговые измерения.

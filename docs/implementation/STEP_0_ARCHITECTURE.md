@@ -63,11 +63,15 @@ request_sent означает начало транспортной попытк
 Новый запуск не переиспользует существующую папку. Файлы fsync до atomic replace.
 Windows: GENERIC_READ, FILE_SHARE_READ|WRITE без DELETE для каталогов; листья без
 следования reparse points и без write/delete sharing. POSIX: O_NOFOLLOW/openat,
-dir_fd для rename/unlink/mkdir. Windows проверен фактически; POSIX интеграция не проводилась.
+dir_fd для rename/unlink/mkdir; O_NONBLOCK предотвращает зависание до проверки типа FIFO.
+Windows и Ubuntu проверены фактически, включая file symlink и подмену родителя каталога.
 
 Отмена закрывает ресурсы, сохраняет failed и завершённые наблюдения, затем пробрасывает
 CancelledError. Ошибка диска даёт OUTPUT_WRITE_FAILED без положительного commit.
 Hard exit может оставить .tmp, raw и running-journal; без site.json запуск не завершён.
+Producer и оба handoff используют единый лимит 64 MiB на evidence-файл и
+256 MiB на уникальные evidence-файлы run. Проверка до положительного site commit
+не позволяет опубликовать вход, который loader заведомо отвергнет.
 Возобновление не реализовано. Atomic rename не обещает транзакцию каталога при потере питания.
 
 Step1Input вложенно содержит site: версии, URL/origin/scope, status/reasons,

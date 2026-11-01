@@ -65,25 +65,30 @@ config step0-config-1.2.0 и config_sha256. Смешанные/неизвест�
 - implementation/STEP_0_NETWORK_AND_POLICY.md и STEP_0_NETWORK_VALIDATION.md — исторический
   сетевой этап 0.2.0; его формулировки о незавершённом runner более не актуальны.
 
-Фактически выполнен полный suite: 339 passed, 1 skipped после completion-аудита 0.3.1.
+Фактически выполнен полный suite 0.3.2: локально 351 passed / 3 skipped;
+Windows 2025 и Ubuntu 24.04 CI — по 352 passed / 2 platform-only skipped.
 Реальный TCP/TLS IPv4/IPv6, wrong hostname/untrusted CA/peer mismatch/handshake timeout
 проверены отдельно от mocks. Сквозная интеграция: реальный runner на контролируемом
 HTTPS-сайте → файлы → новый процесс consumer без разрешённых socket/DNS операций.
 Success/partial/denied/corrupt/unknown version/expired проверены; GET остался один.
-Файловый symlink тест skipped из-за WinError 1314; hardlink/junction/directory rename race
-проверены реально. POSIX integration и живой внешний сайт не проверялись.
+File symlink выполнен на обеих CI ОС без skip; POSIX FIFO и directory-FD race,
+Windows hardlink/junction/directory rename проверены реально. Локальный WinError 1314
+сохраняется, но это больше не блокер приёмки. CI run 41310258426, commit 88d3c1b:
+обе job successful; установка с нуля, без старого venv/cache и неотслеживаемых файлов.
 
 Mypy strict, Ruff, Bandit, lock/pip check, генерация контрактов и wheel smoke выполняются
 по командам README. pip-audit после исправления pytest: 56 зависимостей, 0 известных
 уязвимостей, 0 skip. Отсутствие scanner findings не означает полной безопасности.
 
-Дополнительная приёмка чистоты: 101 необходимый файл, включая workflow; полная инвентаризация в
+Дополнительная приёмка чистоты: 103 необходимых файла, включая workflow/interactive CLI; полная инвентаризация в
 STEP_0_VALIDATION.md. .gitignore расширен, два сырых benchmark JSON сняты с учёта и
 оставлены локально. Все tools включены в Ruff/compileall/Bandit. Явный sdist include
-уменьшил его с 102 до 33 файлов; wheel содержит 31 файл. В отдельной копии только из
+уменьшил его с 102 до 34 файлов; wheel содержит 32 файла. В отдельной копии только из
 версионируемых исходников установка uv --no-cache sync --locked и полный suite повторены:
-339 passed, 1 skipped (0.3.1). Новый audit cache: 56 зависимостей/0 vulnerabilities. Архивы
-рабочей и чистой копии побайтово одинаковы; handoff проверен также из установленного wheel.
+339 passed, 1 skipped (историческая проверка 0.3.1); текущий tracked-only CI описан выше.
+Новый audit cache: 56 зависимостей/0 vulnerabilities. Архивы 0.3.1 рабочей и чистой
+копии побайтово совпали. Для 0.3.2 установлен wheel в новый venv по hashed export:
+6 real-runner/new-process handoff cases прошли; импорт идёт из site-packages.
 
 ## Принятые решения и уточнения
 
@@ -108,6 +113,7 @@ STEP_0_VALIDATION.md. .gitignore расширен, два сырых benchmark J
 | 01.11.2026 | Patch 0.3.1: сохранять ACCESS_LOGIN без выдуманного ACCESS_CHALLENGE; дополнить проверки CLI-кодов, UTC rollback и import I/O | Повторный completion audit выявил неточную причину барьера и недостаточно прямые подтверждения отдельных требований; status/can_enter/schema остаются прежними |
 | 01.11.2026 | Добавить ограниченный Windows/Linux CI с обязательным file-symlink gate, read-only token и SHA pins | Продолжение поручения после локального WinError 1314; нужно фактически проверить отсутствующие платформенные сценарии, без изменения ОС пользователя |
 | 01.11.2026 | Patch 0.3.2: ограничить hash-чтение размером evidence + 1; POSIX open с O_NONBLOCK до проверки типа; проверить подмену родителя через directory FD | Анализ внешней платформенной приёмки выявил возможность неограниченного чтения растущего файла и блокировки FIFO; исправления не меняют Step1Input и network budgets |
+| 01.11.2026 | Единые evidence caps producer/handoff (64 MiB/file, 256 MiB/run), отказ до положительного site; platform guards через sys.platform и strict mypy для обеих ОС | Producer мог сохранить непригодный для загрузчика объём; внешняя Linux-проверка обнаружила неточную типизацию Windows-only API. Четыре отрицательные регрессии проверяют отсутствие commit/GET/чтения/расхода бюджета |
 
 Это реализационные уточнения текущей редакции, а не изменение исходного PDF.
 Каталоги незавершённой реализации без полных evidence не мигрируются выдуманными данными:
@@ -116,9 +122,10 @@ STEP_0_VALIDATION.md. .gitignore расширен, два сырых benchmark J
 ## Ограничения и следующий этап
 
 Только прямой маршрут; первый проверенный IP без перебора; ограниченные тела в памяти;
-эвристики без исполнения JS; SHA-256 без подписи каталога; доверенные UTC часы. POSIX,
-file symlink без Windows privilege и аппаратный crash/power loss не приняты
-как проверенные. Живой public smoke шага 0 выполнен в рамках ревью ниже.
+эвристики без исполнения JS; SHA-256 без подписи каталога; доверенные UTC часы.
+Аппаратный crash/power loss и полный forensic scan истории не проверялись.
+POSIX и реальный file symlink приняты по фактическому CI; локальное ограничение
+Windows symlink privilege не требует изменения настроек ОС пользователя. Живой public smoke шага 0 выполнен в рамках ревью ниже.
 Исходные PDF и полезные инструменты подготовки документов сохранены.
 
 Следующая отдельная задача — шаг 1 по его подробному алгоритму: robots/очередь/ограниченный

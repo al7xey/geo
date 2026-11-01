@@ -1,8 +1,10 @@
 # Security review фактической реализации шага 0
 
-01.11.2026. Проверены исходный commit 0fa9d78 и исправления пакета 0.3.1.
-Предыдущие отчёты не использовались как доказательство. Среда: Windows 11 22631,
-Python 3.12.10, NTFS, обычный пользователь. Полный suite: 339 passed, 1 skipped.
+01.11.2026. Проверены исходный commit 0fa9d78 и исправления пакета 0.3.2.
+Предыдущие отчёты не использовались как доказательство. Локально Windows 11/NTFS,
+Python 3.12.10, обычный пользователь: 351 passed / 3 skipped. Внешний CI run 41310258426:
+Windows 2025 и Ubuntu 24.04 successful, по 352 passed / 2 platform-only skipped;
+реальный file symlink отдельно без skip. Предыдущие counts ниже — история проверок.
 
 ## Модель угроз
 
@@ -30,8 +32,8 @@ rebinding, scope/TLS/proxy bypass, decompression bomb, slow drip, лог-инъ�
 
 A/E/I — test_acceptance.py / test_step0_end_to_end.py / test_connection_integration.py.
 Дополнительно исправлена POSIX-ветка: rename/unlink/mkdir относительно directory FD,
-вместо повторного pathname access. Это следует из анализа гонки, но POSIX эксплуатация
-и интеграционный результат в данной Windows-среде не заявляются проверенными.
+вместо повторного pathname access. Первоначально это следовало из анализа гонки; теперь реальная directory-swap
+регрессия выполнена на Ubuntu CI (результаты платформенной приёмки ниже).
 
 ## Независимая проверка сетевой архитектуры
 
@@ -113,8 +115,9 @@ CLI-коды 2/5/70/130 с отсутствием лишних GET, редакт
 policy.classify_result): regression test_login_barrier_does_not_invent_a_challenge проверяет
 reason_codes/next_action, отсутствие fallback и отказ handoff при единственном GET.
 
-Не проверены POSIX filesystem integration, реальный файловый symlink без Windows privilege,
-публичный живой сайт, аппаратная потеря питания и враждебный маршрутизатор. Один проверенный
+Не проверены аппаратная потеря питания, враждебный маршрутизатор и полный forensic scan
+истории Git. POSIX filesystem integration и file symlink реально выполнены в CI.
+Датированный public smoke в отчёте приёмки не доказывает универсальную доступность. Один проверенный
 IP без перебора остальных может снизить доступность. Неподдержанные proxy, HTTP2, brotli,
 raw-deflate и JS дают явные ограничения. Большие ответы ограниченно буферизуются; все
 попытки bounded, но процесс не имеет отдельной OS memory quota. SHA-256 не заменяет подпись.
@@ -131,19 +134,36 @@ mypy/Ruff/Bandit, audit и build также successful. Это закрывае�
 
 Два дополнительных сценария хранения:
 
-- S07, средняя серьёзность: EvidenceStore.verify использовал file_digest до EOF после
+- S07, средняя серьёзность: src/geo_audit/evidence.py, EvidenceStore.verify использовал
+  file_digest до EOF после
   одной проверки stat. Растущий конкурентно файл мог неограниченно продлевать hash-read.
   test_verification_bounds_reads_when_evidence_keeps_growing на старом коде запрашивал
   262144 bytes при declared size=3 и падал. Теперь чтение ограничено declared size + 1;
   лишний байт обнаруживает рост, короткий поток — усечение; SHA-256 остаётся обязательным.
   Регрессия проходит и проверяет отсутствие лишних чтений, не только сообщение ошибки.
-- S08, средняя серьёзность: POSIX FIFO может заблокировать O_RDONLY open до fstat,
+- S08, средняя серьёзность: src/geo_audit/secure_io.py, open_confined.
+  POSIX FIFO может заблокировать O_RDONLY open до fstat,
   поэтому проверка regular-file после open сама по себе недостаточна. Добавлен O_NONBLOCK,
   затем прежний fstat/type/link check до fdopen. Семантика — Linux open(2):
   https://man7.org/linux/man-pages/man2/open.2.html . Реальный FIFO-тест с timeout дочернего
-  процесса и запретом fdopen подготовлен для Ubuntu CI; до его результата не засчитан.
+  процесса и запретом fdopen фактически прошёл на Ubuntu CI run 41310258426.
 
 Также добавлена POSIX regression на rename pinned raw → parked и подстановку symlink
 наружу между записью tmp и replace. Она требует неизменности внешнего sentinel/source,
 отсутствия внешнего target и отказа последующей верификации изменённого namespace.
 Это реальная проверка directory FD, а не замена проверки пути resolve/stat.
+Итог run [41310258426](https://github.com/al7xey/geo/actions/runs/41310258426), commit 88d3c1b:
+обе ОС successful; S07/S08 и parent-swap регрессии подтверждены, no-skip symlink gate пройден.
+Linux mypy обнаружил 12 platform-only attr ошибок: os.name guards заменены на
+sys.platform, без ignore; strict types Linux/Windows проверяются на обеих CI ОС.
+
+S09, низкая серьёзность, отказ handoff: src/geo_audit/evidence.py, EvidenceStore.publish
+не учитывал caps loader в src/geo_audit/handoff.py
+(64 MiB/file, 256 MiB/run), поэтому большой завершённый run мог получить positive site,
+который загрузчик отвергал. Условие — большой ответ/накопленная история или увеличенный config.
+Общий verify_evidence_limits теперь вызывается producer и обоими handoff до чтения evidence.
+Четыре безопасных сценария с уменьшенным test-only cap воспроизводят оба лимита:
+test_producer_refuses_result_that_handoff_cannot_load и
+test_loader_enforces_shared_limits_before_evidence_open. Проверяют failed/false, отсутствие
+site commit, сохранение observations, ровно один GET, неизменный budget и запрет
+verify/verified_bytes при превышении. Все четыре прошли локально и в обеих CI ОС.
