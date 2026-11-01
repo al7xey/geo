@@ -1,0 +1,103 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "decision_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Decision Id",
+      "type": "string"
+    },
+    "observation_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Observation Id",
+      "type": "string"
+    },
+    "evaluated_url": {
+      "format": "uri",
+      "pattern": "^https?://",
+      "title": "Evaluated Url",
+      "type": "string"
+    },
+    "origin": {
+      "title": "Origin",
+      "type": "string"
+    },
+    "product_token": {
+      "minLength": 1,
+      "title": "Product Token",
+      "type": "string"
+    },
+    "decision": {
+      "enum": [
+        "allowed",
+        "disallowed",
+        "unknown"
+      ],
+      "title": "Decision",
+      "type": "string"
+    },
+    "robots_evidence_id": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Robots Evidence Id"
+    },
+    "matched_group_lines": {
+      "items": {
+        "type": "integer"
+      },
+      "title": "Matched Group Lines",
+      "type": "array"
+    },
+    "decisive_rule_lines": {
+      "items": {
+        "type": "integer"
+      },
+      "title": "Decisive Rule Lines",
+      "type": "array"
+    },
+    "reason_code": {
+      "title": "Reason Code",
+      "type": "string"
+    },
+    "parser_version": {
+      "title": "Parser Version",
+      "type": "string"
+    },
+    "crawl_delay": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Crawl Delay"
+    }
+  },
+  "required": [
+    "decision_id",
+    "observation_id",
+    "evaluated_url",
+    "origin",
+    "product_token",
+    "decision",
+    "robots_evidence_id",
+    "matched_group_lines",
+    "decisive_rule_lines",
+    "reason_code",
+    "parser_version",
+    "crawl_delay"
+  ],
+  "title": "RobotsDecision",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:RobotsDecision:1.0.0"
+}

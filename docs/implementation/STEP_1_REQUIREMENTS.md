@@ -373,6 +373,27 @@ RunCounters не имеет собственного start/deadline/remaining HT
 
 ## Граница готовности текущего поручения
 
+### Фактический прогресс цепочки 1–13
+
+| Промпт | Факт / gate | Статус |
+|---|---|---|
+| 1 | 170 уникальных R, §§1–16/8.5, A01–A16, L01–L11, локальные ссылки, unchanged sources, 32 старых artifacts; commit 70eba84, push main | completed |
+| 2 | `step1/config.py`, `models.py`, `schemas.py`, 19 synthetic artifacts и `tests/test_step1_contracts.py`; новые версии раздельны, refs/coverage/material/quotes/UTC/extra проверены | implemented+verified в пределах моделей; disk/offset bytes и runner ещё deferred |
+| 3–13 | Сеть/robots/обход/публикация/Step2 loader/security/performance/final acceptance ещё не реализованы | deferred |
+
+Проверки промпта 2: `pytest tests/test_step1_contracts.py tests/test_contracts.py` —
+107 passed / 2 platform-only skipped; strict mypy win32/linux — pass; Ruff src/tests/tools,
+Bandit src/tools, оба generators --check и git diff --check — pass. Старый полный
+baseline до новых моделей: 351 passed / 3 skipped (Windows symlink privilege, POSIX
+FIFO и directory FD). Эти skips не приёмка Linux/CI этого этапа.
+Синтетические invalid примеры хранят компактные mutations к result.json; пример
+Step2Input не имеет действующего commit и не является готовым audit handoff.
+
+Строки R с полной future pipeline проверкой пока остаются D: наличие модели не
+реализует сетевое/extraction поведение. Подтверждена контрактная часть R06.01,
+R07.10–11, R10.08, R13.01/03–07, R14.09 и совместимость R16.03; тесты модели не
+заменяют будущие integration tests с указанными T-именами.
+
 Документальная спецификация готова при наличии полной трассировки разделов выше,
 таблицы L, архитектуры владельцев/API/ошибок/compatibility и явных Q. Это не готовность
 обхода. Следующая реализация начинается с моделей и offline fixtures; новые строки

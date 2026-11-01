@@ -1,0 +1,94 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "diagnostic_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Diagnostic Id",
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "browser",
+        "ua_probe",
+        "https_alternative"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "url": {
+      "anyOf": [
+        {
+          "format": "uri",
+          "pattern": "^https?://",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Url"
+    },
+    "status": {
+      "enum": [
+        "pass",
+        "fail",
+        "warning",
+        "unknown",
+        "not_applicable"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "reason_code": {
+      "title": "Reason Code",
+      "type": "string"
+    },
+    "evidence_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "title": "Evidence Ids",
+      "type": "array"
+    },
+    "selection_reason": {
+      "title": "Selection Reason",
+      "type": "string"
+    },
+    "outcome": {
+      "anyOf": [
+        {
+          "enum": [
+            "observed_gain",
+            "no_material_gain",
+            "inconclusive"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Outcome"
+    },
+    "limitation": {
+      "title": "Limitation",
+      "type": "string"
+    }
+  },
+  "required": [
+    "diagnostic_id",
+    "kind",
+    "url",
+    "status",
+    "reason_code",
+    "evidence_ids",
+    "selection_reason",
+    "outcome",
+    "limitation"
+  ],
+  "title": "DiagnosticResult",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:DiagnosticResult:1.0.0"
+}

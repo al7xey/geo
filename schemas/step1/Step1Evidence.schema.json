@@ -1,0 +1,130 @@
+{
+  "$defs": {
+    "Step1File": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "size_bytes": {
+          "maximum": 67108864,
+          "minimum": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        },
+        "complete": {
+          "title": "Complete",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "size_bytes",
+        "complete"
+      ],
+      "title": "Step1File",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "evidence_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Evidence Id",
+      "type": "string"
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "file": {
+      "$ref": "#/$defs/Step1File"
+    },
+    "representation": {
+      "enum": [
+        "content_encoded",
+        "entity_bytes",
+        "decoded_text",
+        "attempt_observation",
+        "extracted_raw",
+        "main_text",
+        "rendered_dom",
+        "user_material",
+        "robots_text",
+        "robots_decision",
+        "sitemap_observation"
+      ],
+      "title": "Representation",
+      "type": "string"
+    },
+    "source_evidence_id": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Source Evidence Id"
+    },
+    "source_run_id": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Source Run Id"
+    },
+    "transform_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Transform Version"
+    },
+    "original_evidence_id": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Original Evidence Id"
+    }
+  },
+  "required": [
+    "evidence_id",
+    "run_id",
+    "file",
+    "representation",
+    "source_evidence_id",
+    "source_run_id",
+    "transform_version",
+    "original_evidence_id"
+  ],
+  "title": "Step1Evidence",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:Step1Evidence:1.0.0"
+}

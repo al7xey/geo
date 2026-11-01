@@ -1,0 +1,106 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "observation_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Observation Id",
+      "type": "string"
+    },
+    "origin": {
+      "title": "Origin",
+      "type": "string"
+    },
+    "final_url": {
+      "anyOf": [
+        {
+          "format": "uri",
+          "pattern": "^https?://",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Final Url"
+    },
+    "state": {
+      "enum": [
+        "present",
+        "empty",
+        "absent",
+        "access_denied",
+        "rate_limited",
+        "unreachable",
+        "invalid_response",
+        "incomplete"
+      ],
+      "title": "State",
+      "type": "string"
+    },
+    "evidence_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "title": "Evidence Ids",
+      "type": "array"
+    },
+    "status_code": {
+      "anyOf": [
+        {
+          "maximum": 599,
+          "minimum": 100,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Status Code"
+    },
+    "observed_at": {
+      "format": "date-time",
+      "title": "Observed At",
+      "type": "string"
+    },
+    "parser_version": {
+      "title": "Parser Version",
+      "type": "string"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    },
+    "sitemap_urls": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Sitemap Urls",
+      "type": "array"
+    },
+    "truncated": {
+      "title": "Truncated",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "observation_id",
+    "origin",
+    "final_url",
+    "state",
+    "evidence_ids",
+    "status_code",
+    "observed_at",
+    "parser_version",
+    "warnings",
+    "sitemap_urls",
+    "truncated"
+  ],
+  "title": "RobotsObservation",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:RobotsObservation:1.0.0"
+}

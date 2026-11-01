@@ -1,0 +1,79 @@
+{
+  "base": "result.json",
+  "instructions": "Replace the value at path in a copy of base; reject it.",
+  "cases": [
+    {
+      "case": "unknown_version",
+      "path": [
+        "schema_version"
+      ],
+      "value": "unknown"
+    },
+    {
+      "case": "foreign_run",
+      "path": [
+        "run",
+        "run_id"
+      ],
+      "value": "other-run"
+    },
+    {
+      "case": "config_hash",
+      "path": [
+        "source",
+        "source_step0_config_sha256"
+      ],
+      "value": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "case": "dangling_evidence",
+      "path": [
+        "crawl",
+        "pages",
+        0,
+        "evidence_id"
+      ],
+      "value": "missing"
+    },
+    {
+      "case": "quote_offsets",
+      "path": [
+        "crawl",
+        "pages",
+        0,
+        "business_quotes",
+        0,
+        "end"
+      ],
+      "value": 99999
+    },
+    {
+      "case": "coverage",
+      "path": [
+        "crawl",
+        "coverage",
+        "useful_pages"
+      ],
+      "value": 9
+    },
+    {
+      "case": "material_gate",
+      "path": [
+        "crawl",
+        "material",
+        "can_start_step2"
+      ],
+      "value": false
+    },
+    {
+      "case": "not_terminal",
+      "path": [
+        "crawl",
+        "candidates",
+        0,
+        "state"
+      ],
+      "value": "queued"
+    }
+  ]
+}

@@ -1,0 +1,387 @@
+{
+  "$defs": {
+    "DirectiveObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "enum": [
+            "http_header",
+            "html_meta",
+            "data_nosnippet",
+            "canonical"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "representation": {
+          "enum": [
+            "static",
+            "rendered"
+          ],
+          "title": "Representation",
+          "type": "string"
+        },
+        "evidence_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "recipient": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Recipient"
+        },
+        "raw": {
+          "title": "Raw",
+          "type": "string"
+        },
+        "tokens": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Tokens",
+          "type": "array"
+        }
+      },
+      "required": [
+        "source",
+        "representation",
+        "evidence_id",
+        "recipient",
+        "raw",
+        "tokens"
+      ],
+      "title": "DirectiveObservation",
+      "type": "object"
+    },
+    "QuoteRef": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "text_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Text Hash",
+          "type": "string"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "minimum": 0,
+          "title": "End",
+          "type": "integer"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "text_hash",
+        "start",
+        "end",
+        "text"
+      ],
+      "title": "QuoteRef",
+      "type": "object"
+    },
+    "Signal": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "lang",
+            "hreflang",
+            "address",
+            "service_geography",
+            "tld",
+            "phone"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "strength": {
+          "enum": [
+            "explicit",
+            "weak"
+          ],
+          "title": "Strength",
+          "type": "string"
+        },
+        "quote": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/QuoteRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Evidence Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "value",
+        "strength",
+        "quote",
+        "evidence_id"
+      ],
+      "title": "Signal",
+      "type": "object"
+    },
+    "TextRef": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "text_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Text Hash",
+          "type": "string"
+        },
+        "text_chars": {
+          "minimum": 0,
+          "title": "Text Chars",
+          "type": "integer"
+        },
+        "normalization_version": {
+          "const": "text-ws-1",
+          "default": "text-ws-1",
+          "title": "Normalization Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "text_hash",
+        "text_chars"
+      ],
+      "title": "TextRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "page_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Page Id",
+      "type": "string"
+    },
+    "candidate_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Candidate Id",
+      "type": "string"
+    },
+    "url": {
+      "format": "uri",
+      "pattern": "^https?://",
+      "title": "Url",
+      "type": "string"
+    },
+    "effective_url": {
+      "format": "uri",
+      "pattern": "^https?://",
+      "title": "Effective Url",
+      "type": "string"
+    },
+    "evidence_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Evidence Id",
+      "type": "string"
+    },
+    "title": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Title"
+    },
+    "headings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Headings",
+      "type": "array"
+    },
+    "lists": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Lists",
+      "type": "array"
+    },
+    "tables": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Tables",
+      "type": "array"
+    },
+    "main_text": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/TextRef"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "alternate_texts": {
+      "items": {
+        "$ref": "#/$defs/TextRef"
+      },
+      "title": "Alternate Texts",
+      "type": "array"
+    },
+    "extraction_method": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Extraction Method"
+    },
+    "extractor_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Extractor Version"
+    },
+    "extraction_reason": {
+      "title": "Extraction Reason",
+      "type": "string"
+    },
+    "content_state": {
+      "enum": [
+        "html",
+        "js_candidate",
+        "access_barrier",
+        "suspicious_html",
+        "empty",
+        "non_html",
+        "incomplete",
+        "too_large",
+        "soft_404",
+        "service_content"
+      ],
+      "title": "Content State",
+      "type": "string"
+    },
+    "useful_candidate": {
+      "title": "Useful Candidate",
+      "type": "boolean"
+    },
+    "supporting_page": {
+      "title": "Supporting Page",
+      "type": "boolean"
+    },
+    "business_relevance": {
+      "enum": [
+        "observed",
+        "not_observed",
+        "unknown"
+      ],
+      "title": "Business Relevance",
+      "type": "string"
+    },
+    "business_quotes": {
+      "items": {
+        "$ref": "#/$defs/QuoteRef"
+      },
+      "title": "Business Quotes",
+      "type": "array"
+    },
+    "directives": {
+      "items": {
+        "$ref": "#/$defs/DirectiveObservation"
+      },
+      "title": "Directives",
+      "type": "array"
+    },
+    "signals": {
+      "items": {
+        "$ref": "#/$defs/Signal"
+      },
+      "title": "Signals",
+      "type": "array"
+    },
+    "header_capture_complete": {
+      "title": "Header Capture Complete",
+      "type": "boolean"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    }
+  },
+  "required": [
+    "page_id",
+    "candidate_id",
+    "url",
+    "effective_url",
+    "evidence_id",
+    "title",
+    "headings",
+    "lists",
+    "tables",
+    "main_text",
+    "alternate_texts",
+    "extraction_method",
+    "extractor_version",
+    "extraction_reason",
+    "content_state",
+    "useful_candidate",
+    "supporting_page",
+    "business_relevance",
+    "business_quotes",
+    "directives",
+    "signals",
+    "header_capture_complete",
+    "limitations"
+  ],
+  "title": "Page",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:Page:1.0.0"
+}

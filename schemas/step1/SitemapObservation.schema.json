@@ -1,0 +1,127 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "sitemap_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Sitemap Id",
+      "type": "string"
+    },
+    "url": {
+      "format": "uri",
+      "pattern": "^https?://",
+      "title": "Url",
+      "type": "string"
+    },
+    "depth": {
+      "maximum": 3,
+      "minimum": 1,
+      "title": "Depth",
+      "type": "integer"
+    },
+    "state": {
+      "enum": [
+        "parsed",
+        "absent",
+        "invalid",
+        "incomplete",
+        "skipped",
+        "failed"
+      ],
+      "title": "State",
+      "type": "string"
+    },
+    "evidence_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "title": "Evidence Ids",
+      "type": "array"
+    },
+    "urls": {
+      "items": {
+        "format": "uri",
+        "pattern": "^https?://",
+        "type": "string"
+      },
+      "title": "Urls",
+      "type": "array"
+    },
+    "child_sitemaps": {
+      "items": {
+        "format": "uri",
+        "pattern": "^https?://",
+        "type": "string"
+      },
+      "title": "Child Sitemaps",
+      "type": "array"
+    },
+    "publisher_metadata": {
+      "items": {
+        "maxItems": 2,
+        "minItems": 2,
+        "prefixItems": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "string"
+          }
+        ],
+        "type": "array"
+      },
+      "title": "Publisher Metadata",
+      "type": "array"
+    },
+    "parsed_entries": {
+      "minimum": 0,
+      "title": "Parsed Entries",
+      "type": "integer"
+    },
+    "skipped_entries": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Skipped Entries"
+    },
+    "reason_code": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Reason Code"
+    },
+    "truncated": {
+      "title": "Truncated",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "sitemap_id",
+    "url",
+    "depth",
+    "state",
+    "evidence_ids",
+    "urls",
+    "child_sitemaps",
+    "publisher_metadata",
+    "parsed_entries",
+    "skipped_entries",
+    "reason_code",
+    "truncated"
+  ],
+  "title": "SitemapObservation",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:SitemapObservation:1.0.0"
+}

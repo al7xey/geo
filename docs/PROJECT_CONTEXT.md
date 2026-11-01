@@ -151,6 +151,14 @@ robots до каждого HTML redirect и отсутствие reentrant lock 
 Текущая задача расширена пользователем на всю цепочку 1–13; наличие спецификации
 не закрывает gates реализации, security, performance и tracked-only приёмки.
 
+Промпт 2: добавлен отдельный пакет `geo_audit.step1` с конфигурацией, строгими
+моделями crawl/checks/run/evidence/material и будущим Step2Input, отдельным schema
+registry и 19 синтетическими артефактами. Старые Literal/URN/32 fixtures неизменны.
+Причина: закрепить связь source_step0_config_sha256 → step1 config_hash, terminal
+states, refs/coverage/quote invariants до сети. Контрактные проверки: 107 passed,
+2 platform skips; mypy win32/linux, Ruff/Bandit и generators успешны. Это модели,
+не loader/обход; Q01–Q06 и следующие gates остаются открытыми.
+
 ### Цепочка разработки шага 1 — 01.11.2026
 
 По поручению пользователя подготовлен `docs/PROMPTS_STEP_1.md`: общий блок,

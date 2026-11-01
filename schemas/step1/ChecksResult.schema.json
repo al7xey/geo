@@ -1,0 +1,298 @@
+{
+  "$defs": {
+    "DiagnosticResult": {
+      "additionalProperties": false,
+      "properties": {
+        "diagnostic_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Diagnostic Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "browser",
+            "ua_probe",
+            "https_alternative"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "pattern": "^https?://",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Url"
+        },
+        "status": {
+          "enum": [
+            "pass",
+            "fail",
+            "warning",
+            "unknown",
+            "not_applicable"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "reason_code": {
+          "title": "Reason Code",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "selection_reason": {
+          "title": "Selection Reason",
+          "type": "string"
+        },
+        "outcome": {
+          "anyOf": [
+            {
+              "enum": [
+                "observed_gain",
+                "no_material_gain",
+                "inconclusive"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Outcome"
+        },
+        "limitation": {
+          "title": "Limitation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "diagnostic_id",
+        "kind",
+        "url",
+        "status",
+        "reason_code",
+        "evidence_ids",
+        "selection_reason",
+        "outcome",
+        "limitation"
+      ],
+      "title": "DiagnosticResult",
+      "type": "object"
+    },
+    "TechnicalCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "check_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Check Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "robots_policy",
+            "indexing_directives",
+            "snippet_directives",
+            "canonical_signal",
+            "observed_access",
+            "https_transport",
+            "sitemap",
+            "javascript",
+            "ua_comparison"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "pattern": "^https?://",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Url"
+        },
+        "page_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Page Id"
+        },
+        "robot_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Robot Id"
+        },
+        "status": {
+          "enum": [
+            "pass",
+            "fail",
+            "warning",
+            "unknown",
+            "not_applicable"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "observation": {
+          "title": "Observation",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "decisive_rule_lines": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Decisive Rule Lines",
+          "type": "array"
+        },
+        "reason_code": {
+          "title": "Reason Code",
+          "type": "string"
+        },
+        "limitation": {
+          "title": "Limitation",
+          "type": "string"
+        },
+        "observed_at": {
+          "format": "date-time",
+          "title": "Observed At",
+          "type": "string"
+        },
+        "rule_version": {
+          "title": "Rule Version",
+          "type": "string"
+        },
+        "scope": {
+          "title": "Scope",
+          "type": "string"
+        }
+      },
+      "required": [
+        "check_id",
+        "kind",
+        "url",
+        "page_id",
+        "robot_id",
+        "status",
+        "observation",
+        "evidence_ids",
+        "decisive_rule_lines",
+        "reason_code",
+        "limitation",
+        "observed_at",
+        "rule_version",
+        "scope"
+      ],
+      "title": "TechnicalCheck",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "step1-1.0.0",
+      "default": "step1-1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "algorithm_version": {
+      "const": "step1-1.0",
+      "default": "step1-1.0",
+      "title": "Algorithm Version",
+      "type": "string"
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "publication_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Publication Id",
+      "type": "string"
+    },
+    "config_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Config Hash",
+      "type": "string"
+    },
+    "registry_version": {
+      "title": "Registry Version",
+      "type": "string"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "finished_at": {
+      "format": "date-time",
+      "title": "Finished At",
+      "type": "string"
+    },
+    "checks": {
+      "items": {
+        "$ref": "#/$defs/TechnicalCheck"
+      },
+      "title": "Checks",
+      "type": "array"
+    },
+    "diagnostics": {
+      "items": {
+        "$ref": "#/$defs/DiagnosticResult"
+      },
+      "title": "Diagnostics",
+      "type": "array"
+    }
+  },
+  "required": [
+    "run_id",
+    "publication_id",
+    "config_hash",
+    "registry_version",
+    "started_at",
+    "finished_at",
+    "checks",
+    "diagnostics"
+  ],
+  "title": "ChecksResult",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:ChecksResult:1.0.0"
+}

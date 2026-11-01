@@ -1,0 +1,161 @@
+{
+  "$defs": {
+    "DiscoverySource": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "entry",
+            "html_link",
+            "sitemap",
+            "redirect"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "source_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Source Id",
+          "type": "string"
+        },
+        "occurrence": {
+          "minimum": 0,
+          "title": "Occurrence",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "kind",
+        "source_id",
+        "occurrence"
+      ],
+      "title": "DiscoverySource",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "candidate_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Candidate Id",
+      "type": "string"
+    },
+    "url": {
+      "format": "uri",
+      "pattern": "^https?://",
+      "title": "Url",
+      "type": "string"
+    },
+    "sources": {
+      "items": {
+        "$ref": "#/$defs/DiscoverySource"
+      },
+      "minItems": 1,
+      "title": "Sources",
+      "type": "array"
+    },
+    "role": {
+      "enum": [
+        "entry",
+        "about",
+        "services",
+        "prices",
+        "contacts",
+        "faq",
+        "other"
+      ],
+      "title": "Role",
+      "type": "string"
+    },
+    "role_basis": {
+      "title": "Role Basis",
+      "type": "string"
+    },
+    "language": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Language"
+    },
+    "priority": {
+      "maximum": 6,
+      "minimum": 0,
+      "title": "Priority",
+      "type": "integer"
+    },
+    "ordinal": {
+      "minimum": 0,
+      "title": "Ordinal",
+      "type": "integer"
+    },
+    "selected": {
+      "title": "Selected",
+      "type": "boolean"
+    },
+    "state": {
+      "enum": [
+        "queued",
+        "fetched",
+        "failed",
+        "skipped_robots",
+        "skipped_policy_unknown",
+        "skipped_scope",
+        "skipped_external",
+        "skipped_excluded",
+        "skipped_parameter_limit",
+        "duplicate",
+        "not_attempted_budget",
+        "cancelled",
+        "not_selected_limit"
+      ],
+      "title": "State",
+      "type": "string"
+    },
+    "reason_code": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Reason Code"
+    },
+    "alias_of": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Alias Of"
+    }
+  },
+  "required": [
+    "candidate_id",
+    "url",
+    "sources",
+    "role",
+    "role_basis",
+    "language",
+    "priority",
+    "ordinal",
+    "selected",
+    "state",
+    "reason_code",
+    "alias_of"
+  ],
+  "title": "Candidate",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:Candidate:1.0.0"
+}

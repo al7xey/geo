@@ -1,0 +1,146 @@
+{
+  "$defs": {
+    "TextRef": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "text_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Text Hash",
+          "type": "string"
+        },
+        "text_chars": {
+          "minimum": 0,
+          "title": "Text Chars",
+          "type": "integer"
+        },
+        "normalization_version": {
+          "const": "text-ws-1",
+          "default": "text-ws-1",
+          "title": "Normalization Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "text_hash",
+        "text_chars"
+      ],
+      "title": "TextRef",
+      "type": "object"
+    },
+    "UserMaterial": {
+      "additionalProperties": false,
+      "properties": {
+        "material_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Material Id",
+          "type": "string"
+        },
+        "source_type": {
+          "const": "user_provided",
+          "default": "user_provided",
+          "title": "Source Type",
+          "type": "string"
+        },
+        "author_type": {
+          "const": "user",
+          "default": "user",
+          "title": "Author Type",
+          "type": "string"
+        },
+        "provided_at": {
+          "format": "date-time",
+          "title": "Provided At",
+          "type": "string"
+        },
+        "text": {
+          "$ref": "#/$defs/TextRef"
+        },
+        "suitability": {
+          "enum": [
+            "usable",
+            "needs_clarification",
+            "unknown"
+          ],
+          "title": "Suitability",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "material_id",
+        "provided_at",
+        "text",
+        "suitability",
+        "reason"
+      ],
+      "title": "UserMaterial",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "state": {
+      "enum": [
+        "usable",
+        "limited",
+        "insufficient",
+        "needs_description",
+        "user_supported"
+      ],
+      "title": "State",
+      "type": "string"
+    },
+    "can_start_step2": {
+      "title": "Can Start Step2",
+      "type": "boolean"
+    },
+    "reason": {
+      "title": "Reason",
+      "type": "string"
+    },
+    "useful_page_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "title": "Useful Page Ids",
+      "type": "array"
+    },
+    "supporting_page_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "title": "Supporting Page Ids",
+      "type": "array"
+    },
+    "user_materials": {
+      "items": {
+        "$ref": "#/$defs/UserMaterial"
+      },
+      "title": "User Materials",
+      "type": "array"
+    }
+  },
+  "required": [
+    "state",
+    "can_start_step2",
+    "reason",
+    "useful_page_ids",
+    "supporting_page_ids",
+    "user_materials"
+  ],
+  "title": "Material",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:Material:1.0.0"
+}

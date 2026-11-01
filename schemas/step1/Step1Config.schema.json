@@ -1,0 +1,198 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "step1-1.0.0",
+      "default": "step1-1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "config_version": {
+      "const": "step1-config-1.0.0",
+      "default": "step1-config-1.0.0",
+      "title": "Config Version",
+      "type": "string"
+    },
+    "source_step0_config_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Source Step0 Config Sha256",
+      "type": "string"
+    },
+    "max_candidates": {
+      "default": 5000,
+      "maximum": 5000,
+      "minimum": 1,
+      "title": "Max Candidates",
+      "type": "integer"
+    },
+    "max_selected": {
+      "default": 30,
+      "maximum": 30,
+      "minimum": 1,
+      "title": "Max Selected",
+      "type": "integer"
+    },
+    "max_query_variants": {
+      "default": 2,
+      "maximum": 2,
+      "minimum": 1,
+      "title": "Max Query Variants",
+      "type": "integer"
+    },
+    "max_sitemap_files": {
+      "default": 5,
+      "maximum": 5,
+      "minimum": 0,
+      "title": "Max Sitemap Files",
+      "type": "integer"
+    },
+    "max_sitemap_urls": {
+      "default": 5000,
+      "maximum": 5000,
+      "minimum": 1,
+      "title": "Max Sitemap Urls",
+      "type": "integer"
+    },
+    "max_sitemap_depth": {
+      "default": 3,
+      "maximum": 3,
+      "minimum": 1,
+      "title": "Max Sitemap Depth",
+      "type": "integer"
+    },
+    "max_sitemap_bytes": {
+      "default": 5242880,
+      "maximum": 5242880,
+      "minimum": 1,
+      "title": "Max Sitemap Bytes",
+      "type": "integer"
+    },
+    "max_robots_bytes": {
+      "default": 524288,
+      "maximum": 524288,
+      "minimum": 1,
+      "title": "Max Robots Bytes",
+      "type": "integer"
+    },
+    "max_xml_depth": {
+      "default": 64,
+      "maximum": 64,
+      "minimum": 1,
+      "title": "Max Xml Depth",
+      "type": "integer"
+    },
+    "max_skip_examples": {
+      "default": 100,
+      "maximum": 1000,
+      "minimum": 0,
+      "title": "Max Skip Examples",
+      "type": "integer"
+    },
+    "allowed_sitemap_hosts": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Allowed Sitemap Hosts",
+      "type": "array"
+    },
+    "excluded_path_segments": {
+      "default": [
+        "logout",
+        "cart",
+        "basket",
+        "account",
+        "login",
+        "search",
+        "calendar"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "title": "Excluded Path Segments",
+      "type": "array"
+    },
+    "browser_enabled": {
+      "default": false,
+      "title": "Browser Enabled",
+      "type": "boolean"
+    },
+    "ua_probes_enabled": {
+      "default": false,
+      "title": "Ua Probes Enabled",
+      "type": "boolean"
+    },
+    "max_browser_pages": {
+      "default": 5,
+      "maximum": 5,
+      "minimum": 1,
+      "title": "Max Browser Pages",
+      "type": "integer"
+    },
+    "browser_page_seconds": {
+      "default": 20.0,
+      "exclusiveMinimum": 0,
+      "maximum": 20,
+      "title": "Browser Page Seconds",
+      "type": "number"
+    },
+    "max_browser_attempts": {
+      "default": 200,
+      "maximum": 200,
+      "minimum": 1,
+      "title": "Max Browser Attempts",
+      "type": "integer"
+    },
+    "max_probe_pages": {
+      "default": 3,
+      "maximum": 3,
+      "minimum": 1,
+      "title": "Max Probe Pages",
+      "type": "integer"
+    },
+    "max_probe_agents": {
+      "default": 3,
+      "maximum": 3,
+      "minimum": 1,
+      "title": "Max Probe Agents",
+      "type": "integer"
+    },
+    "useful_chars": {
+      "default": 300,
+      "minimum": 1,
+      "title": "Useful Chars",
+      "type": "integer"
+    },
+    "gain_chars": {
+      "default": 500,
+      "minimum": 1,
+      "title": "Gain Chars",
+      "type": "integer"
+    },
+    "gain_ratio": {
+      "default": 2.0,
+      "exclusiveMinimum": 1,
+      "title": "Gain Ratio",
+      "type": "number"
+    },
+    "gain_static_ceiling": {
+      "default": 1000,
+      "minimum": 1,
+      "title": "Gain Static Ceiling",
+      "type": "integer"
+    },
+    "normalization_version": {
+      "const": "text-ws-1",
+      "default": "text-ws-1",
+      "title": "Normalization Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_step0_config_sha256"
+  ],
+  "title": "Step1Config",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:Step1Config:1.0.0"
+}

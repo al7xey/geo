@@ -1,0 +1,83 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "discovered_urls": {
+      "minimum": 0,
+      "title": "Discovered Urls",
+      "type": "integer"
+    },
+    "selected_candidates": {
+      "minimum": 0,
+      "title": "Selected Candidates",
+      "type": "integer"
+    },
+    "fetch_successes": {
+      "minimum": 0,
+      "title": "Fetch Successes",
+      "type": "integer"
+    },
+    "unique_html_pages": {
+      "minimum": 0,
+      "title": "Unique Html Pages",
+      "type": "integer"
+    },
+    "extracted_pages": {
+      "minimum": 0,
+      "title": "Extracted Pages",
+      "type": "integer"
+    },
+    "useful_pages": {
+      "minimum": 0,
+      "title": "Useful Pages",
+      "type": "integer"
+    },
+    "skipped": {
+      "minimum": 0,
+      "title": "Skipped",
+      "type": "integer"
+    },
+    "failed": {
+      "minimum": 0,
+      "title": "Failed",
+      "type": "integer"
+    },
+    "discarded_entries": {
+      "minimum": 0,
+      "title": "Discarded Entries",
+      "type": "integer"
+    },
+    "skip_examples": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Skip Examples",
+      "type": "array"
+    },
+    "skip_examples_truncated": {
+      "title": "Skip Examples Truncated",
+      "type": "boolean"
+    },
+    "sitemap_truncated": {
+      "title": "Sitemap Truncated",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "discovered_urls",
+    "selected_candidates",
+    "fetch_successes",
+    "unique_html_pages",
+    "extracted_pages",
+    "useful_pages",
+    "skipped",
+    "failed",
+    "discarded_entries",
+    "skip_examples",
+    "skip_examples_truncated",
+    "sitemap_truncated"
+  ],
+  "title": "Coverage",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:Coverage:1.0.0"
+}

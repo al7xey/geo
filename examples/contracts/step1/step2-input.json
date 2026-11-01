@@ -1,0 +1,238 @@
+{
+  "schema_version": "step2-input-1.0.0",
+  "source_step": 1,
+  "source_commit_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "result": {
+    "schema_version": "step1-1.0.0",
+    "source": {
+      "run_id": "synthetic-run",
+      "site_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "manifest_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "source_step0_config_sha256": "cc5a909336e4d69681426385223c5409ea133fe46c5bfe7bc4a465146d394fe8",
+      "selected_evidence_id": "html-1"
+    },
+    "config": {
+      "schema_version": "step1-1.0.0",
+      "config_version": "step1-config-1.0.0",
+      "source_step0_config_sha256": "cc5a909336e4d69681426385223c5409ea133fe46c5bfe7bc4a465146d394fe8",
+      "max_candidates": 5000,
+      "max_selected": 30,
+      "max_query_variants": 2,
+      "max_sitemap_files": 5,
+      "max_sitemap_urls": 5000,
+      "max_sitemap_depth": 3,
+      "max_sitemap_bytes": 5242880,
+      "max_robots_bytes": 524288,
+      "max_xml_depth": 64,
+      "max_skip_examples": 100,
+      "allowed_sitemap_hosts": [],
+      "excluded_path_segments": [
+        "logout",
+        "cart",
+        "basket",
+        "account",
+        "login",
+        "search",
+        "calendar"
+      ],
+      "browser_enabled": false,
+      "ua_probes_enabled": false,
+      "max_browser_pages": 5,
+      "browser_page_seconds": 20.0,
+      "max_browser_attempts": 200,
+      "max_probe_pages": 3,
+      "max_probe_agents": 3,
+      "useful_chars": 300,
+      "gain_chars": 500,
+      "gain_ratio": 2.0,
+      "gain_static_ceiling": 1000,
+      "normalization_version": "text-ws-1"
+    },
+    "evidence": [
+      {
+        "evidence_id": "html-1",
+        "run_id": "synthetic-run",
+        "file": {
+          "path": "raw/html-1.bin",
+          "sha256": "af0bf35aafeef1b118811d536d29892f990bb5485a2829827c836547ce954ceb",
+          "size_bytes": 21,
+          "complete": true
+        },
+        "representation": "entity_bytes",
+        "source_evidence_id": null,
+        "source_run_id": null,
+        "transform_version": null,
+        "original_evidence_id": null
+      },
+      {
+        "evidence_id": "text-1",
+        "run_id": "synthetic-run",
+        "file": {
+          "path": "raw/text-1.bin",
+          "sha256": "7f708ca6f0122d38da838f60a470e9b6c6ab19bc3aebb47f5391dc183cdacd91",
+          "size_bytes": 468,
+          "complete": true
+        },
+        "representation": "main_text",
+        "source_evidence_id": "html-1",
+        "source_run_id": null,
+        "transform_version": "synthetic-extraction-1",
+        "original_evidence_id": null
+      }
+    ],
+    "crawl": {
+      "schema_version": "step1-1.0.0",
+      "algorithm_version": "step1-1.0",
+      "run_id": "synthetic-run",
+      "publication_id": "synthetic-publication",
+      "config_hash": "e55f767087bd1542687d9e2b99381fae3b63d9dd3e3acf4d60c7263dc24aff25",
+      "registry_version": "synthetic-registry",
+      "started_at": "2026-10-31T12:00:00Z",
+      "finished_at": "2026-10-31T12:00:02Z",
+      "candidates": [
+        {
+          "candidate_id": "candidate-1",
+          "url": "https://example.com/",
+          "sources": [
+            {
+              "kind": "entry",
+              "source_id": "html-1",
+              "occurrence": 0
+            }
+          ],
+          "role": "entry",
+          "role_basis": "entry",
+          "language": null,
+          "priority": 0,
+          "ordinal": 0,
+          "selected": true,
+          "state": "fetched",
+          "reason_code": null,
+          "alias_of": null
+        }
+      ],
+      "pages": [
+        {
+          "page_id": "page-1",
+          "candidate_id": "candidate-1",
+          "url": "https://example.com/",
+          "effective_url": "https://example.com/",
+          "evidence_id": "html-1",
+          "title": "Example",
+          "headings": [],
+          "lists": [],
+          "tables": [],
+          "main_text": {
+            "evidence_id": "text-1",
+            "text_hash": "7f708ca6f0122d38da838f60a470e9b6c6ab19bc3aebb47f5391dc183cdacd91",
+            "text_chars": 468,
+            "normalization_version": "text-ws-1"
+          },
+          "alternate_texts": [],
+          "extraction_method": "synthetic",
+          "extractor_version": "1",
+          "extraction_reason": "fixture",
+          "content_state": "html",
+          "useful_candidate": true,
+          "supporting_page": false,
+          "business_relevance": "observed",
+          "business_quotes": [
+            {
+              "evidence_id": "text-1",
+              "text_hash": "7f708ca6f0122d38da838f60a470e9b6c6ab19bc3aebb47f5391dc183cdacd91",
+              "start": 0,
+              "end": 37,
+              "text": "Example manufactures industrial pumps"
+            }
+          ],
+          "directives": [],
+          "signals": [],
+          "header_capture_complete": false,
+          "limitations": [
+            "SYNTHETIC_NOT_AUDIT"
+          ]
+        }
+      ],
+      "robots": [],
+      "robots_decisions": [],
+      "sitemaps": [],
+      "pending_external_urls": [],
+      "coverage": {
+        "discovered_urls": 1,
+        "selected_candidates": 1,
+        "fetch_successes": 1,
+        "unique_html_pages": 1,
+        "extracted_pages": 1,
+        "useful_pages": 1,
+        "skipped": 0,
+        "failed": 0,
+        "discarded_entries": 0,
+        "skip_examples": [],
+        "skip_examples_truncated": false,
+        "sitemap_truncated": false
+      },
+      "material": {
+        "state": "limited",
+        "can_start_step2": true,
+        "reason": "SYNTHETIC_ONLY",
+        "useful_page_ids": [
+          "page-1"
+        ],
+        "supporting_page_ids": [],
+        "user_materials": []
+      }
+    },
+    "checks": {
+      "schema_version": "step1-1.0.0",
+      "algorithm_version": "step1-1.0",
+      "run_id": "synthetic-run",
+      "publication_id": "synthetic-publication",
+      "config_hash": "e55f767087bd1542687d9e2b99381fae3b63d9dd3e3acf4d60c7263dc24aff25",
+      "registry_version": "synthetic-registry",
+      "started_at": "2026-10-31T12:00:00Z",
+      "finished_at": "2026-10-31T12:00:02Z",
+      "checks": [],
+      "diagnostics": []
+    },
+    "run": {
+      "schema_version": "step1-1.0.0",
+      "algorithm_version": "step1-1.0",
+      "run_id": "synthetic-run",
+      "publication_id": "synthetic-publication",
+      "config_hash": "e55f767087bd1542687d9e2b99381fae3b63d9dd3e3acf4d60c7263dc24aff25",
+      "registry_version": "synthetic-registry",
+      "started_at": "2026-10-31T12:00:00Z",
+      "finished_at": "2026-10-31T12:00:02Z",
+      "status": "ok",
+      "lifecycle": "completed",
+      "stop_reason": "SYNTHETIC_ONLY",
+      "budget": {
+        "schema_version": "1.2.0",
+        "started_at": "2026-10-31T12:00:00Z",
+        "captured_at": "2026-10-31T12:00:02Z",
+        "step0_deadline_at": "2026-10-31T12:01:00Z",
+        "total_deadline_at": "2026-10-31T12:05:00Z",
+        "elapsed_seconds": 2.0,
+        "step0_attempts": 1,
+        "total_attempts": 1,
+        "step0_max_attempts": 15,
+        "total_max_attempts": 150
+      },
+      "browser_attempts": 0,
+      "cache_hits": 0,
+      "unfinished_urls": [],
+      "limitations": [
+        "SYNTHETIC_ONLY"
+      ]
+    }
+  },
+  "useful_texts": [
+    {
+      "evidence_id": "text-1",
+      "text_hash": "7f708ca6f0122d38da838f60a470e9b6c6ab19bc3aebb47f5391dc183cdacd91",
+      "text_chars": 468,
+      "normalization_version": "text-ws-1"
+    }
+  ],
+  "supporting_texts": []
+}
