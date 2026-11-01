@@ -88,6 +88,7 @@ class Step1Store:
         self._sealed = False
         self.records: list[Step1Evidence] = []
         self._journal: list[object] = []
+        self.attempt_evidence: dict[str, tuple[str, ...]] = {}
         sizes = {f.path: f.size_bytes for r in site.evidence for f in r.files}
         self._logical_bytes = sum(sizes.values())
         self._physical_bytes = 0
@@ -220,6 +221,11 @@ class Step1Store:
             representation="attempt_observation",
             complete=True,
         )
+        if isinstance(event, HttpAttempt):
+            self.attempt_evidence[event.attempt_id] = (
+                *tuple(b.evidence_id for b in bodies),
+                record.evidence_id,
+            )
         self._journal.append(dict(evidence_id=record.evidence_id, resource_purpose=purpose))
         self.checkpoint("running")
 

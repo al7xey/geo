@@ -60,7 +60,8 @@
         "user_material",
         "robots_text",
         "robots_decision",
-        "sitemap_observation"
+        "sitemap_observation",
+        "registry_snapshot"
       ],
       "title": "Representation",
       "type": "string"

@@ -6,7 +6,7 @@ from collections.abc import Callable
 from dataclasses import asdict, replace
 from pathlib import Path
 from types import TracebackType
-from typing import TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
 import anyio
 
@@ -33,6 +33,9 @@ from .models import (
     Step1Result,
 )
 from .storage import Step1Store, encoded_json
+
+if TYPE_CHECKING:
+    from .robots import RobotsService
 
 T = TypeVar("T")
 
@@ -147,6 +150,19 @@ class Step1Runtime:
         self._finished = False
         self._pending_urls: set[str] = set()
         self._stop_reason: str | None = None
+        self._robots: RobotsService | None = None
+
+    @property
+    def robots(self) -> "RobotsService":
+        from .robots import RobotsService
+
+        if self._robots is None:
+            self._robots = RobotsService(self)
+        return self._robots
+
+    async def fetch_html(self, url: str) -> FetchTrace:
+        """Production HTML boundary: our robots authorization before every attempt/redirect."""
+        return await self.fetch(url, RequestPolicy("html", self.robots.authorize))
 
     @classmethod
     def from_directory(
@@ -244,6 +260,15 @@ class Step1Runtime:
             encoded_json(
                 dict(
                     operation_url=url,
+                    fetch_state=(
+                        "skipped_robots"
+                        if trace.policy_denial.decision == "disallowed"
+                        else "skipped_policy_unknown"
+                    )
+                    if trace.policy_denial
+                    else "failed"
+                    if trace.error
+                    else "completed",
                     resource_purpose=policy.purpose,
                     resource_policy=dict(
                         max_encoded_bytes=min(
@@ -333,7 +358,9 @@ class Step1Runtime:
             run_id=site.run_id,
             publication_id=self.publication_id,
             config_hash=self.config.fingerprint(),
-            registry_version="not_loaded",
+            registry_version=self._robots.registry.registry_version
+            if self._robots
+            else "not_loaded",
             started_at=self.started_at,
             finished_at=self.time.utcnow(),
         )
@@ -389,8 +416,8 @@ class Step1Runtime:
                     **envelope,
                     candidates=(candidate,),
                     pages=(page,),
-                    robots=(),
-                    robots_decisions=(),
+                    robots=tuple(self._robots.observations) if self._robots else (),
+                    robots_decisions=tuple(self._robots.decisions.values()) if self._robots else (),
                     sitemaps=(),
                     pending_external_urls=(),
                     coverage=Coverage(
@@ -417,7 +444,13 @@ class Step1Runtime:
                     ),
                 )
             ),
-            checks=ChecksResult.model_validate(dict(**envelope, checks=(), diagnostics=())),
+            checks=ChecksResult.model_validate(
+                dict(
+                    **envelope,
+                    checks=self._robots.checks() if self._robots else (),
+                    diagnostics=(),
+                )
+            ),
             run=RunResult.model_validate(
                 dict(
                     **envelope,

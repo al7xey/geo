@@ -40,6 +40,7 @@ Representation = Literal[
     "robots_text",
     "robots_decision",
     "sitemap_observation",
+    "registry_snapshot",
 ]
 Role = Literal["entry", "about", "services", "prices", "contacts", "faq", "other"]
 

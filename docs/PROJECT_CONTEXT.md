@@ -8,8 +8,8 @@ GEO — Generative Engine Optimization: анализ видимости комп
 систем. Пользователь поручил последовательно разбирать и улучшать алгоритм, включая код.
 Шаг 0 и контракт входа шага 1 реализованы. 01.11.2026 пользователь поручил выполнить
 цепочку разработки шага 1 (PROMPTS_STEP_1, 1–13) с последовательными gates.
-Подготовлены спецификация, строгие модели и runtime-каркас; robots и автоматический обход
-шага 1 ещё не реализованы и не запускались.
+Подготовлены спецификация, модели, runtime-каркас и robots/реестр.
+Автоматический обход пока отсутствует; public audit-сеть не запускалась.
 Шаг 2, LLM и платные API не входят в это поручение. Browser/UA probes выключены по умолчанию.
 
 - docs/source/geo-audit-algorithm-2026-10-31.pdf — исходный пользовательский PDF, сохранён.
@@ -233,3 +233,20 @@ Codex co-author не добавляется. Не коммитить venv, cache
   повторного запуска. Новый модуль и тесты входят в обычную проверку проекта.
 
 Подробности проверок и ограничения приведены в implementation/STEP_0_VALIDATION.md.
+
+
+## Промпт 4: robots/registry — 01.11.2026
+
+Реализованы RobotsService, registry robots-2026-11-01.1, Protego 0.7.0 pin/lock,
+все §2.2 states, cache на origin внутри run, 512 KiB cap, исходные rule lines и
+mismatch→unknown. Production fetch_html проверяет own REP до каждого redirect target,
+сохраняя прежние numeric pin/peer/TLS, frozen HTML scope и общий Budget.
+Причина: дать проверяемую политику до подключения sitemap/crawler. Восемь исходных
+операторских tokens, актуальные official sources/date/roles; Claude UA не выдуманы,
+Google-Extended UA null. Два дефекта объяснителя воспроизведены и исправлены.
+46 unit/controlled + 2 real TCP/TLS сценария; итоговые проверки — в матрице.
+Шаги 5–13 пока не приняты, следующий этап §5 sitemap уже поручен пользователем.
+
+Итог gate промпта 4: полный pytest 467 passed / 3 прежних platform skips;
+strict mypy win32/linux, Ruff, Bandit, lock/pip check, generators (32 + 22 artifacts)
+и diff check успешны. Public audit и UA probes не запускались.

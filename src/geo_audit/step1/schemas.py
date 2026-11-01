@@ -19,6 +19,7 @@ from .models import (
     Step1Result,
     Step2Input,
 )
+from .registry import RobotEntry, RobotRegistry
 from .storage import PublicationCommit
 
 MODELS: dict[str, type[Contract]] = {
@@ -41,6 +42,8 @@ MODELS: dict[str, type[Contract]] = {
         Step1Result,
         Step2Input,
         PublicationCommit,
+        RobotEntry,
+        RobotRegistry,
     )
 }
 

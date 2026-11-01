@@ -380,7 +380,8 @@ RunCounters не имеет собственного start/deadline/remaining HT
 | 1 | 170 уникальных R, §§1–16/8.5, A01–A16, L01–L11, локальные ссылки, unchanged sources, 32 старых artifacts; commit 70eba84, push main | completed |
 | 2 | `step1/config.py`, `models.py`, `schemas.py`, 19 synthetic artifacts и `tests/test_step1_contracts.py`; новые версии раздельны, refs/coverage/material/quotes/UTC/extra проверены; повторная проверка исправила cross-entity collisions/derivation/aliases | completed для моделей; disk/точный text slice и runner ещё deferred |
 | 3 | `Step1Runtime`, `Step1Store`, `PublicationCommit`, offline inspector; resource policy общего клиента; in-process/new-process, read-only source, общий Budget, cancel/disk/CPU gates | completed для каркаса; автоматический обход ещё отсутствует |
-| 4–13 | Robots/реестр, discovery/обход, extraction/checks, Step2 loader, security/performance/final acceptance | deferred |
+| 4 | RobotsService/registry/Protego/source lines/fetch_html | implemented+verified; gates below |
+| 5–13 | Sitemap/discovery/crawler/extraction/Step2 loader/final acceptance | deferred |
 
 Проверки промпта 2 после исправлений: полный `pytest -q -ra` — 384 passed / 3 skipped,
 `pytest tests/test_step1_contracts.py` — 33 passed; strict mypy win32/linux — pass;
@@ -434,3 +435,30 @@ R07.10–11, R10.08, R13.01/03–07, R14.09 и совместимость R16.03
 D/B переводятся в implemented+verified только после конкретных фактически выполненных
 тестов. Browser/UA выключены по умолчанию; статическое ядро обязано корректно
 публиковать их disabled/unavailable состояния. Новая сеть аудита этим заданием не разрешена.
+
+
+### Robots, промпт 4 — 01.11.2026
+
+R02.01–15/R03.01–09/R04.01–08 реализованы в step1/robots.py и registry.py.
+Protego 0.7.0 pinned в pyproject/lock, source lines и independent explanation;
+46 controlled/unit и 2 real TLS сценария. Полный suite фиксируется после завершения.
+
+| Gate | Реальный тест (tests/test_step1_robots*.py) |
+|---|---|
+| Case/groups/merge/Allow tie/empty/wildcards/$/UTF-8/query/percent, строки | test_rfc_vectors_and_exact_lines (18), test_crawl_delay_extensions_and_line_errors |
+| Mismatch и корректность decisive lines | test_parser_disagreement_has_no_fabricated_decisive_line, test_decisive_line_uses_parser_encoded_pattern_priority, test_implicit_index_alias_does_not_get_a_fabricated_direct_allow_line |
+| Вся таблица 2.2, cached unknown | test_complete_status_table_and_cached_unknown (13) |
+| Timeout/partial/truncated/bomb/unsafe redirect/loop | test_failure_resources_never_authorize_html (6) |
+| Origin cache, robots до redirect HTML, delay | test_html_redirect_checks_new_origin_and_url_before_get |
+| External robots binding, frozen HTML scope, evidence bytes | test_external_robots_redirect_binds_initial_origin_without_html_scope_expansion |
+| 5 hops и общий counter | test_five_safe_redirects_are_a_shared_budget_bound (2) |
+| Registry/version/roles/NULL UA/no probes | test_registry_roles_null_ua_snapshot_and_no_probes |
+| Настоящий TLS и ноль forbidden GET | test_real_robots_authorizer_and_tls_no_forbidden_html (2) |
+
+Два дефекта объяснителя воспроизведены до исправления: query encoded priority и
+неявный index.html alias. Production boundary runtime.fetch_html всегда применяет
+RobotsService; generic fetch с authorizer остаётся доверенным seam. Unknown не Disallow.
+
+Итог gate промпта 4: полный pytest 467 passed / 3 прежних platform skips;
+strict mypy win32/linux, Ruff, Bandit, lock/pip check, generators (32 + 22 artifacts)
+и diff check успешны. Public audit и UA probes не запускались.

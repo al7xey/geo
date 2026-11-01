@@ -1,0 +1,135 @@
+{
+  "$defs": {
+    "RobotEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "robot_id": {
+          "pattern": "^[a-z][a-z0-9-]{0,79}$",
+          "title": "Robot Id",
+          "type": "string"
+        },
+        "operator": {
+          "enum": [
+            "OpenAI",
+            "Anthropic",
+            "Google"
+          ],
+          "title": "Operator",
+          "type": "string"
+        },
+        "product_token": {
+          "pattern": "^[A-Za-z_-]+$",
+          "title": "Product Token",
+          "type": "string"
+        },
+        "purpose": {
+          "items": {
+            "enum": [
+              "search",
+              "training",
+              "user_fetch",
+              "indexing",
+              "grounding"
+            ],
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Purpose",
+          "type": "array"
+        },
+        "robots_applicability": {
+          "enum": [
+            "documented",
+            "may_not_apply",
+            "usage_control"
+          ],
+          "title": "Robots Applicability",
+          "type": "string"
+        },
+        "http_user_agent": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Http User Agent"
+        },
+        "documentation_url": {
+          "format": "uri",
+          "pattern": "^https?://",
+          "title": "Documentation Url",
+          "type": "string"
+        },
+        "verified_at": {
+          "format": "date-time",
+          "title": "Verified At",
+          "type": "string"
+        },
+        "registry_version": {
+          "const": "robots-2026-11-01.1",
+          "default": "robots-2026-11-01.1",
+          "title": "Registry Version",
+          "type": "string"
+        },
+        "registry_entry_state": {
+          "enum": [
+            "verified",
+            "needs_verification"
+          ],
+          "title": "Registry Entry State",
+          "type": "string"
+        },
+        "interpretation_notes": {
+          "title": "Interpretation Notes",
+          "type": "string"
+        }
+      },
+      "required": [
+        "robot_id",
+        "operator",
+        "product_token",
+        "purpose",
+        "robots_applicability",
+        "http_user_agent",
+        "documentation_url",
+        "verified_at",
+        "registry_entry_state",
+        "interpretation_notes"
+      ],
+      "title": "RobotEntry",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "robot-registry-1.0.0",
+      "default": "robot-registry-1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "registry_version": {
+      "const": "robots-2026-11-01.1",
+      "default": "robots-2026-11-01.1",
+      "title": "Registry Version",
+      "type": "string"
+    },
+    "entries": {
+      "items": {
+        "$ref": "#/$defs/RobotEntry"
+      },
+      "title": "Entries",
+      "type": "array"
+    }
+  },
+  "required": [
+    "entries"
+  ],
+  "title": "RobotRegistry",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:RobotRegistry:1.0.0"
+}

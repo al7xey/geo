@@ -441,3 +441,40 @@ checkout, fresh lock installation, wheel/sdist import/CLI/new-process handoff.
 CI/scanner/browser, которые фактически недоступны или не запускались, записываются
 как unavailable/not run, а не passed. Commit/push после каждого завершённого задания
 с автором alexey, без generated runs, caches, force push и Codex co-author.
+
+
+## Реализованный robots/registry — 01.11.2026
+
+runtime.robots создаёт run-local RobotsService; runtime.fetch_html использует его
+own-token authorizer перед каждой попыткой/redirect. Robots GET не требует REP
+рекурсивно. Cache key scheme/host/port; public service redirects относятся к исходному
+origin, не расширяя HTML scope. Все размеры, retries/delays и TLS/pin/peer общие.
+Registry snapshot сохраняется как registry_snapshot evidence, версия входит в envelopes.
+Policy-технические checks не являются HTTP probes и не доказывают GEO-причинность.
+
+Protego 0.7.0 / geo-rfc-lines-1 использует только public parse/can_fetch/crawl_delay.
+Canonical поля User-agent/Allow/Disallow/Sitemap/Crawl-delay сохраняют исходные номера
+строк; неизвестные и некорректные строки игнорируются с warnings, raw остаётся целиком.
+Tolerant aliases не принимаются молча. Explainer независимо выбирает groups/rules,
+сверяет boolean/delay с parser; mismatch даёт unknown без решающих строк.
+Encoded priority учитывает ASCII-форму сравнения Protego. Неявный parent Allow через
+index.html, неоднозначное reserved %3D и literal-dollar alias дают unknown: им нельзя
+приписать отсутствующую прямую директиву. Это ограничения адаптера, не запреты RFC.
+
+Официальные источники перепроверены 01.11.2026:
+- https://www.rfc-editor.org/rfc/rfc9309.html (группы, paths, redirects/errors/limits).
+- https://pypi.org/project/Protego/0.7.0/ и https://github.com/scrapy/protego/tree/0.7.0
+  (public API и фактическая семантика; расширения не выдаются за полный RFC).
+- https://developers.openai.com/api/docs/bots (три исходные роли, опубликованные UA examples).
+- https://support.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler
+  (три роли и robots; полных UA на этом источнике нет, поэтому null).
+- https://developers.google.com/crawling/docs/crawlers-fetchers/google-common-crawlers
+  (Googlebot rare documented UA без placeholder; Google-Extended HTTP UA null).
+- https://developers.google.com/crawling/docs/robots-txt/robots-txt-spec (operator-specific semantics).
+
+Registry robots-2026-11-01.1 содержит восемь tokens, source/date/purpose/applicability/notes.
+verified_at имеет точность даты (UTC midnight). ChatGPT-User may_not_apply и
+Google-Extended usage_control отличны от crawler access. Полные Claude UA не выдуманы.
+401/403 unknown — продуктовая консервативная политика, не поведение всех операторов.
+Public audit/probes/LLM не запускались. Generic fetch остаётся trusted seam с явным
+authorizer; production crawler следующего этапа должен использовать fetch_html.
