@@ -7,6 +7,7 @@ from pydantic import AfterValidator, Field, model_validator
 from ..contracts import SHA256, Contract, Identifier, UTCDateTime
 from ..errors import GeoAuditError
 from ..models import URL, BudgetSnapshot, EvidenceFile
+from ..request_policy import ResourcePurpose as ResourcePurpose
 from ..urls import normalize_input
 from .config import Step1Config
 
@@ -40,7 +41,6 @@ Representation = Literal[
     "robots_decision",
     "sitemap_observation",
 ]
-ResourcePurpose = Literal["html", "robots", "sitemap", "https_diagnostic", "ua_probe"]
 Role = Literal["entry", "about", "services", "prices", "contacts", "faq", "other"]
 
 

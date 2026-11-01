@@ -20,6 +20,21 @@ TLS, бюджеты и классификация содержимого.
 JSON Schema проверяет форму данных; межобъектные ссылки и согласованность счётчиков
 дополнительно проверяет `Step1Result.model_validate_json(...)`.
 
+Каркас запуска доступен через `Step1Runtime`: в том же процессе принимает готовый
+`Step1Handoff`, в новом — `Step1Runtime.from_directory(source_dir, output_dir=...)`.
+Контекст `async with runtime:` сохраняет результат, не выполняя автоматического обхода.
+Входной `FetchResult` переиспользуется; Budget и deadline сохраняются. Пока результат
+имеет `partial/SKELETON_ONLY`, без готового материала шага 2. Robots/очередь/извлечение
+будут подключаться отдельно. `runtime.fetch(url, RequestPolicy(...))` — явная внутренняя
+точка запроса через общий клиент, а не команда запуска аудита; HTML требует authorizer.
+
+Публикация создаётся в новой папке `output_dir/step1-<uuid>/`. Исходный каталог шага 0
+не изменяется. Внутри — snapshot `site.json`, `source.json`, `config.json`, отдельный
+`raw/manifest.json`, `crawl.json`, `checks.json`, `journal.json`; `run.json` публикуется
+последним и содержит хэши связанных артефактов. Повторный commit запрещён.
+`load_step1_result(directory)` проверяет commit и файлы без DNS/HTTP, не возобновляя бюджет.
+Это инспектор результата step1; готовый файловый consumer `Step2Input` остаётся следующим этапом.
+
 Спецификация: [требования](docs/implementation/STEP_1_REQUIREMENTS.md),
 [архитектура](docs/implementation/STEP_1_ARCHITECTURE.md).
 

@@ -1,0 +1,236 @@
+{
+  "$defs": {
+    "ArtifactDigest": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "enum": [
+            "site.json",
+            "source.json",
+            "config.json",
+            "raw/manifest.json",
+            "crawl.json",
+            "checks.json"
+          ],
+          "title": "Name",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "sha256"
+      ],
+      "title": "ArtifactDigest",
+      "type": "object"
+    },
+    "BudgetSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "enum": [
+            "1.0.0",
+            "1.1.0",
+            "1.2.0"
+          ],
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "started_at": {
+          "format": "date-time",
+          "title": "Started At",
+          "type": "string"
+        },
+        "captured_at": {
+          "format": "date-time",
+          "title": "Captured At",
+          "type": "string"
+        },
+        "step0_deadline_at": {
+          "format": "date-time",
+          "title": "Step0 Deadline At",
+          "type": "string"
+        },
+        "total_deadline_at": {
+          "format": "date-time",
+          "title": "Total Deadline At",
+          "type": "string"
+        },
+        "elapsed_seconds": {
+          "minimum": 0,
+          "title": "Elapsed Seconds",
+          "type": "number"
+        },
+        "step0_attempts": {
+          "minimum": 0,
+          "title": "Step0 Attempts",
+          "type": "integer"
+        },
+        "total_attempts": {
+          "minimum": 0,
+          "title": "Total Attempts",
+          "type": "integer"
+        },
+        "step0_max_attempts": {
+          "minimum": 1,
+          "title": "Step0 Max Attempts",
+          "type": "integer"
+        },
+        "total_max_attempts": {
+          "minimum": 1,
+          "title": "Total Max Attempts",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "schema_version",
+        "started_at",
+        "captured_at",
+        "step0_deadline_at",
+        "total_deadline_at",
+        "elapsed_seconds",
+        "step0_attempts",
+        "total_attempts",
+        "step0_max_attempts",
+        "total_max_attempts"
+      ],
+      "title": "BudgetSnapshot",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "step1-1.0.0",
+      "default": "step1-1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "algorithm_version": {
+      "const": "step1-1.0",
+      "default": "step1-1.0",
+      "title": "Algorithm Version",
+      "type": "string"
+    },
+    "run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "publication_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Publication Id",
+      "type": "string"
+    },
+    "config_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Config Hash",
+      "type": "string"
+    },
+    "registry_version": {
+      "minLength": 1,
+      "title": "Registry Version",
+      "type": "string"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "finished_at": {
+      "format": "date-time",
+      "title": "Finished At",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "ok",
+        "partial",
+        "needs_input",
+        "failed"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "lifecycle": {
+      "enum": [
+        "completed",
+        "cancelled"
+      ],
+      "title": "Lifecycle",
+      "type": "string"
+    },
+    "stop_reason": {
+      "title": "Stop Reason",
+      "type": "string"
+    },
+    "budget": {
+      "$ref": "#/$defs/BudgetSnapshot"
+    },
+    "browser_attempts": {
+      "maximum": 200,
+      "minimum": 0,
+      "title": "Browser Attempts",
+      "type": "integer"
+    },
+    "cache_hits": {
+      "minimum": 0,
+      "title": "Cache Hits",
+      "type": "integer"
+    },
+    "unfinished_urls": {
+      "items": {
+        "format": "uri",
+        "pattern": "^https?://",
+        "type": "string"
+      },
+      "title": "Unfinished Urls",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "commit_version": {
+      "const": "step1-commit-1.0.0",
+      "default": "step1-commit-1.0.0",
+      "title": "Commit Version",
+      "type": "string"
+    },
+    "artifact_hashes": {
+      "items": {
+        "$ref": "#/$defs/ArtifactDigest"
+      },
+      "title": "Artifact Hashes",
+      "type": "array"
+    }
+  },
+  "required": [
+    "run_id",
+    "publication_id",
+    "config_hash",
+    "registry_version",
+    "started_at",
+    "finished_at",
+    "status",
+    "lifecycle",
+    "stop_reason",
+    "budget",
+    "browser_attempts",
+    "cache_hits",
+    "unfinished_urls",
+    "limitations",
+    "artifact_hashes"
+  ],
+  "title": "PublicationCommit",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:PublicationCommit:1.0.0"
+}

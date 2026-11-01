@@ -8,7 +8,8 @@ GEO — Generative Engine Optimization: анализ видимости комп
 систем. Пользователь поручил последовательно разбирать и улучшать алгоритм, включая код.
 Шаг 0 и контракт входа шага 1 реализованы. 01.11.2026 пользователь поручил выполнить
 цепочку разработки шага 1 (PROMPTS_STEP_1, 1–13) с последовательными gates.
-Подготовлены спецификация и строгие модели; robots и обход шага 1 ещё не реализованы и не запускались.
+Подготовлены спецификация, строгие модели и runtime-каркас; robots и автоматический обход
+шага 1 ещё не реализованы и не запускались.
 Шаг 2, LLM и платные API не входят в это поручение. Browser/UA probes выключены по умолчанию.
 
 - docs/source/geo-audit-algorithm-2026-10-31.pdf — исходный пользовательский PDF, сохранён.
@@ -175,6 +176,21 @@ foreign imports, derived parent, incomplete source и dangling alias chain (по
 платформенные причины), strict mypy win32/linux, Ruff, Bandit, lock/pip check и оба
 generators --check — успешны. Зависимости и uv.lock не менялись. README описывает
 API моделей, external text refs и границу JSON Schema/Python graph validation.
+
+Промпт 3, 01.11.2026: реализованы Step1Runtime (live/saved handoff), RequestPolicy
+общего SafeHttpClient, отдельный Step1Store/PublicationCommit и offline inspector.
+Причина: подключать последующие robots/discovery без нового клиента и без переписывания
+источника step0. Budget остаётся исходным, step=1 использует total; source импортируется
+read-only, run.json commit last, 64/256/16 MiB caps сохранены. Авторизация до каждого
+HTML target выполняется вне lock; robots redirects не расширяют HTML scope.
+В каркасе нет автоматического обхода: итог partial/SKELETON_ONLY, материал шага 2 не готов.
+Два отрицательных теста воспроизвели подмену detached Budget (idle reset) и assessment;
+исправлены до завершения этапа. Реальные local TCP/TLS, 15 step0 starts, cancel/Retry-After
+и новый offline process проверены. Полный suite до этих двух случаев — 417 passed,
+3 прежних platform skips; после изменений затронутые тесты проверены отдельно.
+Финальный targeted suite: 35 passed (включая 3 real TCP/TLS сценария); strict mypy
+win32/linux, Ruff, Bandit, lock/pip check, generators и diff check — успешны.
+Схемы step1: 20 synthetic artifacts, добавлена PublicationCommit; старые 32 неизменны.
 
 ### Цепочка разработки шага 1 — 01.11.2026
 

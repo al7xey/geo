@@ -167,6 +167,12 @@ class EvidenceStore:
             }
         )
 
+    def atomic_bytes(self, name: str, data: bytes, *, limit: int = MAX_FILE_BYTES) -> None:
+        """Shared confined writer; publication owners supply their own typed manifest."""
+        if len(data) > min(limit, MAX_FILE_BYTES):
+            raise problem("OUTPUT_WRITE_FAILED", "output", "Artifact size limit exceeded.")
+        self._atomic_bytes(name, data)
+
     def verify(self, record: EvidenceRecord) -> None:
         for item in record.files:
             if not item.path.startswith("raw/") or len(Path(item.path).parts) != 2:

@@ -4,6 +4,51 @@
 Это план реализации, не описание существующего обхода. Обязательства и тестовые
 ID заданы в [матрице](STEP_1_REQUIREMENTS.md); `T…` ниже — будущие проверки.
 
+### Реализованный каркас, 01.11.2026
+
+Промпт 3 реализован в `step1/runner.py` и `step1/storage.py`: `Step1Runtime` принимает
+verified handoff; `from_directory` использует прежний loader без обновления deadline.
+Контекст сохраняет честный `partial/SKELETON_ONLY`: автоматические robots/очередь и
+extraction ещё не подключены. Реальные тесты и границы приёмки перечислены в матрице.
+
+Уточнение минимального плана API: отдельный клиент/Step1FetchTrace не создавались.
+Общий runtime-only FetchTrace допускает метку step1-1.0, а default остаётся step0-1.2;
+persisted step0 Literal/version gates неизменны. HttpAttempt сохраняет прежние
+response_headers и дополнительно resource_purpose/resource_headers/authorization
+для нового режима. Последние содержат все разрешённые field lines, включая повторные
+X-Robots-Tag; старый Header не расширен. RequestPolicy — keyword-only параметр get.
+Для step1 запрещён автоматический HTTP fallback; авторизация вне transport lock,
+перед каждой попыткой/redirect; TLS/pin/peer/ports/caps не отключаются профилем.
+Общий host pacing усиливается per-origin Crawl-delay из authorization; новый процесс
+консервативно восстанавливает host timestamps по завершению наблюдений step0.
+
+Выбран один layout: новая `step1-<uuid>` публикация вне source. Импортируются все
+verified source evidence (для сохранения TLS/history), с новыми локальными ID/path
+и original_evidence_id/source_run_id; source никогда не открывается на запись.
+site.json — byte-exact snapshot. Source bytes учитываются в том же логическом cap
+256 MiB, imported copies не выдают новый запас; physical publication тоже ≤256 MiB.
+Metadata ≤16 MiB/file, evidence ≤64 MiB/file; новые данные резервируются до записи.
+run.json — PublicationCommit (расширение RunResult с commit_version и фиксированным
+набором artifact hashes), записываемый последним. Sealed publication запрещает новые
+записи/повторный commit, interrupted generation не переиспользуется. Offline inspector
+проверяет все ссылки/хэши; он не является ещё готовым consumer Step2Input.
+
+Ручная сборка detached Step1Handoff не разрешает свежий Budget с прежними счетчиками:
+проверяются исходные timestamps, counters и elapsed с учётом UTC idle; live режим
+также требует identity Budget/FetchResult. Assessment и bytes совпадают с source.
+Synchronous bounded_phase ограничивает bytes и проверяет время до/после; parser
+обязан отдельно ограничить nodes/depth/work. Прерывание CPU посреди вызова не обещается.
+При отмене raw завершённых наблюдений сохраняется, pending URL и budget пишутся в
+partial commit; CancelledError распространяется. Ошибка диска явная; JSON не обещается
+при неработающем диске. Исходные программные исключения не подменяются cleanup ошибкой.
+
+Повторно проверены 01.11.2026: RFC 9309 §2.3.1.2
+(https://www.rfc-editor.org/rfc/rfc9309.html), HTTPX 0.28.1 raw headers/streaming
+(https://raw.githubusercontent.com/encode/httpx/0.28.1/httpx/_models.py,
+https://www.python-httpx.org/async/), Python 3.12 asyncio timeout
+(https://docs.python.org/3.12/library/asyncio-task.html#timeouts).
+Pins/uv.lock не менялись; public audit-сеть не запускалась.
+
 ## Принятые инженерные решения
 
 Не меняем исходный алгоритм/PDF. Последовательный async — основной исполнитель:

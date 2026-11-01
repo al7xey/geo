@@ -19,6 +19,7 @@ from .models import (
     Step1Result,
     Step2Input,
 )
+from .storage import PublicationCommit
 
 MODELS: dict[str, type[Contract]] = {
     model.__name__: model
@@ -39,6 +40,7 @@ MODELS: dict[str, type[Contract]] = {
         Step1Evidence,
         Step1Result,
         Step2Input,
+        PublicationCommit,
     )
 }
 

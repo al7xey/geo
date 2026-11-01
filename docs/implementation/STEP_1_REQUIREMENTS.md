@@ -379,7 +379,8 @@ RunCounters не имеет собственного start/deadline/remaining HT
 |---|---|---|
 | 1 | 170 уникальных R, §§1–16/8.5, A01–A16, L01–L11, локальные ссылки, unchanged sources, 32 старых artifacts; commit 70eba84, push main | completed |
 | 2 | `step1/config.py`, `models.py`, `schemas.py`, 19 synthetic artifacts и `tests/test_step1_contracts.py`; новые версии раздельны, refs/coverage/material/quotes/UTC/extra проверены; повторная проверка исправила cross-entity collisions/derivation/aliases | completed для моделей; disk/точный text slice и runner ещё deferred |
-| 3–13 | Сеть/robots/обход/публикация/Step2 loader/security/performance/final acceptance ещё не реализованы | deferred |
+| 3 | `Step1Runtime`, `Step1Store`, `PublicationCommit`, offline inspector; resource policy общего клиента; in-process/new-process, read-only source, общий Budget, cancel/disk/CPU gates | completed для каркаса; автоматический обход ещё отсутствует |
+| 4–13 | Robots/реестр, discovery/обход, extraction/checks, Step2 loader, security/performance/final acceptance | deferred |
 
 Проверки промпта 2 после исправлений: полный `pytest -q -ra` — 384 passed / 3 skipped,
 `pytest tests/test_step1_contracts.py` — 33 passed; strict mypy win32/linux — pass;
@@ -397,6 +398,28 @@ Ruff src/tests/tools, Bandit src/tools, uv lock --check, uv pip check, оба ge
 `test_graph_invariants_before_any_files_are_opened`, `test_generated_step1_artifacts_match`.
 Все в `tests/test_step1_contracts.py`; parametrization проверяет отдельные мутации.
 JSON Schema не выражает все graph invariants: Python validator обязателен дополнительно.
+
+Промпт 3, 01.11.2026: полный suite до последних двух отрицательных сценариев —
+417 passed / 3 прежних platform skips. После выявления подмены detached Budget и
+assessment исправлен только runtime; затронутые тесты запущены отдельно (результат ниже).
+После исправлений runtime: 35 затронутых тестов passed, включая 3 настоящих TCP/TLS
+сценария. Strict mypy win32/linux, Ruff, Bandit, lock/pip check, оба generators
+и git diff --check — pass. Полный suite повторно не запускался: step0 не менялся
+после его успешной полной регрессии, последние исправления покрыты targeted suite.
+Генератор step1 теперь содержит 20 artifacts: добавлена схема PublicationCommit.
+
+| Подтверждённая часть R / ограничение | Реальный код | Реальный тест |
+|---|---|---|
+| R01.01–05, R14.01: verified handoff, тот же FetchResult/Budget, no GET, no idle reset | runner.__init__/from_directory + существующий handoff | `test_same_process_reuses_identity_and_readonly_source`, `test_saved_input_new_process_has_no_dns_get_or_deadline_reset`, `test_invalid_input_does_not_create_output_or_send`, `test_detached_handoff_cannot_replace_restore_with_fresh_budget` |
+| R02.11–13, R06.10: служебный robots redirect и hook перед каждым HTML target; настоящий parser ещё D | http_client.get, RequestPolicy | `test_external_robots_redirect_and_multivalue_headers_do_not_expand_html`, `test_nested_authorizer_without_deadlock_gates_each_redirect`, `test_private_service_redirect_is_blocked_and_robots_cap_is_enforced` |
+| R07.01–04: encoded/entity/observation, headers, raw before transform | storage.observe; shared raw headers | те же resource tests + `test_programming_observer_error_is_preserved_with_completed_evidence` |
+| R11.02–07: charged starts, общий total, cache ≠ GET, Retry-After, cancel | Budget (без изменений), http_client, runner | `test_step0_fifteen_attempts_and_sixty_seconds_do_not_reset_total`, `test_total_attempt_cap_allows_cache_and_processing_but_no_new_transport`, `test_retry_after_outside_shared_deadline_preserves_partial`, `test_cancellation_preserves_completed_raw_and_closes_stream` |
+| R11.08, R13.02, R14.06–08: отдельная публикация, raw/hash commit last, source read-only, no mixed generation | Step1Store/PublicationCommit/load_step1_result | `test_write_failure_has_no_commit_and_does_not_change_source` (ENOSPC/EACCES ×5 точек), `test_output_preflight_denied_sends_nothing`, `test_mixed_generation_and_tampered_commit_are_rejected` |
+| Bounded CPU input/check before-after; нет обещания preemption и ещё нет XML/extraction | runner.bounded_phase | `test_storage_and_cpu_caps_do_not_create_new_budget`, `test_expired_phase_yields_partial_not_failed` |
+| Реальный TCP/TLS + fresh offline consumer, настоящий закрытый stream, 15 starts step0 | tests/test_step1_runtime_integration.py | `test_real_tls_resource_runtime_and_offline_new_process` (complete/cancel), `test_real_tls_fifteen_step0_starts_then_step1_and_expired_handoff` |
+
+Наличие authorizer hook не закрывает R03 (парсер robots), а skeleton partial не закрывает
+R12/R14.09–11 (готовый материал/Step2 loader). Browser/UA diagnostics не запускаются.
 Синтетические invalid примеры хранят компактные mutations к result.json; пример
 Step2Input не имеет действующего commit и не является готовым audit handoff.
 
