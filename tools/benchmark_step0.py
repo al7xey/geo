@@ -65,10 +65,21 @@ def measure(name):
                 counters["duplicate_identity_bytes"] += len(result.decoded_body)
         return result
 
+    class TrackedHash:
+        def __init__(self, value):
+            self.value = value
+
+        def update(self, data):
+            counters["hashed_bytes"] += len(data)
+            self.value.update(data)
+
+        def __getattr__(self, name):
+            return getattr(self.value, name)
+
     def sha(data=b"", **kwargs):
         counters["sha256_calls"] += 1
         counters["hashed_bytes"] += len(data)
-        return original_sha(data, **kwargs)
+        return TrackedHash(original_sha(data, **kwargs))
 
     def digest(stream, *args, **kwargs):
         counters["sha256_calls"] += 1

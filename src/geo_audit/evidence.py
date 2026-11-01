@@ -6,9 +6,8 @@ import os
 import uuid
 from collections.abc import Iterator
 from contextlib import contextmanager
-from io import BufferedReader
 from pathlib import Path
-from typing import BinaryIO, cast
+from typing import BinaryIO
 
 from pydantic import ValidationError
 
@@ -157,10 +156,19 @@ class EvidenceStore:
             with self.open_read(item.path) as stream:
                 if os.fstat(stream.fileno()).st_size != item.size_bytes:
                     raise problem("INPUT_ARTIFACT_INVALID", "input", "Evidence size mismatch.")
-                if (
-                    hashlib.file_digest(cast(BufferedReader, stream), "sha256").hexdigest()
-                    != item.sha256
-                ):
+                digest = hashlib.sha256()
+                remaining = item.size_bytes
+                while remaining:
+                    chunk = stream.read(min(64 * 1024, remaining))
+                    if not chunk:
+                        raise problem("INPUT_ARTIFACT_INVALID", "input", "Evidence was truncated.")
+                    digest.update(chunk)
+                    remaining -= len(chunk)
+                if stream.read(1):
+                    raise problem(
+                        "INPUT_ARTIFACT_INVALID", "input", "Evidence grew beyond its size."
+                    )
+                if digest.hexdigest() != item.sha256:
                     raise problem(
                         "INPUT_ARTIFACT_INVALID", "input", "Evidence is corrupt: hash mismatch."
                     )

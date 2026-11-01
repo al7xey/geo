@@ -271,3 +271,18 @@ symlink тест. Остальные ограничения security review со
 ## Подготовка внешней платформенной проверки
 
 По возобновлённому поручению добавлен .github/workflows/step0.yml: Windows 2025 / Ubuntu 24.04, Python 3.12.10, uv 0.9.7, read-only contents permission, SHA-pinned actions, без caches и с timeout 15 минут. Все тесты, типы, lint/security/dependency audit, генерация и сборка выполняются заново. Отдельный JUnit gate требует один реально выполненный file-symlink case, ноль skip/failure. До получения результата это подготовка, а не успешная проверка. GitHub Actions для репозитория включён; системные настройки пользователя не менялись. Новый tracked workflow увеличивает инвентаризацию до 101 файла.
+
+## Исправления по первой Windows/Linux проверке
+
+Run 41308165433, commit 4fc456e: Windows 2025 successful, 340 passed за 27.39 s,
+file symlink 1 passed без skip; Linux — 1 failed / 337 passed / 2 Windows-only skipped.
+Единственное падение Linux связано с fixture denied(), не принимающей dir_fd kwargs.
+Сигнатура исправлена без удаления проверок. В 0.3.2 дополнительно ограничен hash-read
+растущего файла и добавлен O_NONBLOCK для POSIX FIFO, плюс регрессия parent-swap.
+
+Локальная изолированная копия C:/GEO/tmp/step0-acceptance-032:
+340 passed / 3 skipped (нет Windows symlink privilege, два POSIX-only сценария).
+Mypy 24 runtime files, Ruff src/tests/tools, Bandit и 32 generated artifacts проходят.
+Это отдельный worktree: параллельные правки CLI/content/interactive из основного C:/GEO
+не копировались, не перезаписывались и в данный коммит не включаются.
+Новые Linux-сценарии до второго CI-прогона остаются ожидающими фактической проверки.

@@ -119,3 +119,31 @@ IP без перебора остальных может снизить дост
 raw-deflate и JS дают явные ограничения. Большие ответы ограниченно буферизуются; все
 попытки bounded, но процесс не имеет отдельной OS memory quota. SHA-256 не заменяет подпись.
 Отсутствие предупреждений не означает «код полностью безопасен».
+
+## Платформенная приёмка и patch 0.3.2
+
+Внешняя Windows 2025 job в run 41308165433 (commit 4fc456e) фактически прошла:
+340 passed, отдельный file-symlink case 1 passed, JUnit gate tests=1 / skipped+failed=0;
+mypy/Ruff/Bandit, audit и build также successful. Это закрывает прежний Windows-блокер,
+без изменения настроек ОС пользователя. Ubuntu обнаружил один дефект fixture: denied()
+не принимала src_dir_fd/dst_dir_fd у POSIX os.replace. Исправлена сигнатура заглушки,
+проверка OUTPUT_WRITE_FAILED и все security-проверки сохранены.
+
+Два дополнительных сценария хранения:
+
+- S07, средняя серьёзность: EvidenceStore.verify использовал file_digest до EOF после
+  одной проверки stat. Растущий конкурентно файл мог неограниченно продлевать hash-read.
+  test_verification_bounds_reads_when_evidence_keeps_growing на старом коде запрашивал
+  262144 bytes при declared size=3 и падал. Теперь чтение ограничено declared size + 1;
+  лишний байт обнаруживает рост, короткий поток — усечение; SHA-256 остаётся обязательным.
+  Регрессия проходит и проверяет отсутствие лишних чтений, не только сообщение ошибки.
+- S08, средняя серьёзность: POSIX FIFO может заблокировать O_RDONLY open до fstat,
+  поэтому проверка regular-file после open сама по себе недостаточна. Добавлен O_NONBLOCK,
+  затем прежний fstat/type/link check до fdopen. Семантика — Linux open(2):
+  https://man7.org/linux/man-pages/man2/open.2.html . Реальный FIFO-тест с timeout дочернего
+  процесса и запретом fdopen подготовлен для Ubuntu CI; до его результата не засчитан.
+
+Также добавлена POSIX regression на rename pinned raw → parked и подстановку symlink
+наружу между записью tmp и replace. Она требует неизменности внешнего sentinel/source,
+отсутствия внешнего target и отказа последующей верификации изменённого namespace.
+Это реальная проверка directory FD, а не замена проверки пути resolve/stat.

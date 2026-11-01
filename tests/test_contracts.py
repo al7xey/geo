@@ -2,6 +2,7 @@ import asyncio
 import json
 import subprocess
 import sys
+from contextlib import contextmanager
 from datetime import timedelta
 from pathlib import Path
 
@@ -296,6 +297,111 @@ def test_store_writes_and_detects_corruption(tmp_path):
         store.verify(record)
 
 
+def test_verification_bounds_reads_when_evidence_keeps_growing(tmp_path, monkeypatch):
+    store = EvidenceStore(tmp_path)
+    store.prepare()
+    blob = store.write_blob(b"aaa", representation="entity_bytes", complete=True)
+    record = SiteValidationResult.model_validate_json(json.dumps(load())).evidence[0]
+    record = record.model_copy(update={"files": (blob,)})
+    calls = []
+
+    class GrowingFile:
+        def fileno(self):
+            return backing.fileno()
+
+        def readable(self):
+            return True
+
+        def read(self, size=-1):
+            calls.append(size)
+            if size < 0 or sum(calls) > blob.size_bytes + 1:
+                raise AssertionError("Verification attempted an unbounded read")
+            return b"a" * size
+
+        def readinto(self, buffer):
+            data = self.read(len(buffer))
+            buffer[: len(data)] = data
+            return len(data)
+
+    @contextmanager
+    def growing(_relative):
+        yield GrowingFile()
+
+    with (tmp_path / blob.path).open("rb") as backing:
+        monkeypatch.setattr(store, "open_read", growing)
+        with pytest.raises(GeoAuditError) as error:
+            store.verify(record)
+    assert error.value.detail.code == "INPUT_ARTIFACT_INVALID"
+    assert sum(calls) <= blob.size_bytes + 1
+
+
+@pytest.mark.skipif(sys.platform == "win32", reason="POSIX FIFO semantics")
+def test_fifo_artifact_is_rejected_without_waiting_for_writer(tmp_path):
+    import os
+
+    fifo = tmp_path / "fifo.bin"
+    os.mkfifo(fifo)
+    program = r"""
+import sys
+from pathlib import Path
+from geo_audit.secure_io import open_confined
+import os
+def no_stream(*args, **kwargs):
+    raise AssertionError("A FIFO must be rejected before creating a content stream")
+os.fdopen = no_stream
+try:
+    with open_confined(Path(sys.argv[1])):
+        raise AssertionError("FIFO was accepted as an ordinary file")
+except OSError:
+    print("rejected")
+"""
+    result = subprocess.run(
+        [sys.executable, "-c", program, str(fifo)],
+        capture_output=True,
+        text=True,
+        timeout=5,
+        check=True,
+    )
+    assert result.stdout.strip() == "rejected"
+
+
+@pytest.mark.skipif(sys.platform == "win32", reason="POSIX directory descriptor semantics")
+def test_atomic_write_parent_swap_cannot_publish_outside_run(tmp_path, monkeypatch):
+    import os
+
+    import geo_audit.evidence as module
+
+    store = EvidenceStore(tmp_path / "run")
+    store.prepare(new=True)
+    raw = store.root / "raw"
+    parked = store.root / "parked"
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    (outside / "sentinel").write_bytes(b"untouched")
+    original = os.replace
+    calls = []
+
+    def swap(source, target, **kwargs):
+        calls.append((source, target))
+        raw.rename(parked)
+        raw.symlink_to(outside, target_is_directory=True)
+        # A pathname-based replace would consume this attacker-controlled source.
+        (outside / source).write_bytes(b"attacker-controlled")
+        return original(source, target, **kwargs)
+
+    monkeypatch.setattr(module.os, "replace", swap)
+    blob = store.write_blob(b"real evidence", representation="entity_bytes", complete=True)
+    source, target = calls[0]
+    assert (parked / target).read_bytes() == b"real evidence"
+    assert (outside / source).read_bytes() == b"attacker-controlled"
+    assert not (outside / target).exists()
+    assert (outside / "sentinel").read_bytes() == b"untouched"
+    record = SiteValidationResult.model_validate_json(json.dumps(load())).evidence[0]
+    with pytest.raises(GeoAuditError):
+        store.verify(record.model_copy(update={"files": (blob,)}))
+    assert not (store.root / "site.json").exists()
+
+
 def test_publish_refuses_dangling_files(tmp_path):
     site = SiteValidationResult.model_validate_json(json.dumps(load()))
     store = EvidenceStore(tmp_path)
@@ -318,7 +424,7 @@ def test_publish_and_atomic_write_failure(tmp_path, monkeypatch):
     assert (tmp_path / "raw/manifest.json").exists()
     assert SiteValidationResult.model_validate_json((tmp_path / "site.json").read_bytes()) == site
 
-    def denied(*_):
+    def denied(*_args, **_kwargs):
         raise PermissionError("synthetic disk failure")
 
     monkeypatch.setattr(module.os, "replace", denied)

@@ -175,6 +175,8 @@ def open_confined(path: Path, *, writing: bool = False) -> Iterator[BinaryIO]:
             flags = (os.O_WRONLY | os.O_CREAT | os.O_EXCL if writing else os.O_RDONLY) | getattr(
                 os, "O_NOFOLLOW"
             )
+            if not writing:
+                flags |= getattr(os, "O_NONBLOCK")  # A FIFO must not block before fstat rejects it.
             fd = os.open(path.name, flags, 0o600, dir_fd=directory_fd)
         try:
             info = os.fstat(fd)
