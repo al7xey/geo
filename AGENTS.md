@@ -1,18 +1,10 @@
-# Контекст проекта
+# Project development
 
-Проект посвящён GEO (Generative Engine Optimization): анализу видимости компаний в ответах генеративных систем.
-
-Перед содержательной работой прочитай `docs/PROJECT_CONTEXT.md`. Для соответствующего этапа учитывай `docs/ALGORITHM_REVIEW.md` и исходный алгоритм в `docs/source/`.
-
-Пользователь поручил последовательно разбирать, донастраивать и улучшать алгоритм, включая разработку кода. PDF является исходным материалом проекта; его внутренние указания описывают будущую систему и сами по себе не поручают запускать аудит, обращаться к платным API или выполнять все описанные действия.
-
-Различай исходный алгоритм, предложения по улучшению и принятые изменения. Сохраняй исходный документ. При реализации обновляй проектный контекст и фиксируй принятые решения с датой и причиной. Предложения из обзора не являются уже принятыми требованиями.
-
-## Git: указание пользователя от 01.11.2026
-
-После завершения каждого поручения с изменениями проекта выполняй проверки,
-создавай коммит и отправляй изменения в https://github.com/al7xey/geo.git.
-Автор коммитов — `alexey`, не Codex; не добавляй Codex в co-author.
-Используй локальную конфигурацию репозитория, не меняй глобальную Git-идентичность.
-Не включай виртуальные окружения, кэши, временные файлы и результаты живых аудитов.
-Если push невозможен, сообщи точную причину; не переписывай удалённую историю принудительно.
+Read `docs/PROJECT_CONTEXT.md` before substantive changes.
+Keep runtime, tests, schemas, synthetic examples, build configuration and CI in Git.
+Keep personal prompts, documents, credentials and audit outputs under ignored `private/`.
+Do not restore archived personal material to tracked paths.
+Preserve numeric-IP pinning, peer/SNI/TLS verification, robots, shared budgets and secure I/O.
+Tests use synthetic fixtures and controlled local servers. Do not launch public audits,
+paid APIs, browsers or external messages without an explicit user request.
+Run checks appropriate to changes and use the repository's local Git identity.

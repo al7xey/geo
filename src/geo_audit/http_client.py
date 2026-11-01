@@ -486,12 +486,12 @@ class SafeHttpClient:
                         for name, value in response.headers.raw
                         if name.decode("ascii").lower() in allowed
                     )
-                    if policy:
-                        resource_headers = tuple(
-                            (name.decode("ascii").lower(), value.decode("latin-1"))
-                            for name, value in response.headers.raw
-                            if name.decode("ascii").lower() in (*allowed, "x-robots-tag")
-                        )
+                    # Runtime-only extension; persisted step0 Header/version gates stay unchanged.
+                    resource_headers = tuple(
+                        (name.decode("ascii").lower(), value.decode("latin-1"))
+                        for name, value in response.headers.raw
+                        if name.decode("ascii").lower() in (*allowed, "x-robots-tag")
+                    )
                     encodings = response.headers.get_list("content-encoding")
                     body = LimitedBody(
                         ",".join(encodings),

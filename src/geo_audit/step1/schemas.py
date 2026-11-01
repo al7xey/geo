@@ -1,6 +1,7 @@
 """Separate schema namespace; the step 0 registry and URNs remain unchanged."""
 
 from ..contracts import Contract
+from ..recommendations import Recommendation, RecommendationReport
 from .config import Step1Config
 from .discovery import DiscoveredURL, DiscoveryResult
 from .models import (
@@ -47,6 +48,8 @@ MODELS: dict[str, type[Contract]] = {
         PublicationCommit,
         RobotEntry,
         RobotRegistry,
+        Recommendation,
+        RecommendationReport,
     )
 }
 

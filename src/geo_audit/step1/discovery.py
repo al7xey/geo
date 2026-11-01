@@ -84,6 +84,7 @@ class DiscoveryService:
         self.result: DiscoveryResult | None = None
         self._started = False
         self._stopped = False
+        self.external_urls: dict[str, None] = {}
 
     @property
     def sitemap_truncated(self) -> bool:
@@ -100,6 +101,8 @@ class DiscoveryService:
         normalized = normalize_input(url)
         reason = scope_reason(normalized, self.runtime.scope)
         if reason:
+            if len(self.external_urls) < self.runtime.config.max_candidates:
+                self.external_urls[normalized.url] = None
             self._problem(reason, url)
             return
         if normalized.url not in self.urls:

@@ -1,0 +1,14 @@
+{
+  "schema_version": "recommendations-1.0.0",
+  "method_version": "technical-geo-rules-1",
+  "scope": "technical_only_no_ai_visibility_measurement",
+  "source_step": 1,
+  "source_run_id": "synthetic-run",
+  "source_publication_id": "synthetic-publication",
+  "source_commit_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "observed_at": "2026-10-31T12:00:00Z",
+  "recommendations": [],
+  "limitations": [
+    "SYNTHETIC_ONLY_NOT_LIVE_OBSERVATION"
+  ]
+}

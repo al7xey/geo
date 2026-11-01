@@ -47,7 +47,7 @@ async def validate_site(
     budget: Budget | None = None,
     *,
     store: EvidenceStore | None = None,
-    output_dir: Path = Path("output/runs"),
+    output_dir: Path = Path("private/runs"),
     timing: TimeServices | None = None,
     parent_run_id: str | None = None,
 ) -> SiteValidationResult:

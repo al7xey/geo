@@ -30,6 +30,7 @@ class Budget:
             raise ValueError("started_at must be UTC")
         self._step0_attempts = 0
         self._total_attempts = 0
+        self._restored_from: BudgetSnapshot | None = None
 
     def _elapsed(self) -> float:
         elapsed = self._offset + self._clock() - self._start
@@ -42,6 +43,7 @@ class Budget:
     def restore(
         cls, config: Step0Config, snapshot: BudgetSnapshot, *, timing: TimeServices
     ) -> "Budget":
+        restore_start = timing.monotonic()
         now = timing.utcnow()
         if now < snapshot.captured_at or now >= snapshot.total_deadline_at:
             raise problem(
@@ -56,9 +58,12 @@ class Budget:
                 "Run request budget is exhausted; start a new run.",
             )
         value = cls(config, timing=timing, started_at=snapshot.started_at)
+        # Charge restoration work too; initialization must not discard elapsed time.
+        value._start = restore_start
         value._offset = max(snapshot.elapsed_seconds, (now - snapshot.started_at).total_seconds())
         value._step0_attempts = snapshot.step0_attempts
         value._total_attempts = snapshot.total_attempts
+        value._restored_from = snapshot
         return value
 
     def remaining_seconds(self, *, step: int = 0) -> float:

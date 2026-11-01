@@ -288,12 +288,17 @@ def verify_file(store: EvidenceStore, record: Step1Evidence) -> bytes:
 
 
 def load_step1_result(directory: Path) -> Step1Result:
+    return _load_step1_result(directory)[0]
+
+
+def _load_step1_result(directory: Path) -> tuple[Step1Result, bytes]:
     """Offline committed-publication inspector, without restoring any network rights."""
     from .config import Step1Config
 
     io = EvidenceStore(directory)
     try:
-        commit = PublicationCommit.model_validate_json(encoded_json(io.read_json("run.json")))
+        commit_raw = io.read_bytes("run.json", limit=MAX_JSON_BYTES)
+        commit = PublicationCommit.model_validate_json(commit_raw)
         if commit.publication_id != io.root.name:
             raise ValueError("publication identity differs from directory")
         artifacts = {}
@@ -320,6 +325,6 @@ def load_step1_result(directory: Path) -> Step1Result:
             raise ValueError("source site snapshot hash mismatch")
         for record in result.evidence:
             verify_file(io, record)
-        return result
+        return result, commit_raw
     except (ValueError, KeyError, RecursionError):
         raise problem("INPUT_ARTIFACT_INVALID", "input", "Invalid step 1 publication.") from None

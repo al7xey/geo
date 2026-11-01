@@ -30,7 +30,7 @@ class _SafeArgumentParser(argparse.ArgumentParser):
 def parser() -> argparse.ArgumentParser:
     result = _SafeArgumentParser(
         prog="geo-audit",
-        description="GEO step 0: validate a public site and persist verifiable evidence.",
+        description="Technical GEO site audit, verifiable evidence and offline recommendations.",
     )
     sub = result.add_subparsers(dest="command", required=True)
     sub.add_parser("config-defaults", help="Print versioned default configuration as JSON")
@@ -57,7 +57,7 @@ def parser() -> argparse.ArgumentParser:
     )
     for command in (run, interactive):
         command.add_argument("--config", type=Path)
-        command.add_argument("--output-dir", type=Path, default=Path("output/runs"))
+        command.add_argument("--output-dir", type=Path, default=Path("private/runs"))
         command.add_argument("--http-fallback", action=argparse.BooleanOptionalAction, default=None)
         command.add_argument(
             "--allow-host",
@@ -65,6 +65,12 @@ def parser() -> argparse.ArgumentParser:
             default=[],
             help="Exact explicitly allowed host; does not permit private IPs or other subdomains",
         )
+    from .step1.cli import configure
+
+    configure(sub)
+    web = sub.add_parser("serve", help="Open the local technical audit web interface")
+    web.add_argument("--port", type=int, default=8765)
+    web.add_argument("--output-dir", type=Path, default=Path("private/runs"))
     return result
 
 
@@ -72,6 +78,15 @@ def main(argv: list[str] | None = None) -> int:
     arguments = parser()
     args = arguments.parse_args(argv)
     try:
+        if args.command == "serve":
+            from .web import serve
+
+            serve(args.port, args.output_dir)
+            return 0
+        if args.command in {"audit", "step1", "load-step2", "recommend"}:
+            from .step1.cli import run_command
+
+            return run_command(args)
         if args.command == "config-defaults":
             print(Step0Config().model_dump_json(indent=2))
         elif args.command == "schema":

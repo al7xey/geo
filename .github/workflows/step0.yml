@@ -1,4 +1,4 @@
-name: Step 0 and step 1 component checks
+name: Steps 0-1 static acceptance
 
 on:
   push:
@@ -72,5 +72,24 @@ jobs:
         run: uv build --out-dir tmp/package
       - name: Verify package contents
         run: uv run --locked python tools/check_distribution.py tmp/package
+      - name: Create isolated installed-wheel environment
+        run: uv venv tmp/wheel-env --python 3.12
+      - name: Install hashed dependencies for wheel acceptance
+        run: uv pip install --python tmp/wheel-env --require-hashes -r tmp/audit-requirements.txt
+      - name: Install built wheel without source checkout
+        run: >-
+          python -c "import pathlib,subprocess;
+          wheel=next(pathlib.Path('tmp/package').glob('*.whl'));
+          subprocess.run(['uv','pip','install','--python','tmp/wheel-env','--no-deps',str(wheel)],check=True)"
+      - name: Verify installed import and controlled wheel e2e
+        run: >-
+          python -c "import pathlib,subprocess,os;
+          env=pathlib.Path('tmp/wheel-env').resolve();
+          py=env/('Scripts/python.exe' if os.name=='nt' else 'bin/python');
+          subprocess.run([str(py),'-I','-c',
+          'import geo_audit,pathlib,sys; p=pathlib.Path(geo_audit.__file__).resolve(); print(p); assert p.is_relative_to(pathlib.Path(sys.prefix))'],check=True);
+          subprocess.run([str(py),'-I','-m','pytest','-q','-ra',
+          'tests/test_step1_pipeline_integration.py','tests/test_recommendations.py',
+          'tests/test_connection_integration.py','tests/test_web.py'],check=True)"
       - name: CLI smoke
         run: uv run --locked geo-audit --help

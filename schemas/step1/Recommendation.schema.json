@@ -1,0 +1,87 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "recommendation_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Recommendation Id",
+      "type": "string"
+    },
+    "priority": {
+      "enum": [
+        "high",
+        "medium",
+        "info"
+      ],
+      "title": "Priority",
+      "type": "string"
+    },
+    "category": {
+      "enum": [
+        "robots",
+        "indexing",
+        "https",
+        "access",
+        "snippets",
+        "canonical",
+        "material",
+        "coverage",
+        "javascript",
+        "ua"
+      ],
+      "title": "Category",
+      "type": "string"
+    },
+    "title": {
+      "maxLength": 200,
+      "title": "Title",
+      "type": "string"
+    },
+    "action": {
+      "maxLength": 1000,
+      "title": "Action",
+      "type": "string"
+    },
+    "affected_checks": {
+      "minimum": 0,
+      "title": "Affected Checks",
+      "type": "integer"
+    },
+    "check_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "maxItems": 128,
+      "title": "Check Ids",
+      "type": "array"
+    },
+    "evidence_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "maxItems": 128,
+      "title": "Evidence Ids",
+      "type": "array"
+    },
+    "references_truncated": {
+      "title": "References Truncated",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "recommendation_id",
+    "priority",
+    "category",
+    "title",
+    "action",
+    "affected_checks",
+    "check_ids",
+    "evidence_ids",
+    "references_truncated"
+  ],
+  "title": "Recommendation",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:Recommendation:1.0.0"
+}

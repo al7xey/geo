@@ -1,254 +1,116 @@
-# GEO Audit — шаг 0
+# GEO Audit
 
-Python 3.12+, пакет 0.3.2. Проверяет URL, получает ограниченный HTML, сохраняет
-доказательства и готовит вход будущего шага 1. Работают HTTPS-first, явный HTTP,
-ограниченный fallback, ручные редиректы, проверка назначения фактического соединения,
-TLS, бюджеты и классификация содержимого.
+Технический аудит сайта и рекомендации GEO без платных API и LLM. Python 3.12+.
+Проверяет доступность, TLS, robots, sitemap, внутренние страницы, директивы
+индексации и сниппетов; извлекает проверяемый текст и языковые/географические сигналы.
+Рекомендации основаны на наблюдениях и evidence. Видимость в ответах ИИ не измеряется,
+профиль компании и следующий аналитический шаг не реализованы.
 
-Автоматический обход шага 1, браузер, генерация вопросов и платные API пока не реализованы.
-`can_enter_step1` не означает разрешение robots.
+## Установка и запуск
 
-Строгие контракты будущего шага 1 доступны отдельно: `geo_audit.step1.Step1Config`,
-`Step1Result` и `Step2Input`. Они не запускают сеть и не строят профиль компании.
-Схемы находятся в `schemas/step1/`, синтетические примеры — в `examples/contracts/step1/`.
-Примеры не являются действующим handoff: у них фиксированное время и нет commit/evidence
-реального запуска. `invalid.json` задаёт мутации к `result.json`, которые должны отвергаться.
-Цитаты используют индексы Unicode code points `[start,end)` и hash внешнего UTF-8 текста;
-проверка фактических файлов/срезов относится к будущему offline loader.
-Конфигурации связаны явно: `source_step0_config_sha256` указывает на исходный step0,
-а `config_hash` артефактов step1 вычисляется из отдельного `Step1Config`.
-JSON Schema проверяет форму данных; межобъектные ссылки и согласованность счётчиков
-дополнительно проверяет `Step1Result.model_validate_json(...)`.
+Установите Python 3.12 и [uv](https://docs.astral.sh/uv/getting-started/installation/),
+затем из каталога клонированного репозитория:
 
-Каркас запуска доступен через `Step1Runtime`: в том же процессе принимает готовый
-`Step1Handoff`, в новом — `Step1Runtime.from_directory(source_dir, output_dir=...)`.
-Контекст `async with runtime:` сохраняет результат, не выполняя автоматического обхода.
-Входной `FetchResult` переиспользуется; Budget и deadline сохраняются. Пока результат
-имеет `partial/SKELETON_ONLY`, без готового материала шага 2. Robots доступны через runtime.robots; очередь/извлечение
-будут подключаться отдельно. `runtime.fetch(url, RequestPolicy(...))` — явная внутренняя
-точка запроса через общий клиент, а не команда запуска аудита; HTML требует authorizer.
-
-Публикация создаётся в новой папке `output_dir/step1-<uuid>/`. Исходный каталог шага 0
-не изменяется. Внутри — snapshot `site.json`, `source.json`, `config.json`, отдельный
-`raw/manifest.json`, `crawl.json`, `checks.json`, `journal.json`; `run.json` публикуется
-последним и содержит хэши связанных артефактов. Повторный commit запрещён.
-`load_step1_result(directory)` проверяет commit и файлы без DNS/HTTP, не возобновляя бюджет.
-Это инспектор результата step1; готовый файловый consumer `Step2Input` остаётся следующим этапом.
-
-Спецификация: [требования](docs/implementation/STEP_1_REQUIREMENTS.md),
-[архитектура](docs/implementation/STEP_1_ARCHITECTURE.md).
-
-## Установка и запуск в Windows PowerShell
-
-```powershell
-Set-Location C:\GEO
-python -m pip install --user uv==0.9.7
+```sh
 uv sync --locked --python 3.12
 uv run --locked geo-audit --help
-uv run --locked geo-audit step0 'https://example.com/ru/?city=msk' --output-dir output/runs
-uv run --locked geo-audit step0 'example.com' --no-http-fallback
-uv run --locked geo-audit step0 'example.com' --allow-host other.example --http-fallback
+uv run --locked geo-audit serve
+uv run --locked geo-audit audit https://example.com
 ```
 
-В этой рабочей папке uv также доступен как `.\.bootstrap\Scripts\uv.exe`.
-Для воспроизведения не обновляйте `uv.lock`. Сетевой запуск выполняйте для выбранного
-вами публичного сайта. Команды выше — примеры, а не результаты живого аудита.
-Тесты используют контролируемые фикстуры и серверы.
+`serve` открывает локальный сервер: http://127.0.0.1:8765 — введите сайт в браузере.
+Одновременно выполняется один анализ; интерфейс показывает охват, наблюдения,
+географические/языковые сигналы и рекомендации. Сервер доступен только локально.
+`audit` обращается к указанному сайту из терминала. Результаты по умолчанию сохраняются
+в игнорируемом `private/runs/`. Сводка JSON содержит статус, охват, ограничения,
+каталог публикации и технические рекомендации. Исходники шага 0 сохраняются отдельно;
+шаг 1 их не переписывает. Не публикуйте результаты аудита: URL и исходники сайта
+могут содержать чувствительные данные. Папку вывода можно задать через `--output-dir`.
 
-### Ручная проверка нескольких сайтов
-
-```powershell
-Set-Location C:\GEO
-.\.venv\Scripts\python.exe -X utf8 -m geo_audit try-step0
+```sh
+uv run --locked geo-audit audit https://example.com --description-file description.txt
+uv run --locked geo-audit step1 private/runs/RUN_ID
+uv run --locked geo-audit recommend private/runs/PUBLICATION_ID
+uv run --locked geo-audit load-step2 private/runs/PUBLICATION_ID
 ```
 
-В строке `Сайт>` вводите публичные URL по очереди. Для каждого адреса создаётся
-отдельный запуск и новый бюджет. Выводятся status, пригодность для шага 1, HTTP/TLS,
-тип содержимого, число попыток, время, причины и каталог со всеми доказательствами.
-Пустая строка или `exit` завершает режим; Ctrl+C отменяет текущую проверку.
-Полные URL/query в сводке не печатаются. Это CLI-режим, библиотека не запрашивает ввод.
+`step1` принимает свежий проверенный результат шага 0; общий таймер и расход попыток
+не обнуляются. Для истёкшего результата нужен новый явный `audit`.
+`recommend` работает офлайн с сохранённым шагом 0 или 1, проверяя evidence.
+`load-step2` проверяет сохранённый корпус без DNS/HTTP и повторной экстракции.
+Его отдельная политика свежести — 7 дней от начала исходного наблюдения, а не 300 секунд
+сетевого бюджета. Технические ошибки не исчезают после добавления описания пользователя.
 
-Поддерживаются те же `--config`, `--output-dir`, `--allow-host` и
-`--no-http-fallback`, что у `step0`. Например:
+Старые команды шага 0 сохранены; точный синтаксис доступен через `--help`.
+Для `audit`: `--step0-config` задаёт JSON `Step0Config`, `--config` — `Step1Config`.
+`step1` также принимает `--config`. Поле `source_step0_config_sha256` обязательно
+совпадает с fingerprint конфигурации шага 0; это другой hash, чем конфигурация шага 1.
+Схемы и синтетические примеры: [schemas](schemas), [examples/contracts](examples/contracts).
+Они не являются действующими сетевыми handoff.
 
-```powershell
-.\.venv\Scripts\python.exe -X utf8 -m geo_audit try-step0 --no-http-fallback
-```
+Коды новых команд: 0 — ok; 1 — failed; 2 — некорректный ввод; 3 — partial;
+4 — needs_input; 5 — ошибка сохранения; 70 — программная ошибка; 130 — отмена.
+При отказе диска наличие полноценной JSON-публикации не гарантируется.
 
-Живые результаты остаются в игнорируемой Git папке `output/runs/`.
+## Границы и безопасность
 
-Конфигурацию можно сохранить через `config-defaults` и передать `--config FILE`.
-Сохранение UTF-8 без зависимости от кодировки перенаправления PowerShell:
+Статический обход последовательный: максимум 30 выбранных страниц, 5000 кандидатов,
+2 query-варианта на путь. Общий бюджет шагов 0–1: 300 секунд / 150 попыток;
+собственный предел шага 0: 60 секунд / 15 попыток. Redirect/retry расходуют попытки,
+cache hit — нет. Pacing, Retry-After и robots соблюдаются до каждого HTML redirect.
+Один клиент проверяет публичное назначение, закрепляет IP и проверяет TLS/peer.
+Sitemap/CDN/canonical не расширяют разрешение на внешний HTML.
 
-```powershell
-$cfg = uv run --locked geo-audit config-defaults
-[IO.File]::WriteAllText((Join-Path $PWD 'step0-config.json'), ($cfg -join "`n"), [Text.UTF8Encoding]::new($false))
-uv run --locked geo-audit step0 'example.com' --config step0-config.json
-uv run --locked geo-audit load-step1 'output/runs/run-REPLACE_WITH_ACTUAL_ID'
-```
+Robots: 512 KiB decoded, неизвестность не считается разрешением.
+Sitemap: до 5 файлов, 5 MiB на слой/файл, 5000 URL, глубина 3;
+DTD/entities и XML-сеть запрещены. Evidence ограничены 64 MiB/файл и 256 MiB/запуск.
+Текст нормализуется NFC с определёнными Unicode offsets; цитаты проверяются по hash.
+Решение о бизнес-материале — консервативная эвристика явных фраз деятельности,
+а не семантическая гарантия. Служебная длина не даёт готовность корпуса.
 
-`--allow-host` задаёт точный хост, допускается несколько параметров. Он не разрешает
-private IP, все поддомены или дополнительные порты. Порты и `path_scope` задаются
-в конфигурации. `--parent-run-id` связывает новый запуск с предыдущим, без скрытого
-продления бюджета. `needs_input` возвращает конкретный `--allow-host`, без ожидания ввода.
+UA probes и browser выключены по умолчанию. Включённые probes — наблюдение из нашей
+среды, не доказательство ответа настоящему роботу. Google-Extended не имеет HTTP UA.
+Без проверенной защиты фактического browser egress включение браузера возвращает
+`unknown/SAFE_EGRESS_UNAVAILABLE`: безопасный renderer пока не поставляется.
+CAPTCHA/login/robots не обходятся.
 
-## Выходы и exit codes
-
-```text
-run-<uuid>/
-  config.json          # полная конфигурация
-  budget.json          # время и счётчики на момент завершения
-  journal.json         # завершённые наблюдения; running/completed/cancelled
-  raw/manifest.json    # evidence_id, SHA-256, размер, представление, полнота
-  raw/<uuid>.bin       # тела и структурированные наблюдения
-  site.json            # итог; публикуется последним
-```
-
-`content_encoded` — тело до content decoding, после удаления HTTP transfer framing;
-`entity_bytes` — распакованное содержимое; `decoded_text` — текст в UTF-8 с записанной
-исходной/применённой кодировкой. Общие лимиты публикации и загрузки: 64 MiB
-на evidence-файл, 256 MiB на уникальные evidence-файлы запуска; сетевые caps отдельно.
-Превышение запрещает положительную публикацию. Это не захват TLS/HTTP wire-трафика. При identity
-байты совпадают, но происхождение представлений остаётся явным.
-
-Синтетический stdout CLI (полный контракт: [site-ok.json](examples/contracts/site-ok.json)):
-
-```json
-{"status":"ok","can_enter_step1":true,"effective_origin":"https://example.com","reason_codes":[],"next_action":"continue_step1","run_id":"run-<uuid>","run_directory":"C:\\GEO\\output\\runs\\run-<uuid>"}
-```
-
-| Код | Значение |
-|---|---|
-| 0 | ok или успешная локальная проверка |
-| 1 | failed при проверке сайта |
-| 2 | Ошибка аргументов, конфигурации или входного артефакта |
-| 3 | partial: пригодность определяется отдельно по can_enter_step1 |
-| 4 | needs_input |
-| 5 | OUTPUT_WRITE_FAILED |
-| 70 | Программная ошибка; библиотека сохраняет исходное исключение |
-| 130 | Отмена / KeyboardInterrupt |
-
-200, короткий текст и успешный TLS по отдельности не подтверждают пригодность HTML.
-Полные URL/query и тела находятся в приватном локальном каталоге; консоль показывает origin.
-
-## Публичный API и вход шага 1
+## Публичный consumer API
 
 ```python
 from pathlib import Path
-from geo_audit import (
-    Budget, SafeHttpClient, Step0Config, TimeServices,
-    load_step1_input, prepare_step1, validate_site,
-)
+from geo_audit.step1.handoff import read_corpus
+from geo_audit.recommendations import recommendation_report
 
-async def inspect(url: str):
-    config = Step0Config()
-    timing = TimeServices()
-    budget = Budget(config, timing=timing)
-    client = SafeHttpClient(config, timing=timing)
-    site = await validate_site(url, config, client, budget,
-                              timing=timing, output_dir=Path('output/runs'))
-    if site.can_enter_step1:
-        ready = prepare_step1(site, budget=budget)
-        assert ready.budget is budget
-        # ready.fetch_result — готовый FetchResult; ready.contract — Step1Input.
-        # ready.html — распакованные исходные HTML bytes, без повторного GET.
-    return site
-
-# В другом процессе, пока общий бюджет ещё действует:
-ready = load_step1_input(Path('output/runs/run-REPLACE_WITH_ACTUAL_ID'))
-html = ready.html
-text = ready.fetch_result.html_text
-scope = ready.contract.site.allowed_hosts, ready.contract.site.path_scope
-remaining = ready.budget.remaining_seconds(step=1)
-assert ready.contract.crawl_permission == 'unknown'
+directory = Path("private/runs/PUBLICATION_ID")
+handoff, texts = read_corpus(directory)  # только сохранённые проверенные тексты
+assert handoff.result.crawl.material.can_start_step2
+report = recommendation_report(directory)  # офлайн; ссылки на checks/evidence
 ```
 
-`validate_site(...) -> SiteValidationResult` принимает клиент (`Step0Client`), конфигурацию,
-Budget, TimeServices и EvidenceStore. Библиотека не вызывает `input()`.
-`load_site_result` проверяет любой конечный статус; `load_step1_input` принимает только
-пригодный вход и возвращает `Step1Handoff(contract, fetch_result, budget)`.
-Полный пример: [step1-input.json](examples/contracts/step1-input.json).
+## Проверки разработки
 
-Версии: schema `1.2.0`, algorithm `step0-1.2`, config `step0-config-1.2.0`.
-Согласованные 1.0/1.1 контракты читаются для истории; неполный старый каталог
-не превращается в новый вход. Учебная схема `1.0` из PDF не является программной схемой.
-
-В процессе время монотонное. Между процессами сохраняются UTC deadline, накопленное
-время и счётчики. Восстановленный расход — максимум сохранённого расхода и времени UTC
-от начала; последующее монотонное время прибавляется к нему. Загрузка учитывает простой,
-не обнуляет квоты. Просрочка или UTC ранее captured_at дают INPUT_ARTIFACT_INVALID:
-нужен явно новый запуск. Требуются корректные часы ОС.
-
-## Проверки
-
-```powershell
-New-Item -ItemType Directory -Force tmp | Out-Null
+```sh
 uv lock --check
 uv pip check
 uv run --locked pytest -q -ra
-uv run --locked mypy --platform linux
-uv run --locked mypy --platform win32
 uv run --locked ruff check src tests tools
+uv run --locked mypy --platform win32
+uv run --locked mypy --platform linux
 uv run --locked python tools/generate_step0_artifacts.py --check
 uv run --locked python tools/generate_step1_artifacts.py --check
-uv run --locked bandit -r src tools -f json -o tmp/bandit.json
-uv export --locked --no-emit-project --format requirements-txt --output-file tmp/audit-requirements.txt --quiet
-uv run --locked pip-audit --require-hashes -r tmp/audit-requirements.txt
-uv run --locked python -m tools.benchmark_step0 --output tmp/step0-benchmark.json --repeats 3
+uv run --locked bandit -r src tools
+uv export --locked --no-emit-project --format requirements-txt --output-file tmp/audit-requirements.txt
+uv run --locked pip-audit --require-hashes -r tmp/audit-requirements.txt --cache-dir tmp/audit-cache --progress-spinner off
 uv build --out-dir tmp/package
 uv run --locked python tools/check_distribution.py tmp/package
 ```
 
-pip-audit требует доступа к базе уязвимостей. Недоступность сервиса не означает успех.
-`validate` проверяет контракт; `load-step1` дополнительно проверяет файлы/хэши и свежесть.
-Синтетические примеры имеют фиксированное время и не являются действующим handoff.
+CI выполняет эти gates на Windows и Linux. Фактические результаты и ограничения:
+[docs/VALIDATION.md](docs/VALIDATION.md). Бенчмарк локальных fixtures:
+`uv run --locked python tools/benchmark_step1.py --help` (samples сохраняйте в `tmp/`).
+Wheel/sdist содержат runtime, PSL с происхождением и метаданные; tests/docs/private
+в дистрибутив не входят. Для checkout-тестов нужны tracked fixtures и dev-зависимости.
 
-Для независимого воспроизведения используйте новый clone и `uv --no-cache sync --locked
---python 3.12`, затем те же команды. Приложение и тесты не требуют `.bootstrap`, старого
-venv, локальных PDF-рендеров или benchmark JSON. Эти материалы игнорируются Git.
-Wheel содержит только пакет/PSL/py.typed и метаданные; sdist — runtime source, README,
-pyproject/lock и метаданные, без tests/docs/PDF/audit data. Полный checkout нужен для тестов.
-
-Три PDF-инструмента в tools сохранены для происхождения документов; Ruff/compileall/Bandit
-проверяют и их. Их повторный запуск требует отдельного документального окружения
-(ReportLab, pdfplumber, pypdf, Pillow), Windows fonts и для QA — подготовленных рендеров.
-Это исторический workflow подготовки PDF, не зависимость и не команда приёмки шага 0.
-
-`.github/workflows/step0.yml` повторяет приёмку на Windows 2025 и Ubuntu 24.04.
-Отдельный gate требует фактического выполнения file-symlink теста без skip. У workflow
-read-only token, actions закреплены SHA, caches отключены, время каждой job ограничено.
-Наличие workflow не означает успешного CI: фактические результаты фиксируются в отчёте приёмки.
-
-Документы: [архитектура](docs/implementation/STEP_0_ARCHITECTURE.md),
-[матрица требований](docs/implementation/STEP_0_REQUIREMENTS.md),
-[проверки](docs/implementation/STEP_0_VALIDATION.md),
-[security review](docs/implementation/STEP_0_SECURITY_REVIEW.md),
-[измерения](docs/implementation/STEP_0_PERFORMANCE.md).
-
-Ограничения: прямое соединение без proxy/keepalive/HTTP2; первый проверенный IP;
-identity/gzip/zlib-deflate; эвристики без исполнения JS; ограниченные тела в памяти.
-SHA-256 подтверждает целостность, но не подлинность против владельца, способного
-переписать каталог и хэши. Windows и Ubuntu проверены в CI, включая настоящие
-файловые symlink, FIFO и directory-swap; локальный Windows требует symlink privilege.
-Живые проверки шага 0 выполнены 01.11.2026: example.com
-по HTTP/HTTPS и www.python.org дали ok; expired.badssl.com при отключённом fallback
-дал ожидаемую ошибку сертификата. Эти результаты являются наблюдениями одного запуска,
-а не обещанием доступности тех же сайтов в другой момент или среде.
-Исходные PDF, алгоритмы и полезные инструменты документов сохранены.
-
-
-Robots API: `await runtime.robots.evaluate_all(url)` возвращает own + registry policy
-без HTML GET; `await runtime.fetch_html(url)` проверяет robots перед каждой попыткой
-и redirect target. Исходный GEOAudit UA не меняется при запрете; cache только на run.
-Реестр и исходные rules/lines сохраняются в publication. Unknown не означает Disallow.
-Google-Extended не имеет HTTP probe; UA probes выключены по умолчанию.
-
-
-Состояние step1 на 01.11.2026: Step1Runtime.discover_urls() использует сохранённый
-вход, robots и bounded sitemap/discovery. Protego0.7.0/defusedxml0.7.1 pinned;
-внешние карты через allowed_sitemap_hosts, без расширения HTML scope.
-**Сквозной step1 пока не принят:** runner выдаёт partial/SKELETON_ONLY; crawler,
-extraction, CLI цепочки и offline Step2 consumer отсутствуют. load_step1_result
-проверяет публикацию каркаса, не заменяет Step2 loader. Шаг 2 не реализован.
-Фактическая приёмка и ограничения:
-[STEP_1_VALIDATION.md](docs/implementation/STEP_1_VALIDATION.md).
+Личные документы, промпты и результаты запусков хранятся только в игнорируемом
+`private/` и не нужны для установки. Удаление из текущего дерева Git не удаляет
+ранее опубликованные файлы из истории репозитория.

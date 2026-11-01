@@ -1,0 +1,166 @@
+{
+  "$defs": {
+    "Recommendation": {
+      "additionalProperties": false,
+      "properties": {
+        "recommendation_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Recommendation Id",
+          "type": "string"
+        },
+        "priority": {
+          "enum": [
+            "high",
+            "medium",
+            "info"
+          ],
+          "title": "Priority",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "robots",
+            "indexing",
+            "https",
+            "access",
+            "snippets",
+            "canonical",
+            "material",
+            "coverage",
+            "javascript",
+            "ua"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 200,
+          "title": "Title",
+          "type": "string"
+        },
+        "action": {
+          "maxLength": 1000,
+          "title": "Action",
+          "type": "string"
+        },
+        "affected_checks": {
+          "minimum": 0,
+          "title": "Affected Checks",
+          "type": "integer"
+        },
+        "check_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Check Ids",
+          "type": "array"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "references_truncated": {
+          "title": "References Truncated",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "recommendation_id",
+        "priority",
+        "category",
+        "title",
+        "action",
+        "affected_checks",
+        "check_ids",
+        "evidence_ids",
+        "references_truncated"
+      ],
+      "title": "Recommendation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "recommendations-1.0.0",
+      "default": "recommendations-1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "method_version": {
+      "const": "technical-geo-rules-1",
+      "default": "technical-geo-rules-1",
+      "title": "Method Version",
+      "type": "string"
+    },
+    "scope": {
+      "const": "technical_only_no_ai_visibility_measurement",
+      "default": "technical_only_no_ai_visibility_measurement",
+      "title": "Scope",
+      "type": "string"
+    },
+    "source_step": {
+      "enum": [
+        0,
+        1
+      ],
+      "title": "Source Step",
+      "type": "integer"
+    },
+    "source_run_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Source Run Id",
+      "type": "string"
+    },
+    "source_publication_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Source Publication Id",
+      "type": "string"
+    },
+    "source_commit_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Source Commit Sha256",
+      "type": "string"
+    },
+    "observed_at": {
+      "format": "date-time",
+      "title": "Observed At",
+      "type": "string"
+    },
+    "recommendations": {
+      "items": {
+        "$ref": "#/$defs/Recommendation"
+      },
+      "maxItems": 32,
+      "title": "Recommendations",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    }
+  },
+  "required": [
+    "source_step",
+    "source_run_id",
+    "source_publication_id",
+    "source_commit_sha256",
+    "observed_at",
+    "recommendations",
+    "limitations"
+  ],
+  "title": "RecommendationReport",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:RecommendationReport:1.0.0"
+}

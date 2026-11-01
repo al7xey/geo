@@ -8,6 +8,7 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from geo_audit import BudgetSnapshot, Step0Config
+from geo_audit.recommendations import RecommendationReport
 from geo_audit.step1.config import Step1Config
 from geo_audit.step1.models import Step1Result, Step2Input
 from geo_audit.step1.schemas import MODELS, schema_for
@@ -210,6 +211,15 @@ def artifacts():
     result = sample_result()
     values = {f"schemas/step1/{name}.schema.json": schema_for(name) for name in MODELS}
     values["examples/contracts/step1/result.json"] = result.model_dump(mode="json")
+    values["examples/contracts/step1/recommendations.json"] = RecommendationReport(
+        source_step=1,
+        source_run_id=result.source.run_id,
+        source_publication_id=result.run.publication_id,
+        source_commit_sha256="0" * 64,
+        observed_at=STAMP,
+        recommendations=(),
+        limitations=("SYNTHETIC_ONLY_NOT_LIVE_OBSERVATION",),
+    ).model_dump(mode="json")
     values["examples/contracts/step1/step2-input.json"] = Step2Input(
         source_commit_sha256="0" * 64,
         result=result,

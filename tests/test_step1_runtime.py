@@ -195,6 +195,47 @@ def test_detached_handoff_cannot_replace_restore_with_fresh_budget(monkeypatch, 
     assert not (tmp_path / "reset").exists() and len(connector.calls) == 1
 
 
+def test_detached_budget_sampling_survives_scheduler_delay(monkeypatch, tmp_path):
+    from dataclasses import replace
+
+    from geo_audit import load_step1_input
+
+    _, site, clock, connector = fixture_runtime(monkeypatch, tmp_path)
+    loaded = load_step1_input(site._run_directory, timing=clock.services())
+
+    def delayed_utc():
+        clock.seconds += 0.02
+        return clock.utcnow()
+
+    timing = replace(clock.services(), utcnow=delayed_utc)
+    resumed = Step1Runtime(
+        loaded,
+        source_directory=site._run_directory,
+        output_dir=tmp_path / "resumed",
+        timing=timing,
+    )
+    assert resumed.budget.snapshot().total_deadline_at == site.budget.total_deadline_at
+    assert len(connector.calls) == 1
+
+
+def test_restore_charges_initialization_work(monkeypatch, tmp_path):
+    from geo_audit import Budget
+
+    _, site, clock, connector = fixture_runtime(monkeypatch, tmp_path)
+    original = Budget.__init__
+
+    def slow_init(self, *args, **kwargs):
+        clock.seconds += 0.02
+        original(self, *args, **kwargs)
+
+    monkeypatch.setattr(Budget, "__init__", slow_init)
+    clock.seconds += 10
+    restored = Budget.restore(site.config, site.budget, timing=clock.services())
+    assert restored.snapshot().elapsed_seconds >= clock.seconds
+    assert restored.snapshot().total_deadline_at == site.budget.total_deadline_at
+    assert len(connector.calls) == 1
+
+
 def test_step0_fifteen_attempts_and_sixty_seconds_do_not_reset_total(monkeypatch, tmp_path):
     scripts = []
     for n in range(4):

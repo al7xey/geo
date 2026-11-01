@@ -1,4 +1,4 @@
-"""Verified step 1 session skeleton. No automatic discovery, robots or page crawl yet."""
+"""Verified shared-budget session with explicit orchestration and isolated publication."""
 
 import asyncio
 import uuid
@@ -16,7 +16,7 @@ from ..evidence import MAX_FILE_BYTES, EvidenceStore
 from ..handoff import Step1Handoff, load_site_result, load_step1_input, verify_step1_input
 from ..http_client import FetchTrace, HttpAttempt, HttpObserver, SafeHttpClient
 from ..models import RedirectHop
-from ..request_policy import RequestPolicy
+from ..request_policy import RequestAuthorization, RequestPolicy
 from ..scope import SiteScope
 from ..timing import TimeServices
 from ..urls import normalize_input
@@ -26,15 +26,19 @@ from .models import (
     ChecksResult,
     Coverage,
     CrawlResult,
+    DiagnosticResult,
     DiscoverySource,
     Material,
     Page,
     RunResult,
     Step1Result,
+    TechnicalCheck,
+    UserMaterial,
 )
 from .storage import Step1Store, encoded_json
 
 if TYPE_CHECKING:
+    from .crawler import Crawler
     from .discovery import DiscoveryResult, DiscoveryService
     from .robots import RobotsService
 
@@ -73,10 +77,10 @@ class Step1Runtime:
             raise problem("INPUT_ARTIFACT_INVALID", "input", "Shared budget was replaced or reset.")
         if site._live_budget is not None and site._live_budget is not self.budget:
             raise problem("INPUT_ARTIFACT_INVALID", "input", "Live budget identity mismatch.")
-        if site._live_budget is None and current.elapsed_seconds + 0.001 < max(
-            baseline.elapsed_seconds,
-            (self.time.utcnow() - baseline.started_at).total_seconds(),
-        ):
+        # A detached budget must have been restored from this exact snapshot.
+        # After restore, monotonic time is authoritative; comparing it to a second
+        # wall-clock sample introduces false failures on coarse/adjusted UTC clocks.
+        if site._live_budget is None and self.budget._restored_from != baseline:
             raise problem(
                 "INPUT_ARTIFACT_INVALID", "input", "Detached budget did not account for idle time."
             )
@@ -145,14 +149,62 @@ class Step1Runtime:
         self.started_at = self.time.utcnow()
         self.publication_id = "step1-" + uuid.uuid4().hex
         self.store = Step1Store(output_dir / self.publication_id, source, site)
+        self.entry_headers: tuple[tuple[str, str], ...] = tuple(
+            (h.name, h.value) for h in self.entry.response.response_headers
+        )
+        self.entry_headers_complete = False
+        self.entry_header_evidence_id: str | None = None
+        if site._live_budget is self.budget and client is not None and client.last_trace:
+            for attempt in client.last_trace.attempts:
+                if (
+                    attempt.attempt_id == self.entry.response.attempt_id
+                    and attempt.requested_url == self.entry.response.requested_url
+                    and attempt.decoded_body == self.entry.entity_bytes
+                    and attempt.status_code == self.entry.response.status_code
+                ):
+                    self.entry_headers = attempt.resource_headers
+                    self.entry_headers_complete = bool(attempt.resource_headers)
+                    header_record = self.store.write_evidence(
+                        encoded_json(
+                            dict(
+                                source_attempt_id=attempt.attempt_id,
+                                requested_url=attempt.requested_url,
+                                headers=attempt.resource_headers,
+                                status_code=attempt.status_code,
+                                tls_state=attempt.tls_state,
+                                captured_at=attempt.started_at.isoformat(),
+                            )
+                        ),
+                        representation="attempt_observation",
+                        complete=True,
+                        source_evidence_id=self.store.entry_evidence_id,
+                        transform_version="live-selected-headers-1",
+                    )
+                    self.entry_header_evidence_id = header_record.evidence_id
+                    break
         self.cache_hits = 1  # Reused entry is an observation, never a new HTTP attempt.
         self.result: Step1Result | None = None
         self._entered = False
         self._finished = False
         self._pending_urls: set[str] = set()
-        self._stop_reason: str | None = None
+        self._stop_reason: str | None = (
+            "RETRY_DEFERRED" if "RETRY_DEFERRED" in site.reason_codes else None
+        )
         self._robots: RobotsService | None = None
         self._discovery: DiscoveryService | None = None
+        self._crawler: Crawler | None = None
+        self.user_materials: tuple[UserMaterial, ...] = ()
+        self.diagnostics: tuple[DiagnosticResult, ...] = ()
+        self.extra_checks: tuple[TechnicalCheck, ...] = ()
+        self.pipeline_completed = False
+
+    async def crawl_pages(self) -> None:
+        from .crawler import Crawler
+
+        if self._crawler is not None:
+            raise ValueError("crawler already started")
+        self._crawler = Crawler(self)
+        await self._crawler.run()
 
     @property
     def discovery(self) -> "DiscoveryService":
@@ -175,7 +227,15 @@ class Step1Runtime:
 
     async def fetch_html(self, url: str) -> FetchTrace:
         """Production HTML boundary: our robots authorization before every attempt/redirect."""
-        return await self.fetch(url, RequestPolicy("html", self.robots.authorize))
+
+        async def authorizer(target: str) -> RequestAuthorization:
+            if self._crawler:
+                if target != url and target in self._crawler.effective:
+                    return RequestAuthorization("disallowed", "HTML_CACHE_ALIAS")
+                return await self._crawler.authorize(target)
+            return await self.robots.authorize(target)
+
+        return await self.fetch(url, RequestPolicy("html", authorizer))
 
     @classmethod
     def from_directory(
@@ -255,14 +315,28 @@ class Step1Runtime:
             if observer:
                 await observer(event)
 
-        trace = await self.client.get(
-            url,
-            scope=self.scope,
-            budget=self.budget,
-            step=1,
-            policy=policy,
-            observer=persist,
-        )
+        if self._stop_reason == "RETRY_DEFERRED":
+            trace = FetchTrace(
+                normalized,
+                (),
+                (),
+                self.scope,
+                problem(
+                    "RETRY_DEFERRED", "budget", "Shared run stopped at Retry-After deadline."
+                ).detail,
+                False,
+                False,
+                "step1-1.0",
+            )
+        else:
+            trace = await self.client.get(
+                url,
+                scope=self.scope,
+                budget=self.budget,
+                step=1,
+                policy=policy,
+                observer=persist,
+            )
         if trace.error and trace.error.category == "output":
             raise GeoAuditError(trace.error)
         if trace.error and trace.error.category == "budget":
@@ -420,6 +494,133 @@ class Step1Runtime:
                 limitations=("SKELETON_ONLY",),
             )
         )
+        crawl_coverage = self._crawler.finalize(cancelled=cancelled) if self._crawler else None
+        from .material import summarize
+
+        material = (
+            summarize(self._crawler.pages, self.user_materials)
+            if self._crawler
+            else Material(
+                state="needs_description",
+                can_start_step2=False,
+                reason="EXTRACTION_NOT_IMPLEMENTED",
+                useful_page_ids=(),
+                supporting_page_ids=(),
+                user_materials=(),
+            )
+        )
+        limitations: list[str] = []
+        if not self._crawler:
+            limitations.append("SKELETON_ONLY")
+        else:
+            from .checks import check
+            from .diagnostics import result as diagnostic_result
+
+            for kind, enabled, check_kind in (
+                ("browser", self.config.browser_enabled, "javascript"),
+                ("ua_probe", self.config.ua_probes_enabled, "ua_comparison"),
+            ):
+                if not any(d.kind == kind for d in self.diagnostics):
+                    diagnostic_status = "unknown" if enabled else "not_applicable"
+                    diagnostic_reason = (
+                        (
+                            "SAFE_EGRESS_UNAVAILABLE"
+                            if kind == "browser"
+                            else reason
+                            if reason.startswith(("BUDGET_", "RETRY_", "NETWORK_"))
+                            else "NOT_EXECUTED"
+                        )
+                        if enabled
+                        else "CONFIG_DISABLED"
+                    )
+                    self.diagnostics += (
+                        diagnostic_result(
+                            kind,
+                            None,
+                            diagnostic_status,
+                            diagnostic_reason,
+                            selection="Pipeline ended before optional phase",
+                        ),
+                    )
+                    self.extra_checks += (
+                        check(
+                            self,
+                            kind=check_kind,
+                            status=diagnostic_status,
+                            reason=diagnostic_reason,
+                            observation="Optional phase not executed.",
+                        ),
+                    )
+
+            for candidate in self._crawler.candidates.values():
+                if candidate.selected and candidate.state not in {"fetched", "duplicate"}:
+                    self.extra_checks += (
+                        check(
+                            self,
+                            kind="indexing_directives",
+                            status="unknown",
+                            reason="PAGE_NOT_OBSERVED",
+                            observation="No complete page read; no noindex conclusion.",
+                            url=candidate.url,
+                        ),
+                    )
+            if not self.pipeline_completed:
+                limitations.append("PIPELINE_NOT_COMPLETED")
+            if self._robots and any(
+                d.product_token == self._robots.own_token and d.decision != "allowed"
+                for d in self._robots.decisions.values()
+            ):
+                limitations.append("OWN_ROBOTS_RESTRICTED_OR_UNKNOWN")
+            if self._discovery and (
+                self._discovery.sitemap_truncated
+                or any(
+                    s.state in {"invalid", "incomplete", "failed"}
+                    for s in self._discovery.observations
+                )
+            ):
+                limitations.append("SITEMAP_DISCOVERY_LIMITED")
+            if (
+                self._crawler.truncated
+                or self._crawler.discarded
+                or (
+                    self._discovery
+                    and self._discovery.result
+                    and self._discovery.result.discovery_truncated
+                )
+            ):
+                limitations.append("DISCOVERY_TRUNCATED")
+            if any(not p.header_capture_complete for p in self._crawler.pages):
+                limitations.append("LEGACY_HEADERS_INCOMPLETE")
+            if any(
+                c.state
+                in {
+                    "failed",
+                    "not_attempted_budget",
+                    "cancelled",
+                    "not_selected_limit",
+                    "skipped_robots",
+                    "skipped_policy_unknown",
+                }
+                for c in self._crawler.candidates.values()
+            ):
+                limitations.append("BOUNDED_OR_RESTRICTED_COVERAGE")
+            if any(p.extraction_reason.startswith("EXTRACTION_") for p in self._crawler.pages):
+                limitations.append("EXTRACTION_LIMITED")
+            if any(d.status == "unknown" for d in self.diagnostics):
+                limitations.append("ENABLED_DIAGNOSTIC_UNAVAILABLE")
+            if any("METADATA_TRUNCATED" in p.limitations for p in self._crawler.pages):
+                limitations.append("METADATA_TRUNCATED")
+        status = (
+            "failed"
+            if failed
+            else "partial"
+            if cancelled or reason.startswith(("BUDGET_", "RETRY_"))
+            else "needs_input"
+            if self._crawler and not material.can_start_step2
+            else "partial"
+            if limitations
+            else "ok"
+        )
         result = Step1Result(
             source=self.store.source,
             config=self.config,
@@ -427,13 +628,17 @@ class Step1Runtime:
             crawl=CrawlResult.model_validate(
                 dict(
                     **envelope,
-                    candidates=(candidate,),
-                    pages=(page,),
+                    candidates=tuple(self._crawler.candidates.values())
+                    if self._crawler
+                    else (candidate,),
+                    pages=tuple(self._crawler.pages) if self._crawler else (page,),
                     robots=tuple(self._robots.observations) if self._robots else (),
                     robots_decisions=tuple(self._robots.decisions.values()) if self._robots else (),
                     sitemaps=tuple(self._discovery.observations) if self._discovery else (),
-                    pending_external_urls=(),
-                    coverage=Coverage(
+                    pending_external_urls=tuple(self._crawler.external) if self._crawler else (),
+                    coverage=crawl_coverage
+                    if crawl_coverage is not None
+                    else Coverage(
                         discovered_urls=1,
                         selected_candidates=1,
                         fetch_successes=1,
@@ -449,34 +654,41 @@ class Step1Runtime:
                         if self._discovery
                         else False,
                     ),
-                    material=Material(
-                        state="needs_description",
-                        can_start_step2=False,
-                        reason="EXTRACTION_NOT_IMPLEMENTED",
-                        useful_page_ids=(),
-                        supporting_page_ids=(),
-                        user_materials=(),
-                    ),
+                    material=material,
                 )
             ),
             checks=ChecksResult.model_validate(
                 dict(
                     **envelope,
-                    checks=self._robots.checks() if self._robots else (),
-                    diagnostics=(),
+                    checks=(self._robots.checks() if self._robots else ())
+                    + (tuple(self._crawler.checks) if self._crawler else ())
+                    + self.extra_checks,
+                    diagnostics=self.diagnostics,
                 )
             ),
             run=RunResult.model_validate(
                 dict(
                     **envelope,
-                    status="failed" if failed else "partial",
+                    status=status,
                     lifecycle="cancelled" if cancelled else "completed",
                     stop_reason=reason,
                     budget=self.budget.snapshot(),
                     browser_attempts=0,
                     cache_hits=self.cache_hits,
-                    unfinished_urls=tuple(sorted(self._pending_urls)),
-                    limitations=("SKELETON_ONLY",),
+                    unfinished_urls=tuple(
+                        sorted(
+                            self._pending_urls
+                            | {
+                                c.url
+                                for c in self._crawler.candidates.values()
+                                if c.state
+                                in {"cancelled", "not_selected_limit", "not_attempted_budget"}
+                            }
+                        )
+                    )
+                    if self._crawler
+                    else tuple(sorted(self._pending_urls)),
+                    limitations=tuple(limitations),
                 )
             ),
         )
