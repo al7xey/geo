@@ -5,8 +5,23 @@ Python 3.12+, пакет 0.3.2. Проверяет URL, получает огр�
 ограниченный fallback, ручные редиректы, проверка назначения фактического соединения,
 TLS, бюджеты и классификация содержимого.
 
-Обход шага 1, robots.txt, браузер, генерация вопросов и платные API не реализуются.
+Обход шага 1, robots.txt, браузер, генерация вопросов и платные API пока не реализованы.
 `can_enter_step1` не означает разрешение robots.
+
+Строгие контракты будущего шага 1 доступны отдельно: `geo_audit.step1.Step1Config`,
+`Step1Result` и `Step2Input`. Они не запускают сеть и не строят профиль компании.
+Схемы находятся в `schemas/step1/`, синтетические примеры — в `examples/contracts/step1/`.
+Примеры не являются действующим handoff: у них фиксированное время и нет commit/evidence
+реального запуска. `invalid.json` задаёт мутации к `result.json`, которые должны отвергаться.
+Цитаты используют индексы Unicode code points `[start,end)` и hash внешнего UTF-8 текста;
+проверка фактических файлов/срезов относится к будущему offline loader.
+Конфигурации связаны явно: `source_step0_config_sha256` указывает на исходный step0,
+а `config_hash` артефактов step1 вычисляется из отдельного `Step1Config`.
+JSON Schema проверяет форму данных; межобъектные ссылки и согласованность счётчиков
+дополнительно проверяет `Step1Result.model_validate_json(...)`.
+
+Спецификация: [требования](docs/implementation/STEP_1_REQUIREMENTS.md),
+[архитектура](docs/implementation/STEP_1_ARCHITECTURE.md).
 
 ## Установка и запуск в Windows PowerShell
 
@@ -160,6 +175,7 @@ uv run --locked mypy --platform linux
 uv run --locked mypy --platform win32
 uv run --locked ruff check src tests tools
 uv run --locked python tools/generate_step0_artifacts.py --check
+uv run --locked python tools/generate_step1_artifacts.py --check
 uv run --locked bandit -r src tools -f json -o tmp/bandit.json
 uv export --locked --no-emit-project --format requirements-txt --output-file tmp/audit-requirements.txt --quiet
 uv run --locked pip-audit --require-hashes -r tmp/audit-requirements.txt

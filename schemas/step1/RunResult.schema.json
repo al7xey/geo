@@ -104,6 +104,7 @@
       "type": "string"
     },
     "registry_version": {
+      "minLength": 1,
       "title": "Registry Version",
       "type": "string"
     },

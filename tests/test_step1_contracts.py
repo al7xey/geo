@@ -117,3 +117,111 @@ def test_step2_corpus_gate_and_synthetic_not_live_handoff():
 def test_generated_step1_artifacts_match():
     for path, body in artifacts().items():
         assert (ROOT / path).read_bytes() == body, path
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "unselected_fetched",
+        "source_selected",
+        "source_discovery",
+        "short_useful",
+        "business_without_main_text",
+        "duplicate_material",
+        "quote_wrong_evidence",
+        "unknown_derivation",
+        "nontext_quote",
+        "incomplete_positive",
+        "foreign_import",
+        "wrong_derivation_source",
+        "identity_collision",
+        "dangling_alias_chain",
+    ],
+)
+def test_graph_invariants_before_any_files_are_opened(mutation):
+    raw = sample_result().model_dump(mode="json")
+    page = raw["crawl"]["pages"][0]
+    if mutation == "unselected_fetched":
+        raw["crawl"]["candidates"][0]["selected"] = False
+        raw["crawl"]["coverage"]["selected_candidates"] = 0
+    elif mutation == "source_selected":
+        raw["source"]["selected_evidence_id"] = "missing"
+    elif mutation == "source_discovery":
+        raw["crawl"]["candidates"][0]["sources"][0]["source_id"] = "missing"
+    elif mutation == "short_useful":
+        page["main_text"]["text_chars"] = 100
+    elif mutation == "business_without_main_text":
+        page["main_text"] = None
+        page["useful_candidate"] = False
+        raw["crawl"]["coverage"]["extracted_pages"] = 0
+        raw["crawl"]["coverage"]["useful_pages"] = 0
+        raw["crawl"]["material"].update(
+            state="insufficient",
+            can_start_step2=False,
+            useful_page_ids=[],
+        )
+        raw["run"]["status"] = "needs_input"
+    elif mutation == "duplicate_material":
+        raw["crawl"]["material"]["useful_page_ids"].append("page-1")
+    elif mutation == "quote_wrong_evidence":
+        page["business_quotes"][0]["evidence_id"] = "html-1"
+        page["business_quotes"][0]["text_hash"] = raw["evidence"][0]["file"]["sha256"]
+        page["main_text"]["text_hash"] = raw["evidence"][0]["file"]["sha256"]
+        raw["evidence"][1]["file"]["sha256"] = raw["evidence"][0]["file"]["sha256"]
+    elif mutation == "unknown_derivation":
+        raw["evidence"][1]["source_evidence_id"] = None
+    elif mutation == "nontext_quote":
+        page["signals"] = [
+            dict(
+                kind="address",
+                value="Example",
+                strength="explicit",
+                evidence_id="html-1",
+                quote=dict(
+                    evidence_id="html-1",
+                    text_hash=raw["evidence"][0]["file"]["sha256"],
+                    start=0,
+                    end=7,
+                    text="Example",
+                ),
+            )
+        ]
+    elif mutation == "incomplete_positive":
+        raw["evidence"][0]["file"]["complete"] = False
+    elif mutation == "foreign_import":
+        raw["evidence"][0].update(source_run_id="foreign", original_evidence_id="html-1")
+    elif mutation == "wrong_derivation_source":
+        unrelated = deepcopy(raw["evidence"][0])
+        unrelated["evidence_id"] = "html-2"
+        unrelated["file"]["path"] = "raw/html-2.bin"
+        raw["evidence"].append(unrelated)
+        raw["evidence"][1]["source_evidence_id"] = "html-2"
+    elif mutation == "identity_collision":
+        page["page_id"] = "html-1"
+        raw["crawl"]["material"]["useful_page_ids"] = ["html-1"]
+    else:
+        candidate = raw["crawl"]["candidates"][0]
+        candidate.update(state="duplicate", alias_of="candidate-2")
+        second = deepcopy(candidate)
+        second.update(
+            candidate_id="candidate-2",
+            url="https://example.com/other/",
+            alias_of="missing",
+            ordinal=1,
+        )
+        raw["crawl"]["candidates"].append(second)
+        raw["crawl"]["pages"] = []
+        raw["crawl"]["coverage"].update(
+            discovered_urls=2,
+            selected_candidates=2,
+            fetch_successes=0,
+            unique_html_pages=0,
+            extracted_pages=0,
+            useful_pages=0,
+        )
+        raw["crawl"]["material"].update(
+            state="needs_description", can_start_step2=False, useful_page_ids=[]
+        )
+        raw["run"]["status"] = "needs_input"
+    with pytest.raises(ValidationError):
+        Step1Result.model_validate_json(json.dumps(raw))

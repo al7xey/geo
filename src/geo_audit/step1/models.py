@@ -5,6 +5,7 @@ from typing import Annotated, Literal, Self, cast
 from pydantic import AfterValidator, Field, model_validator
 
 from ..contracts import SHA256, Contract, Identifier, UTCDateTime
+from ..errors import GeoAuditError
 from ..models import URL, BudgetSnapshot, EvidenceFile
 from ..urls import normalize_input
 from .config import Step1Config
@@ -44,7 +45,11 @@ Role = Literal["entry", "about", "services", "prices", "contacts", "faq", "other
 
 
 def _origin(value: str) -> str:
-    if normalize_input(value).origin != value:
+    try:
+        actual = normalize_input(value).origin
+    except GeoAuditError as error:
+        raise ValueError("invalid origin") from error
+    if actual != value:
         raise ValueError("expected exact scheme/host/port origin without path")
     return value
 
@@ -115,6 +120,17 @@ class Step1Evidence(Contract):
             raise ValueError("derivation needs a version")
         if (self.source_run_id is None) != (self.original_evidence_id is None):
             raise ValueError("import needs both original run and evidence identity")
+        if (
+            self.representation
+            in {
+                "extracted_raw",
+                "main_text",
+                "rendered_dom",
+                "robots_decision",
+            }
+            and self.source_evidence_id is None
+        ):
+            raise ValueError("derived representation requires its source")
         if not self.file.path.startswith("raw/") or len(self.file.path.split("/")) != 2:
             raise ValueError("evidence file must be directly under raw")
         return self
@@ -165,6 +181,8 @@ class Candidate(Contract):
     def terminal(self) -> Self:
         if self.selected and self.state in {"queued", "not_selected_limit"}:
             raise ValueError("persisted selected candidates must be terminal")
+        if not self.selected and self.state in {"fetched", "failed", "not_attempted_budget"}:
+            raise ValueError("attempted candidate requires a selected slot")
         if self.alias_of == self.candidate_id:
             raise ValueError("self alias")
         if self.state == "duplicate" and self.alias_of is None:
@@ -294,6 +312,8 @@ class Page(Contract):
             raise ValueError("material requires a text representation")
         if self.business_relevance == "observed" and not self.business_quotes:
             raise ValueError("business observation requires quoted evidence")
+        if self.business_quotes and self.main_text is None:
+            raise ValueError("business quotes require the page text")
         if self.useful_candidate and self.supporting_page:
             raise ValueError("useful and supporting are disjoint")
         return self
@@ -385,6 +405,9 @@ class Material(Contract):
             raise ValueError("material gate differs from state")
         if set(self.useful_page_ids) & set(self.supporting_page_ids):
             raise ValueError("material page roles overlap")
+        unique(self.useful_page_ids, "useful page identity")
+        unique(self.supporting_page_ids, "supporting page identity")
+        unique(tuple(u.material_id for u in self.user_materials), "user material identity")
         if self.state == "user_supported" and not any(
             u.suitability == "usable" for u in self.user_materials
         ):
@@ -400,7 +423,7 @@ class Envelope(Contract):
     run_id: Identifier
     publication_id: Identifier
     config_hash: SHA256
-    registry_version: str
+    registry_version: str = Field(min_length=1)
     started_at: UTCDateTime
     finished_at: UTCDateTime
 
@@ -439,6 +462,17 @@ class CrawlResult(Envelope):
         for c in self.candidates:
             if c.alias_of is not None and c.alias_of not in candidates:
                 raise ValueError("dangling candidate alias")
+            if c.state == "queued":
+                raise ValueError("final crawl cannot contain unexplained queued candidates")
+            visited = {c.candidate_id}
+            current = c
+            while current.alias_of is not None:
+                if current.alias_of not in candidates:
+                    raise ValueError("dangling candidate alias in chain")
+                if current.alias_of in visited:
+                    raise ValueError("cyclic candidate aliases")
+                visited.add(current.alias_of)
+                current = candidates[current.alias_of]
         page_ids = {p.page_id for p in self.pages}
         if (
             not set((*self.material.useful_page_ids, *self.material.supporting_page_ids))
@@ -519,8 +553,30 @@ class Step1Result(Contract):
         unique(tuple(e.evidence_id for e in self.evidence), "evidence ID")
         unique(tuple(c.check_id for c in self.checks.checks), "check ID")
         unique(tuple(d.diagnostic_id for d in self.checks.diagnostics), "diagnostic ID")
+        unique(
+            tuple(e.evidence_id for e in self.evidence)
+            + tuple(c.candidate_id for c in self.crawl.candidates)
+            + tuple(p.page_id for p in self.crawl.pages)
+            + tuple(c.check_id for c in self.checks.checks)
+            + tuple(d.diagnostic_id for d in self.checks.diagnostics)
+            + tuple(r.observation_id for r in self.crawl.robots)
+            + tuple(r.decision_id for r in self.crawl.robots_decisions)
+            + tuple(s.sitemap_id for s in self.crawl.sitemaps)
+            + tuple(u.material_id for u in self.crawl.material.user_materials),
+            "cross-entity identity",
+        )
         evidence = {e.evidence_id: e for e in self.evidence}
         pages = {p.page_id: p for p in self.crawl.pages}
+        known_sources = set(evidence) | set(pages) | {s.sitemap_id for s in self.crawl.sitemaps}
+        for candidate in self.crawl.candidates:
+            if any(s.source_id not in known_sources for s in candidate.sources):
+                raise ValueError("dangling discovery source")
+        if not any(
+            e.evidence_id == self.source.selected_evidence_id
+            or e.original_evidence_id == self.source.selected_evidence_id
+            for e in self.evidence
+        ):
+            raise ValueError("selected source evidence missing")
         unique(tuple(e.file.path for e in self.evidence), "evidence path")
         if sum(e.file.size_bytes for e in self.evidence) > 256 * 1024 * 1024:
             raise ValueError("evidence budget exceeded")
@@ -530,21 +586,36 @@ class Step1Result(Contract):
                 raise ValueError("dangling evidence " + identity)
             return evidence[identity]
 
+        texts: dict[str, TextRef] = {}
+
         def text_ref(value: TextRef) -> None:
             ev = ref(value.evidence_id)
             if ev.file.sha256 != value.text_hash or not ev.file.complete:
                 raise ValueError("text evidence mismatch/incomplete")
             if ev.representation not in {"main_text", "extracted_raw", "user_material"}:
                 raise ValueError("text refers to non-text evidence")
+            if value.text_chars > ev.file.size_bytes:
+                raise ValueError("text character count exceeds UTF-8 byte size")
+            if value.evidence_id in texts and texts[value.evidence_id] != value:
+                raise ValueError("conflicting text reference")
+            texts[value.evidence_id] = value
 
         def quote(value: QuoteRef) -> None:
             ev = ref(value.evidence_id)
-            if ev.file.sha256 != value.text_hash or value.end > ev.file.size_bytes:
+            text = texts.get(value.evidence_id)
+            if (
+                text is None
+                or not ev.file.complete
+                or ev.file.sha256 != value.text_hash
+                or value.end > text.text_chars
+            ):
                 raise ValueError("quote evidence/hash/bounds mismatch")
 
         for ev in self.evidence:
             if ev.run_id != self.source.run_id:
                 raise ValueError("foreign run evidence")
+            if ev.source_run_id is not None and ev.source_run_id != self.source.run_id:
+                raise ValueError("foreign source run import")
             if ev.source_evidence_id is not None:
                 ref(ev.source_evidence_id)
             seen = {ev.evidence_id}
@@ -556,14 +627,38 @@ class Step1Result(Contract):
                 seen.add(identity)
                 current = ref(identity)
         for page in self.crawl.pages:
-            ref(page.evidence_id)
             if page.main_text:
                 text_ref(page.main_text)
             for t in page.alternate_texts:
                 text_ref(t)
+        for user in self.crawl.material.user_materials:
+            text_ref(user.text)
+            if ref(user.text.evidence_id).representation != "user_material":
+                raise ValueError("user material needs its own evidence representation")
+        for page in self.crawl.pages:
+            body = ref(page.evidence_id)
+            for text in ((page.main_text,) if page.main_text else ()) + page.alternate_texts:
+                ancestor = ref(text.evidence_id)
+                while ancestor.source_evidence_id is not None:
+                    ancestor = ref(ancestor.source_evidence_id)
+                    if ancestor.evidence_id == page.evidence_id:
+                        break
+                else:
+                    raise ValueError("text derivation does not originate from this page")
+            if page.main_text and ref(page.main_text.evidence_id).representation != "main_text":
+                raise ValueError("main page text needs main_text representation")
+            if page.useful_candidate and (
+                page.main_text is None or page.main_text.text_chars < self.config.useful_chars
+            ):
+                raise ValueError("useful page text is below configured threshold")
+            if (page.useful_candidate or page.supporting_page) and not body.file.complete:
+                raise ValueError("useful/supporting page requires complete source")
             for q in page.business_quotes:
                 quote(q)
-                if page.main_text is None or q.text_hash != page.main_text.text_hash:
+                if page.main_text is None or (q.text_hash, q.evidence_id) != (
+                    page.main_text.text_hash,
+                    page.main_text.evidence_id,
+                ):
                     raise ValueError("business quote differs from page text")
                 if q.end > page.main_text.text_chars:
                     raise ValueError("quote exceeds page character count")
@@ -573,8 +668,6 @@ class Step1Result(Contract):
                 ref(signal.evidence_id)
                 if signal.quote:
                     quote(signal.quote)
-        for user in self.crawl.material.user_materials:
-            text_ref(user.text)
         for observation in cast(
             tuple[RobotsObservation | SitemapObservation, ...],
             (*self.crawl.robots, *self.crawl.sitemaps),
@@ -586,6 +679,17 @@ class Step1Result(Contract):
                 raise ValueError("dangling robots observation")
             if decision.robots_evidence_id:
                 ref(decision.robots_evidence_id)
+            observation = next(
+                r for r in self.crawl.robots if r.observation_id == decision.observation_id
+            )
+            if decision.origin != observation.origin:
+                raise ValueError("decision differs from original robots origin")
+            if normalize_input(decision.evaluated_url).origin != decision.origin:
+                raise ValueError("robots decision URL differs from evaluated origin")
+            if decision.robots_evidence_id and (
+                decision.robots_evidence_id not in observation.evidence_ids
+            ):
+                raise ValueError("decision cites another robots file")
         for check in self.checks.checks:
             if check.page_id is not None and check.page_id not in pages:
                 raise ValueError("dangling check page")
@@ -601,6 +705,12 @@ class Step1Result(Contract):
             raise ValueError("selection cap exceeded")
         if len(self.crawl.sitemaps) > self.config.max_sitemap_files:
             raise ValueError("sitemap file cap exceeded")
+        if sum(s.parsed_entries for s in self.crawl.sitemaps) > self.config.max_sitemap_urls:
+            raise ValueError("sitemap entry cap exceeded")
+        if any(s.depth > self.config.max_sitemap_depth for s in self.crawl.sitemaps):
+            raise ValueError("sitemap depth cap exceeded")
+        if self.run.browser_attempts > self.config.max_browser_attempts:
+            raise ValueError("browser attempt cap exceeded")
         unique(tuple(r.observation_id for r in self.crawl.robots), "robots observation")
         unique(tuple(r.decision_id for r in self.crawl.robots_decisions), "robots decision")
         if self.run.status == "ok" and not self.crawl.material.can_start_step2:

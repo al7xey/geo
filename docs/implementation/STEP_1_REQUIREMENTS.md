@@ -378,14 +378,25 @@ RunCounters не имеет собственного start/deadline/remaining HT
 | Промпт | Факт / gate | Статус |
 |---|---|---|
 | 1 | 170 уникальных R, §§1–16/8.5, A01–A16, L01–L11, локальные ссылки, unchanged sources, 32 старых artifacts; commit 70eba84, push main | completed |
-| 2 | `step1/config.py`, `models.py`, `schemas.py`, 19 synthetic artifacts и `tests/test_step1_contracts.py`; новые версии раздельны, refs/coverage/material/quotes/UTC/extra проверены | implemented+verified в пределах моделей; disk/offset bytes и runner ещё deferred |
+| 2 | `step1/config.py`, `models.py`, `schemas.py`, 19 synthetic artifacts и `tests/test_step1_contracts.py`; новые версии раздельны, refs/coverage/material/quotes/UTC/extra проверены; повторная проверка исправила cross-entity collisions/derivation/aliases | completed для моделей; disk/точный text slice и runner ещё deferred |
 | 3–13 | Сеть/robots/обход/публикация/Step2 loader/security/performance/final acceptance ещё не реализованы | deferred |
 
-Проверки промпта 2: `pytest tests/test_step1_contracts.py tests/test_contracts.py` —
-107 passed / 2 platform-only skipped; strict mypy win32/linux — pass; Ruff src/tests/tools,
-Bandit src/tools, оба generators --check и git diff --check — pass. Старый полный
-baseline до новых моделей: 351 passed / 3 skipped (Windows symlink privilege, POSIX
-FIFO и directory FD). Эти skips не приёмка Linux/CI этого этапа.
+Проверки промпта 2 после исправлений: полный `pytest -q -ra` — 384 passed / 3 skipped,
+`pytest tests/test_step1_contracts.py` — 33 passed; strict mypy win32/linux — pass;
+Ruff src/tests/tools, Bandit src/tools, uv lock --check, uv pip check, оба generators
+--check и git diff --check — pass. Skips: Windows symlink privilege 1314, POSIX FIFO
+и directory FD; это не новая приёмка Linux/CI. До моделей полный baseline был
+351 passed / 3 skipped. Зависимости не менялись, pyproject/uv.lock неизменны.
+
+Конкретные model gates: `test_roundtrip_schema_and_distinct_versions`,
+`test_invalid_examples_are_rejected`, `test_evidence_and_identity_invariants`,
+`test_nullable_extra_finite_utc_and_terminal_gates`,
+`test_multivalue_headers_do_not_widen_step0_allowlist`,
+`test_quote_offsets_and_user_provenance_have_no_fake_page`,
+`test_step2_corpus_gate_and_synthetic_not_live_handoff`,
+`test_graph_invariants_before_any_files_are_opened`, `test_generated_step1_artifacts_match`.
+Все в `tests/test_step1_contracts.py`; parametrization проверяет отдельные мутации.
+JSON Schema не выражает все graph invariants: Python validator обязателен дополнительно.
 Синтетические invalid примеры хранят компактные mutations к result.json; пример
 Step2Input не имеет действующего commit и не является готовым audit handoff.
 
