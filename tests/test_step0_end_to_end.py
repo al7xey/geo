@@ -134,6 +134,18 @@ def test_content_classification(monkeypatch, tmp_path, body, headers, state, eli
     assert len(connector.calls) == 1
 
 
+@pytest.mark.parametrize("declaration", [b"<![weird]>", b"<![unexpected[broken]]>"])
+def test_malformed_html_declaration_is_saved_as_uncertain(monkeypatch, tmp_path, declaration):
+    body = b"<html><body>" + declaration + b"<p>Business services</p></body></html>"
+    result, _, _, clock, connector, _ = execute(monkeypatch, tmp_path, [wire(body)])
+    assert result.status == "partial" and result.can_enter_step1
+    assert result.content_state == "suspicious_html"
+    assert "CONTENT_SUSPICIOUS" in result.reason_codes
+    assert load_site_result(result._run_directory) == result
+    assert load_step1_input(result._run_directory, timing=clock.services()).html == body
+    assert len(connector.calls) == 1
+
+
 @pytest.mark.parametrize(
     "status,state", [(204, "empty"), (403, "http_denied"), (404, "http_missing")]
 )

@@ -179,8 +179,16 @@ def assess_response(attempt: HttpAttempt, *, sniff_bytes: int = 4096) -> Content
         reasons.append("CONTENT_NON_HTML")
     elif text is not None:
         facts = _HTMLFacts()
-        facts.feed(text)
-        facts.close()
+        parser_incomplete = False
+        try:
+            facts.feed(text)
+            facts.close()
+        except AssertionError as error:
+            # Python's HTMLParser asserts on some malformed, server-controlled declarations.
+            # Handle only its known input errors; unrelated implementation defects still raise.
+            if not str(error).startswith(("unknown status keyword ", "expected name token at ")):
+                raise
+            parser_incomplete = True
         visible = " ".join(" ".join(facts.visible).split()).lower()
         title = " ".join(facts.title).lower()
         challenge_phrase = any(
@@ -204,7 +212,11 @@ def assess_response(attempt: HttpAttempt, *, sniff_bytes: int = 4096) -> Content
                 "проверка браузера",
             )
         )
-        if facts.captcha_widget and challenge_phrase and challenge_title and len(visible) < 500:
+        if parser_incomplete:
+            state, confidence, diagnostic = "suspicious_html", 0.5, True
+            reasons.append("CONTENT_SUSPICIOUS")
+            basis.append("Malformed HTML declaration prevented complete structural assessment")
+        elif facts.captcha_widget and challenge_phrase and challenge_title and len(visible) < 500:
             state, confidence = "access_barrier", 0.98
             reasons.append("ACCESS_CHALLENGE")
             basis.append(
