@@ -502,3 +502,45 @@ def test_cli_exit_codes_real_runner(monkeypatch, tmp_path, capsys, state, expect
     summary = json.loads(output.out)
     assert summary["status"] == state and "secret" not in output.out + output.err
     assert len(connector.calls) == 1
+
+
+@pytest.mark.parametrize(
+    "failure,expected", [("storage", 5), ("bug", 70), ("cancel", 130), ("artifact", 2)]
+)
+def test_cli_failure_codes_preserve_failure_and_redact_details(
+    monkeypatch, tmp_path, capsys, failure, expected
+):
+    connector = Connector([wire()] if failure == "storage" else [])
+    install_connector(monkeypatch, connector)
+    resolver = Resolver(
+        failure={
+            "bug": RuntimeError("private-error-marker"),
+            "cancel": asyncio.CancelledError(),
+        }.get(failure)
+    )
+    monkeypatch.setattr("geo_audit.http_client.SystemResolver", lambda: resolver)
+    if failure == "storage":
+        from geo_audit.errors import error_detail
+
+        def full_disk(*args, **kwargs):
+            raise GeoAuditError(error_detail("OUTPUT_WRITE_FAILED"))
+
+        monkeypatch.setattr(EvidenceStore, "write_blob", full_disk)
+    args = (
+        ["load-step1", str(tmp_path / "absent")]
+        if failure == "artifact"
+        else ["step0", "example.com/?token=private-error-marker", "--output-dir", str(tmp_path)]
+    )
+    assert main(args) == expected
+    output = capsys.readouterr()
+    assert "private-error-marker" not in output.out + output.err
+    assert len(connector.calls) == (1 if failure == "storage" else 0)
+    assert len(resolver.calls) == (0 if failure == "artifact" else 1)
+    sites = list(tmp_path.glob("*/site.json"))
+    if failure in {"storage", "cancel"}:
+        assert len(sites) == 1
+        site = json.loads(sites[0].read_bytes())
+        assert site["status"] == "failed" and not site["can_enter_step1"]
+        assert site["budget"]["total_attempts"] == len(connector.calls)
+    else:
+        assert sites == []

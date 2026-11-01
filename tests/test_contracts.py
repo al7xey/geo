@@ -363,6 +363,39 @@ def test_cli_help_and_safe_validation_errors(tmp_path, capsys):
     assert "secret" not in capsys.readouterr().err
 
 
+def test_import_does_not_start_network_or_write_artifacts(tmp_path):
+    program = r"""
+import os, sys
+events = []
+def guard(event, args):
+    forbidden = event.startswith("socket.") or event in {
+        "os.mkdir", "os.rename", "os.remove", "os.chmod"
+    }
+    if event == "open":
+        name, mode, flags = args
+        forbidden = (isinstance(mode, str) and any(c in mode for c in "wax+")) or bool(
+            flags & (os.O_WRONLY | os.O_RDWR | os.O_CREAT | os.O_TRUNC | os.O_APPEND)
+        )
+        forbidden |= isinstance(name, str) and name.endswith("public_suffix_list.dat")
+    if forbidden:
+        events.append(event)
+        raise AssertionError("Import attempted audit I/O: " + event)
+sys.addaudithook(guard)
+import geo_audit
+assert not events
+print("import_without_audit_io")
+"""
+    result = subprocess.run(
+        [sys.executable, "-I", "-B", "-c", program],
+        cwd=tmp_path,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    assert result.stdout.strip() == "import_without_audit_io"
+    assert list(tmp_path.iterdir()) == []
+
+
 def test_generated_files_are_in_sync():
     subprocess.run(
         [sys.executable, "tools/generate_step0_artifacts.py", "--check"],

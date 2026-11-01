@@ -143,6 +143,26 @@ def test_http_states_without_fallback(monkeypatch, tmp_path, status, state):
     assert not result.fallback_used and len(connector.calls) == 1
 
 
+def test_login_barrier_does_not_invent_a_challenge(monkeypatch, tmp_path):
+    result, _, budget, clock, connector, resolver = execute(
+        monkeypatch,
+        tmp_path,
+        [wire(b"<html><title>Login</title><form><input type='password'></form></html>")],
+    )
+    assert result.status == "partial" and not result.can_enter_step1
+    assert result.content_state == "access_barrier"
+    assert result.reason_codes == ("ACCESS_LOGIN",)
+    assert result.next_action == "resolve_access_barrier_or_choose_public_url"
+    assert not result.fallback_used
+    assert len(connector.calls) == len(resolver.calls) == budget.snapshot().total_attempts == 1
+    saved = load_site_result(result._run_directory)
+    assert saved.reason_codes == ("ACCESS_LOGIN",)
+    with pytest.raises(GeoAuditError) as error:
+        load_step1_input(result._run_directory, timing=clock.services())
+    assert error.value.detail.code == "INPUT_ARTIFACT_INVALID"
+    assert len(connector.calls) == 1
+
+
 def test_external_redirect_requires_concrete_action(monkeypatch, tmp_path):
     result, _, _, clock, connector, _ = execute(
         monkeypatch,
@@ -178,12 +198,13 @@ def test_storage_failure_has_no_positive_commit(monkeypatch, tmp_path):
     monkeypatch.setattr(EvidenceStore, "write_blob", original)
 
 
-def test_expired_and_unknown_version_rejected_before_body_open(monkeypatch, tmp_path):
+@pytest.mark.parametrize("seconds", [-1, 301], ids=["utc_rollback", "expired"])
+def test_expired_and_unknown_version_rejected_before_body_open(monkeypatch, tmp_path, seconds):
     result, _, _, clock, _, _ = execute(monkeypatch, tmp_path, [wire()])
     root = result._run_directory
     reads = []
     monkeypatch.setattr(EvidenceStore, "verified_bytes", lambda *a, **kw: reads.append(True))
-    clock.seconds = 301
+    clock.seconds = seconds
     with pytest.raises(GeoAuditError) as error:
         load_step1_input(root, timing=clock.services())
     assert error.value.detail.code == "INPUT_ARTIFACT_INVALID" and reads == []

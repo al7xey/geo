@@ -1,8 +1,8 @@
 # Security review фактической реализации шага 0
 
-01.11.2026. Проверены исходный commit 0fa9d78 и исправления пакета 0.3.0.
+01.11.2026. Проверены исходный commit 0fa9d78 и исправления пакета 0.3.1.
 Предыдущие отчёты не использовались как доказательство. Среда: Windows 11 22631,
-Python 3.12.10, NTFS, обычный пользователь. Полный suite: 332 passed, 1 skipped.
+Python 3.12.10, NTFS, обычный пользователь. Полный suite: 339 passed, 1 skipped.
 
 ## Модель угроз
 
@@ -25,7 +25,7 @@ rebinding, scope/TLS/proxy bypass, decompression bomb, slow drip, лог-инъ�
 | S02 / средняя | http_client.get/_fetch_once: asyncio timeout сам не замечает продвижение инъецируемого clock или длительную синхронную observer-работу до следующего await; возможен положительный результат после deadline | A:test_virtual_slow_stream_stops_at_shared_deadline; test_observer_work_cannot_extend_deadline | Проверка remaining_seconds на каждом chunk, после finish и observer; fail без нового GET; потоки закрыты. Реальный slow-drip/read timeout тест также проходит |
 | S03 / средняя | models.SiteValidationResult; handoff._scope_history/load_step1_input: принимались смешанные известные версии; история проверялась по конечному scope; хэши отдельных файлов не доказывали соответствие decoded text исходному HTML | A:test_artifact_forgery_rejected: подмена text/encoded/observation с обновлённым hash, версии/scope/path; E:corrupted/unknown/expiry; I:new_process | Версии связаны; переходы и причины retry/fallback проверены хронологически; observation сверяется с attempt; bounded content decoding и повторная классификация связывают representations. INPUT_ARTIFACT_INVALID, без сети/пустого HTML |
 | S04 / низкая, корректность | http_client: широкий catch TimeoutError маскировал дефект resolver; finally observer мог заменить исходное исключение Pydantic ValidationError | A:test_timeout_programming_bug_is_not_network_failure (исходно падал другим исключением), E:test_programming_defect_is_not_site_unavailability | Только expired asyncio timeout становится BUDGET_DEADLINE; unexpected defect не публикуется как нормальная попытка; исходный TimeoutError/RuntimeError сохраняется, site не создаётся |
-| S05 / средняя, dev dependency | pyproject/uv.lock: pytest 8.4.2, PYSEC-2026-1845 / CVE-2025-71176. По advisory: локальная атака на /tmp/pytest-of-* на Unix; runtime проекта от pytest не зависит | pip-audit 2.10.1 по pinned export: две дублирующиеся записи одного advisory в одном пакете | pytest 9.0.3 (указанная исправленная версия), lock обновлён; 332 passed; повторный аудит 56 зависимостей без skip и известных vulnerabilities |
+| S05 / средняя, dev dependency | pyproject/uv.lock: pytest 8.4.2, PYSEC-2026-1845 / CVE-2025-71176. По advisory: локальная атака на /tmp/pytest-of-* на Unix; runtime проекта от pytest не зависит | pip-audit 2.10.1 по pinned export: две дублирующиеся записи одного advisory в одном пакете | pytest 9.0.3 (указанная исправленная версия), lock обновлён; 339 passed; повторный аудит 56 зависимостей без skip и известных vulnerabilities |
 | S06 / низкая | cli.parser: стандартная argparse.error печатала отвергнутый аргумент целиком; лишний URL мог раскрыть credentials/query в stderr | A:test_cli_parse_error_does_not_echo_rejected_secret | Безопасный parser печатает usage и фиксированную ошибку без исходных аргументов; marker отсутствует в stderr, exit=2 |
 
 A/E/I — test_acceptance.py / test_step0_end_to_end.py / test_connection_integration.py.
@@ -86,13 +86,13 @@ Atomic replace не равен fsync транзакции всей папки п
 - Дополнительная проверка чистоты расширила Bandit на `src tools`: 9 low B101 в старых
   проверяющих инструментах заменены явными raise, итог 0 findings без подавления предупреждений.
   Ruff также проверяет все `src tests tools`. В новом изолированном окружении и с новым
-  pip-audit cache повторены 332 passed/1 skipped и аудит 56 зависимостей/0 vulnerabilities.
+  pip-audit cache повторены 339 passed/1 skipped и аудит 56 зависимостей/0 vulnerabilities.
 - pip-audit **2.10.1**, сначала --no-deps по pinned export; после исправления
   --require-hashes по полному uv export: **56 dependencies, 0 vulnerabilities, 0 skipped**.
   База была доступна. Предупреждение short/Unicode пути временного venv проверено:
   аудит завершился с кодом 0; это не сообщение о пропуске пакетов.
 - Ruff **0.14.3**, mypy **1.18.2** strict: без ошибок; uv **0.9.7** lock/pip check проходят.
-- pytest **9.0.3**: 332 passed, 1 skipped; настоящий TCP/TLS и отдельный subprocess consumer
+- pytest **9.0.3**: 339 passed, 1 skipped; настоящий TCP/TLS и отдельный subprocess consumer
   выполнены. Сканеры не заменяют эти проверки и ручной анализ.
 
 Выводы scanner проверены вручную. Устаревший pytest был dev-only, но исправлен для
@@ -104,6 +104,14 @@ Atomic replace не равен fsync транзакции всей папки п
 не обнаружено; отдельный полный forensic secret-scan истории Git не выполнялся.
 
 ## Остаточные ограничения
+
+Completion audit 0.3.1 дополнительно проверил import через audit hook в новом процессе:
+любые socket events, запись файлов и eager PSL read при импорте запрещены. Проверены
+CLI-коды 2/5/70/130 с отсутствием лишних GET, редактированием деталей и failed commit
+при storage/cancellation; UTC rollback отвергается до чтения body. Исправлено неверное
+добавление ACCESS_CHALLENGE к подтверждённому ACCESS_LOGIN (низкая серьёзность корректности,
+policy.classify_result): regression test_login_barrier_does_not_invent_a_challenge проверяет
+reason_codes/next_action, отсутствие fallback и отказ handoff при единственном GET.
 
 Не проверены POSIX filesystem integration, реальный файловый symlink без Windows privilege,
 публичный живой сайт, аппаратная потеря питания и враждебный маршрутизатор. Один проверенный

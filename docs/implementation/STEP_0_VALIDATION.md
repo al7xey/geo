@@ -1,7 +1,7 @@
 # Финальная приёмка шага 0
 
 01.11.2026. Область: только шаг 0 и вход шага 1. Windows 11 22631/NTFS,
-Python 3.12.10, uv 0.9.7; пакет 0.3.0. Промпты/алгоритмы сверены по составным требованиям:
+Python 3.12.10, uv 0.9.7; пакет 0.3.1. Промпты/алгоритмы сверены по составным требованиям:
 [матрица](STEP_0_REQUIREMENTS.md). Исходные документы не подменены реализацией.
 
 ## Исходное состояние и происхождение изменений
@@ -24,7 +24,7 @@ README/контекст/матрица отставали от кода и на�
 | Проверка | Фактический результат |
 |---|---|
 | uv sync --locked; lock --check; pip check | Установка по lock, 59 packages в resolution, зависимости совместимы |
-| pytest -q -ra | **332 passed, 1 skipped**; единственный skip — реальный file symlink, Windows WinError 1314 |
+| pytest -q -ra | **339 passed, 1 skipped**; единственный skip — реальный file symlink, Windows WinError 1314 |
 | mypy 1.18.2, strict | Success, 24 source files |
 | Ruff 0.14.3 (все src/tests/tools) | All checks passed; область расширена при проверке чистоты |
 | python tools/generate_step0_artifacts.py --check | 32 воспроизводимых артефакта, без сети |
@@ -32,7 +32,7 @@ README/контекст/матрица отставали от кода и на�
 | Bandit 1.9.4, -r src tools -f json | 0 findings, без массовых исключений |
 | pip-audit 2.10.1 --require-hashes по uv export | 56 зависимостей, 0 известных vulnerabilities, 0 skip; база доступна |
 | compileall src/geo_audit | Успех |
-| uv build --wheel | geo_audit-0.3.0-py3-none-any.whl собран |
+| uv build --wheel | geo_audit-0.3.1-py3-none-any.whl собран |
 | Wheel в отдельном tmp/wheel-smoke venv с runtime pins/hashes | Установлен; -I/-B import из site-packages, schema config/PSL hash и CLI --help проходят |
 | Пять benchmark-сценариев before/after, по 3 повтора | Агрегаты в Git, сырые samples локально; HTTP/delays неизменны, DNS/copies уменьшены |
 | Проверка всех 4 PDF по git baseline | Побайтово совпадают, hashes ниже |
@@ -132,7 +132,7 @@ Junction/hardlink/directory race реально выполнены. Production s
 Следующий отдельный этап — реализация шага 1 по его алгоритму. В этой приёмке robots,
 очередь URL, анализ бизнеса и платные этапы неприменимы: явно исключены поручением.
 
-## Инвентаризация, чистота и повторная изолированная проверка
+## Инвентаризация, чистота и изолированная проверка 0.3.0
 
 Дополнительное поручение 11–12 от 01.11.2026. Старт: main=c786373, чистый git status,
 посторонних изменённых/неотслеживаемых файлов нет. Изменения этой задачи отдельные.
@@ -219,3 +219,51 @@ Bandit по tools обнаружил 9 low B101 (assert в проверяющи�
 явными raise ValueError/RuntimeError, чтобы проверки действовали также при python -O.
 Предупреждения не скрывались nosec/массовыми исключениями. Поведение runtime шага 0,
 контракт handoff и лимиты этой задачей не менялись.
+## Повторный completion audit: patch 0.3.1
+
+Перед продолжением прочитаны оба приложения pasted-text-1/2; начальное состояние
+main=61ab175, git status чистый. Предыдущий этап дал подтверждённый прогресс (коммит,
+чистый export, тесты/сборки), но завершение заново проверено по действующим требованиям.
+
+Найдено дополнительное расхождение: classify_result для любой access_barrier добавлял
+ACCESS_CHALLENGE, даже если content assessment подтверждал только ACCESS_LOGIN.
+Это не открывало шаг 1, но формировало недостоверную дополнительную причину. Исправлено
+в policy.classify_result; пакет 0.3.1, schema/algorithm/config остаются 1.2 и не понижены.
+Сквозная регрессия проверяет точные reason_codes/next_action, сохранённый site, отсутствие
+fallback, один GET и отказ handoff. Изменение не затрагивает условия can_enter_step1.
+
+Дополнительно усилены прямые доказательства:
+
+- subprocess import с audit hook запрещает все socket events, запись/создание/удаление
+  файлов и eager чтение PSL; импорт проходит, рабочая папка остаётся пустой;
+- реальные CLI-проходы для exit 5/70/130 и loader exit 2 проверяют transport/DNS calls,
+  отсутствие secret marker, отсутствие положительного site и точные бюджетные счётчики;
+- UTC rollback, как и expiry, отклоняется до открытия body, без сети;
+- прежние шесть real TLS→runner→disk→новый consumer сценариев повторены на wheel 0.3.1.
+
+Актуальные результаты: локально 339 passed / 1 skipped за 64.82 s; новый tracked-only
+export tmp/geo-final-20sb3gkb, без старых caches/venv/логов — 339 passed / 1 skipped
+за 97.87 s. После усиления import hook отдельно повторён его тест и в чистой копии.
+uv --no-cache sync --locked заново установил 59 пакетов (19.19 s prepare, 2.72 s install).
+Mypy strict 24 source files, Ruff src/tests/tools, Bandit src/tools, lock/pip check,
+генератор --check (32), CLI/API и archive checker проходят. pip-audit с новым cache:
+56 dependencies, 0 vulnerabilities/skip. Benchmark smoke всех пяти сценариев выполнен;
+новая серия before/after не заявляется. На установленном wheel: 6 handoff cases passed.
+
+Wheel 31 файл / sdist 33 файла, текущая и чистая сборки 0.3.1 побайтово совпали:
+
+- wheel SHA-256 ac8f3b6ece610dd671c98240e53c636500f3c029f6813b0f3d69e095a3788d4b;
+- sdist SHA-256 dc4b205b6e74fb71c9e28032e6a1d19181d33b16f0efe7bf91b6f09726bba4a9.
+
+Чистота: число необходимых tracked файлов остаётся 100; новых отчётов/fixtures/окружений
+в Git не добавлено. PDF и схемы не менялись. Исторические измерения/выходы 0.3.0 выше
+сохранены как результаты соответствующего этапа; актуальные gates приведены здесь.
+
+Строгая проверка реальной file symlink остаётся незавершённой, а не засчитанной:
+SeCreateSymbolicLinkPrivilege не назначена текущему токену (whoami /priv), создание
+возвращает WinError 1314. Для закрытия нужна Windows-среда с этим правом или отдельная
+готовая POSIX/CI-среда. Docker CLI отсутствует; wsl --list возвращает exit 1 и help,
+у текущего пользователя нет зарегистрированного Lxss-окружения. ОС/привилегии не изменялись.
+Hardlink, junction и directory rename race проверены; эти результаты не подменяют file
+symlink тест. Остальные ограничения security review сохраняются. Полное завершение
+строгого security gate до этой внешней проверки не заявляется.

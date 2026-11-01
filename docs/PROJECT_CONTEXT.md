@@ -1,6 +1,6 @@
 # Контекст проекта GEO
 
-Актуализировано 01.11.2026 по коду и проверкам пакета 0.3.0.
+Актуализировано 01.11.2026 по коду пакета 0.3.1 и приёмке редакции 0.3.x.
 
 ## Цель и источники
 
@@ -26,7 +26,7 @@ PDF описывают систему, сами по себе не поруча�
 
 ## Фактическое состояние
 
-Репозиторий C:\GEO, Python >=3.12, пакет geo-audit 0.3.0. Реализованы:
+Репозиторий C:\GEO, Python >=3.12, пакет geo-audit 0.3.1. Реализованы:
 
 - Нормализация без сети, точный scope, локальный полный PSL с private/wildcard/exception.
   Снимок VERSION 2026-10-31_14-17-28_UTC, SHA-256
@@ -65,7 +65,7 @@ config step0-config-1.2.0 и config_sha256. Смешанные/неизвест�
 - implementation/STEP_0_NETWORK_AND_POLICY.md и STEP_0_NETWORK_VALIDATION.md — исторический
   сетевой этап 0.2.0; его формулировки о незавершённом runner более не актуальны.
 
-Фактически выполнен полный suite: 332 passed, 1 skipped после финальной CLI регрессии.
+Фактически выполнен полный suite: 339 passed, 1 skipped после completion-аудита 0.3.1.
 Реальный TCP/TLS IPv4/IPv6, wrong hostname/untrusted CA/peer mismatch/handshake timeout
 проверены отдельно от mocks. Сквозная интеграция: реальный runner на контролируемом
 HTTPS-сайте → файлы → новый процесс consumer без разрешённых socket/DNS операций.
@@ -82,7 +82,7 @@ STEP_0_VALIDATION.md. .gitignore расширен, два сырых benchmark J
 оставлены локально. Все tools включены в Ruff/compileall/Bandit. Явный sdist include
 уменьшил его с 102 до 33 файлов; wheel содержит 31 файл. В отдельной копии только из
 версионируемых исходников установка uv --no-cache sync --locked и полный suite повторены:
-332 passed, 1 skipped. Новый audit cache: 56 зависимостей/0 vulnerabilities. Архивы
+339 passed, 1 skipped (0.3.1). Новый audit cache: 56 зависимостей/0 vulnerabilities. Архивы
 рабочей и чистой копии побайтово одинаковы; handoff проверен также из установленного wheel.
 
 ## Принятые решения и уточнения
@@ -105,6 +105,7 @@ STEP_0_VALIDATION.md. .gitignore расширен, два сырых benchmark J
 | 01.11.2026 | Immutable PSL cache на процесс, SSLContext на client, один identity buffer, убрать лишний redirect DNS | Измеренные издержки; HTTP count/delays/защита неизменны |
 | 01.11.2026 | Удалить неиспользуемые Protocol, сохранить benchmark/документальные инструменты | Минимальная понятная архитектура без потери воспроизводимости |
 | 01.11.2026 | Исключить сырые benchmark samples из Git, сохранить агрегаты и инструмент; явный sdist include; Ruff/Bandit на все tools | Дополнительная приёмка чистоты и воспроизводимости, без удаления fixtures/PSL/PDF |
+| 01.11.2026 | Patch 0.3.1: сохранять ACCESS_LOGIN без выдуманного ACCESS_CHALLENGE; дополнить проверки CLI-кодов, UTC rollback и import I/O | Повторный completion audit выявил неточную причину барьера и недостаточно прямые подтверждения отдельных требований; status/can_enter/schema остаются прежними |
 
 Это реализационные уточнения текущей редакции, а не изменение исходного PDF.
 Каталоги незавершённой реализации без полных evidence не мигрируются выдуманными данными:

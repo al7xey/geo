@@ -155,7 +155,9 @@ def classify_result(
         if not evidence_ready:
             return StatusDecision("failed", False, "OUTPUT_WRITE_FAILED")
         reasons: dict[str, ErrorCode] = {
-            "access_barrier": "ACCESS_CHALLENGE",
+            "access_barrier": "ACCESS_LOGIN"
+            if "ACCESS_LOGIN" in warning_codes and "ACCESS_CHALLENGE" not in warning_codes
+            else "ACCESS_CHALLENGE",
             "empty": "CONTENT_EMPTY",
             "non_html": "CONTENT_NON_HTML",
             "too_large": "CONTENT_TOO_LARGE",
