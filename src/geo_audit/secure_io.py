@@ -8,11 +8,12 @@ No root/admin privileges or custom filesystem driver required.
 import contextlib
 import os
 import stat
+import sys
 from collections.abc import Iterator
 from pathlib import Path
 from typing import BinaryIO
 
-if os.name == "nt":
+if sys.platform == "win32":
     import ctypes
     import msvcrt
     from ctypes import wintypes
@@ -88,7 +89,7 @@ if os.name == "nt":
 def restrict_private_directory(path: Path) -> None:
     """Protect newly created run directories against reads by other local users."""
     with pinned_directory(path.parent):
-        if os.name == "nt":
+        if sys.platform == "win32":
             advapi = ctypes.WinDLL("advapi32", use_last_error=True)
             convert = advapi.ConvertStringSecurityDescriptorToSecurityDescriptorW
             convert.argtypes = [
@@ -124,12 +125,12 @@ def restrict_private_directory(path: Path) -> None:
 @contextlib.contextmanager
 def pinned_directory(path: Path, *, create: bool = False) -> Iterator[int | None]:
     path = Path(os.path.abspath(path))
-    if os.name == "nt" and (not path.drive or path.drive.startswith("\\")):
+    if sys.platform == "win32" and (not path.drive or path.drive.startswith("\\")):
         raise OSError("only local drive paths are supported")
     handles: list[int] = []
     current = Path(path.anchor)
     try:
-        if os.name == "nt":
+        if sys.platform == "win32":
             handles.append(_win_open(current, directory=True))
             for part in path.parts[1:]:
                 current = current / part
@@ -153,7 +154,7 @@ def pinned_directory(path: Path, *, create: bool = False) -> Iterator[int | None
             yield handles[-1]
     finally:
         for handle in reversed(handles):
-            if os.name == "nt":
+            if sys.platform == "win32":
                 _close(handle)
             else:
                 os.close(handle)
@@ -162,7 +163,7 @@ def pinned_directory(path: Path, *, create: bool = False) -> Iterator[int | None
 @contextlib.contextmanager
 def open_confined(path: Path, *, writing: bool = False) -> Iterator[BinaryIO]:
     with pinned_directory(path.parent) as directory_fd:
-        if os.name == "nt":
+        if sys.platform == "win32":
             handle = _win_open(path, directory=False, writing=writing)
             try:
                 fd = msvcrt.open_osfhandle(

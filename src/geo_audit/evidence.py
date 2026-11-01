@@ -16,6 +16,24 @@ from .models import EvidenceFile, EvidenceRecord, SiteValidationResult
 from .secure_io import open_confined, pinned_directory, restrict_private_directory
 
 MAX_JSON_BYTES = 16 * 1024 * 1024
+MAX_FILE_BYTES = 64 * 1024 * 1024
+MAX_TOTAL_BYTES = 256 * 1024 * 1024
+
+
+def verify_evidence_limits(records: tuple[EvidenceRecord, ...]) -> None:
+    """The producer and both handoff modes share one bounded artifact contract."""
+    sizes: dict[str, int] = {}
+    for record in records:
+        for file in record.files:
+            if not file.path.startswith("raw/") or len(Path(file.path).parts) != 2:
+                raise problem("INPUT_ARTIFACT_INVALID", "input", "Invalid evidence path.")
+            if file.size_bytes > MAX_FILE_BYTES or (
+                file.path in sizes and sizes[file.path] != file.size_bytes
+            ):
+                raise problem("INPUT_ARTIFACT_INVALID", "input", "Invalid evidence size.")
+            sizes[file.path] = file.size_bytes
+    if sum(sizes.values()) > MAX_TOTAL_BYTES:
+        raise problem("INPUT_ARTIFACT_INVALID", "input", "Run exceeds the safe loading budget.")
 
 
 class EvidenceStore:
@@ -189,6 +207,7 @@ class EvidenceStore:
 
     def publish(self, result: SiteValidationResult) -> None:
         result = SiteValidationResult.model_validate_json(result.model_dump_json())
+        verify_evidence_limits(result.evidence)
         for record in result.evidence:
             self.verify(record)
         self.atomic_json("raw/manifest.json", [e.model_dump(mode="json") for e in result.evidence])

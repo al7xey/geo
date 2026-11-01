@@ -12,7 +12,7 @@ from .api import FetchResult
 from .body import LimitedBody
 from .budget import Budget
 from .errors import GeoAuditError, problem
-from .evidence import MAX_JSON_BYTES, EvidenceStore
+from .evidence import MAX_FILE_BYTES, MAX_JSON_BYTES, EvidenceStore, verify_evidence_limits
 from .http_client import HttpAttempt
 from .models import EvidenceRecord, SiteValidationResult, Step1Input
 from .policy import choose_next_action
@@ -20,9 +20,6 @@ from .psl import load_bundled_psl
 from .scope import build_scope, decide_redirect, scope_reason
 from .timing import TimeServices
 from .urls import normalize_input
-
-MAX_FILE_BYTES = 64 * 1024 * 1024
-MAX_TOTAL_BYTES = 256 * 1024 * 1024
 
 
 def _verify_observations(site: SiteValidationResult, store: EvidenceStore) -> None:
@@ -190,18 +187,7 @@ def load_site_result(
                 raise ValueError("configuration differs from committed result")
             if store.read_json("budget.json") != site.budget.model_dump(mode="json"):
                 raise ValueError("budget differs from committed result")
-        sizes: dict[str, int] = {}
-        for record in manifest:
-            for file in record.files:
-                if not file.path.startswith("raw/") or len(Path(file.path).parts) != 2:
-                    raise ValueError("invalid evidence path")
-                if file.size_bytes > MAX_FILE_BYTES or (
-                    file.path in sizes and sizes[file.path] != file.size_bytes
-                ):
-                    raise ValueError("invalid evidence size")
-                sizes[file.path] = file.size_bytes
-        if sum(sizes.values()) > MAX_TOTAL_BYTES:
-            raise ValueError("run exceeds the safe loading budget")
+        verify_evidence_limits(manifest)
         _scope_history(site)
         if verify_files:
             for record in manifest:
@@ -228,6 +214,7 @@ def verify_step1_input(
 ) -> None:
     try:
         checked = Step1Input.model_validate_json(value.model_dump_json())
+        verify_evidence_limits(checked.site.evidence)
         current = now or datetime.now(UTC)
         if current < checked.budget.captured_at or current >= checked.budget.total_deadline_at:
             raise ValueError("expired budget or reversed UTC clock")

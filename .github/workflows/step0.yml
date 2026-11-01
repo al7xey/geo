@@ -52,8 +52,10 @@ jobs:
           stopped=sum(int(s.get(k,0)) for s in suites for k in ('skipped','errors','failures'));
           print('Real symlink tests:', tests, 'skipped/failed:', stopped);
           sys.exit(0 if tests==1 and stopped==0 else 1)"
-      - name: Strict runtime types
-        run: uv run --locked mypy
+      - name: Strict runtime types for Linux
+        run: uv run --locked mypy --platform linux
+      - name: Strict runtime types for Windows
+        run: uv run --locked mypy --platform win32
       - name: Lint all supported Python code
         run: uv run --locked ruff check src tests tools
       - name: Static security checks

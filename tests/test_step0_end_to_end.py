@@ -53,6 +53,50 @@ def test_success_save_reload_and_in_process_identity_without_network(monkeypatch
     assert loaded.contract.crawl_permission == "unknown"
 
 
+@pytest.mark.parametrize("limit", ["MAX_FILE_BYTES", "MAX_TOTAL_BYTES"])
+def test_producer_refuses_result_that_handoff_cannot_load(monkeypatch, tmp_path, limit):
+    import geo_audit.evidence as evidence
+
+    monkeypatch.setattr(evidence, limit, 1)
+    result, _, budget, clock, connector, resolver = execute(monkeypatch, tmp_path, [wire()])
+    assert result.status == "failed" and not result.can_enter_step1
+    assert "OUTPUT_WRITE_FAILED" in result.reason_codes
+    assert result.selected_evidence_id is None
+    assert not (result._run_directory / "site.json").exists()
+    # Completed observations survive rejection; no retry attempts to repair storage.
+    assert (result._run_directory / "raw/manifest.json").is_file()
+    assert connector.calls == [("8.8.8.8", 443)]
+    before = budget.snapshot().total_attempts
+    with pytest.raises(GeoAuditError):
+        prepare_step1(result, budget=budget, timing=clock.services())
+    assert budget.snapshot().total_attempts == before == len(resolver.calls) == 1
+
+
+@pytest.mark.parametrize("limit", ["MAX_FILE_BYTES", "MAX_TOTAL_BYTES"])
+def test_loader_enforces_shared_limits_before_evidence_open(monkeypatch, tmp_path, limit):
+    import geo_audit.evidence as evidence
+
+    result, _, budget, clock, connector, resolver = execute(monkeypatch, tmp_path, [wire()])
+    assert result.can_enter_step1
+    before = budget.snapshot().total_attempts
+    monkeypatch.setattr(evidence, limit, 1)
+
+    def forbidden(*_args, **_kwargs):
+        pytest.fail("oversized artifact evidence was opened")
+
+    monkeypatch.setattr(EvidenceStore, "verify", forbidden)
+    monkeypatch.setattr(EvidenceStore, "verified_bytes", forbidden)
+    for consume in (
+        lambda: load_step1_input(result._run_directory, timing=clock.services()),
+        lambda: prepare_step1(result, budget=budget, timing=clock.services()),
+    ):
+        with pytest.raises(GeoAuditError) as error:
+            consume()
+        assert error.value.detail.code == "INPUT_ARTIFACT_INVALID"
+    assert budget.snapshot().total_attempts == before == 1
+    assert len(connector.calls) == len(resolver.calls) == 1
+
+
 def test_tls_fallback_keeps_error_and_encoded_evidence(monkeypatch, tmp_path):
     payload = b"<html><p>Hello from HTTP</p></html>"
     result, _, _, clock, connector, _ = execute(
