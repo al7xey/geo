@@ -117,10 +117,31 @@
             "size_bytes": 80,
             "representation": "entity_bytes",
             "complete": true
+          },
+          {
+            "path": "raw/encoded.bin",
+            "sha256": "8f8fe0b98492ec1d3a8ba1ea1a0d5efafa3e5798ae723b9e7067a9654c468798",
+            "size_bytes": 80,
+            "representation": "content_encoded",
+            "complete": true
+          },
+          {
+            "path": "raw/text.bin",
+            "sha256": "8f8fe0b98492ec1d3a8ba1ea1a0d5efafa3e5798ae723b9e7067a9654c468798",
+            "size_bytes": 80,
+            "representation": "decoded_text",
+            "complete": true
+          },
+          {
+            "path": "raw/attempt.bin",
+            "sha256": "378d07913349b7a6014259065f9db4355580319f43e44b7f3873db35166ca0b0",
+            "size_bytes": 595,
+            "representation": "attempt_observation",
+            "complete": true
           }
         ],
         "declared_encoding": "utf-8",
-        "applied_encoding": null,
+        "applied_encoding": "utf-8",
         "replacement_characters": 0,
         "sniffed_html": false,
         "classification_basis": [
@@ -195,10 +216,31 @@
         "size_bytes": 80,
         "representation": "entity_bytes",
         "complete": true
+      },
+      {
+        "path": "raw/encoded.bin",
+        "sha256": "8f8fe0b98492ec1d3a8ba1ea1a0d5efafa3e5798ae723b9e7067a9654c468798",
+        "size_bytes": 80,
+        "representation": "content_encoded",
+        "complete": true
+      },
+      {
+        "path": "raw/text.bin",
+        "sha256": "8f8fe0b98492ec1d3a8ba1ea1a0d5efafa3e5798ae723b9e7067a9654c468798",
+        "size_bytes": 80,
+        "representation": "decoded_text",
+        "complete": true
+      },
+      {
+        "path": "raw/attempt.bin",
+        "sha256": "378d07913349b7a6014259065f9db4355580319f43e44b7f3873db35166ca0b0",
+        "size_bytes": 595,
+        "representation": "attempt_observation",
+        "complete": true
       }
     ],
     "declared_encoding": "utf-8",
-    "applied_encoding": null,
+    "applied_encoding": "utf-8",
     "replacement_characters": 0,
     "sniffed_html": false,
     "classification_basis": [

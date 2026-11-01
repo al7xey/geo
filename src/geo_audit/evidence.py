@@ -27,11 +27,14 @@ class EvidenceStore:
         try:
             if new and self.root.exists():
                 raise OSError("run directory must be new")
-            with pinned_directory(self.root.parent, create=True):
+            with pinned_directory(self.root.parent, create=True) as parent_fd:
                 if new:
-                    self.root.mkdir(mode=0o700)
+                    if parent_fd is None:
+                        self.root.mkdir(mode=0o700)
+                    else:
+                        os.mkdir(self.root.name, mode=0o700, dir_fd=parent_fd)
                     restrict_private_directory(self.root)
-            with pinned_directory(self.root, create=not new):
+            with pinned_directory(self.root, create=not new) as root_fd:
                 probe = self.root / (uuid.uuid4().hex + ".tmp")
                 try:
                     with open_confined(probe, writing=True) as stream:
@@ -39,7 +42,13 @@ class EvidenceStore:
                         stream.flush()
                         os.fsync(stream.fileno())
                 finally:
-                    probe.unlink(missing_ok=True)
+                    if root_fd is None:
+                        probe.unlink(missing_ok=True)
+                    else:
+                        try:
+                            os.unlink(probe.name, dir_fd=root_fd)
+                        except FileNotFoundError:
+                            pass
                 with pinned_directory(self.root / "raw", create=True):
                     pass
         except OSError:
@@ -99,16 +108,30 @@ class EvidenceStore:
         path = self._path(relative)
         temporary = path.parent / (uuid.uuid4().hex + ".tmp")
         try:
-            with pinned_directory(path.parent):
+            with pinned_directory(path.parent) as directory_fd:
                 try:
                     with open_confined(temporary, writing=True) as stream:
                         stream.write(data)
                         stream.flush()
                         os.fsync(stream.fileno())
                     # Source/target names live under pinned no-reparse parents.
-                    os.replace(temporary, path)
+                    if directory_fd is None:  # Windows parents cannot be renamed while pinned.
+                        os.replace(temporary, path)
+                    else:
+                        os.replace(
+                            temporary.name,
+                            path.name,
+                            src_dir_fd=directory_fd,
+                            dst_dir_fd=directory_fd,
+                        )
                 finally:
-                    temporary.unlink(missing_ok=True)
+                    if directory_fd is None:
+                        temporary.unlink(missing_ok=True)
+                    else:
+                        try:
+                            os.unlink(temporary.name, dir_fd=directory_fd)
+                        except FileNotFoundError:
+                            pass
         except OSError:
             raise problem(
                 "OUTPUT_WRITE_FAILED", "output", "Cannot atomically publish artifact."
@@ -153,14 +176,14 @@ class EvidenceStore:
     def checkpoint(
         self, attempts: object, evidence: tuple[EvidenceRecord, ...], *, state: str
     ) -> None:
-        self.atomic_json("manifest.json", [e.model_dump(mode="json") for e in evidence])
+        self.atomic_json("raw/manifest.json", [e.model_dump(mode="json") for e in evidence])
         self.atomic_json("journal.json", {"state": state, "observations": attempts})
 
     def publish(self, result: SiteValidationResult) -> None:
         result = SiteValidationResult.model_validate_json(result.model_dump_json())
         for record in result.evidence:
             self.verify(record)
-        self.atomic_json("manifest.json", [e.model_dump(mode="json") for e in result.evidence])
+        self.atomic_json("raw/manifest.json", [e.model_dump(mode="json") for e in result.evidence])
         self.atomic_json("config.json", result.config.model_dump(mode="json"))
         self.atomic_json("budget.json", result.budget.model_dump(mode="json"))
         self.atomic_json("site.json", result.model_dump(mode="json"))  # Commit marker, last.

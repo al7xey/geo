@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "geo-audit"
-version = "0.2.0"
-description = "GEO step 0 URL policies and bounded HTTP client with pinned connections"
+version = "0.3.0"
+description = "Evidence-first GEO step 0 and verified step 1 handoff"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -23,7 +23,7 @@ geo-audit = "geo_audit.cli:main"
 
 [dependency-groups]
 dev = [
-    "pytest==8.4.2",
+    "pytest==9.0.3",
     "jsonschema==4.25.1",
     "mypy==1.18.2",
     "ruff==0.14.3",

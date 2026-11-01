@@ -1,50 +1,65 @@
-# Соответствие требованиям шага 0
+# Матрица выполнения восьми промптов
 
-Обновление 01.11.2026: таблица ниже фиксирует первый этап. URL/PSL/policy, retry/redirect,
-bounded decoding и защищённый транспорт реализованы последующим этапом:
-[актуальный отчёт](STEP_0_NETWORK_AND_POLICY.md). Классификатор HTML и final runner ещё требуются.
+01.11.2026. Проверяется пакет 0.3.0, schema 1.2.0 / step0-1.2 / config-1.2.0.
+Источники требований: PROMPTS_STEP_0.md; STEP_0_ALGORITHM_v1.md (§ в таблице);
+STEP_1_ALGORITHM_v1.md §1.1–1.4. PDF сохранены. Учебные JSON не являются полной схемой.
+«Выполнено» ниже означает проверенное поведение в указанной среде, не универсальную гарантию.
 
-Дата: 31.10.2026. «Контракт» означает определённый интерфейс/инвариант, **не** работающую
-проверку сайта. Все сетевые строки требуют отдельной приёмки по разделу 8 алгоритма.
-Ссылки разделов относятся к `docs/steps/STEP_0_ALGORITHM_v1.md` и одноимённому PDF.
+Обозначения тестовых файлов: C=test_contracts, U=test_url_policy, H=test_http_client,
+E=test_step0_end_to_end, A=test_acceptance, I=test_connection_integration (все в tests/).
+Имена в колонке воспроизведения — точные имена тестов; параметризации выполняются полностью.
+Итог запуска и ограничения — STEP_0_VALIDATION.md, security — STEP_0_SECURITY_REVIEW.md.
 
-| Раздел | Требование | Основа реализации / проверка | Что ещё требуется |
-|---|---|---|---|
-| 0.1–0.3 | URL, доступность, scope, доказательства отдельно от GEO-оценки | Контракты/API, никаких платных этапов | Исполнитель шага 0 |
-| 1.1 | Исходная строка, версии, run/parent_run, выходной каталог | Step0Config/SiteValidationResult, EvidenceStore с явным run_directory | Создание нового run_id и каталога runner |
-| 1.2.1–3 | Пробелы, controls, HTTP(S), credentials, порт | normalize_input; положительные/отрицательные URL-тесты | Fuzz/corpus перед сетевой приёмкой |
-| 1.2.4 | IDN, ASCII/Unicode, выбранная IDNA | IDNA UTS46 non-transitional STD3; IDN-тест | Дополнительный корпус IDN |
-| 1.2.5–6 | Путь/query/fragment, согласование с HTTPX | normalize_input, тесты повторных query и регистра | Расширенный корпус неоднозначного синтаксиса |
-| 1.3 | Глубокий путь не заменяется корнем | entry_path и исходный URL в модели | Runner не должен вводить root fallback |
-| 2.1–2.2 | HTTPS-first, явный HTTP, TLS verify, один fallback | defaults, TLSState, http_fallback_eligible, фикстура TLS→HTTP | Реальное выполнение цепочки и запрет повторного круга |
-| 2.1 | NXDOMAIN и временный DNS не становятся fallback | Табличные unit-тесты policy | Классификация исключений DNS адаптера |
-| 2.1–2.3 | 403/барьер не вызывают смену схемы, downgrade сохраняется | FetchAttempt разделяет статус/ошибку, policy, ErrorDetail | Runner, TLS mapper, downgrade detection |
-| 2.3 | HTTP-наблюдение и HTTPS-неопределённость не смешиваются | Отдельные попытки, tls_state, причины | Пользовательские формулировки фактического результата |
-| 3.1 | Точные хосты, ports, origin, path_scope | Модели/config, инвариант scope, запрет скрытого расширения | Проверка портов/path перед каждым GET |
-| 3.2 | Ручные 301/302/303/307/308, Location, visited, 5 hops | RedirectHop и протоколы | Разрешение относительного Location, цикл/hop enforcement |
-| 3.3 | Наблюдаемый www-алиас, локальный PSL/private | AliasVerifier, обязательный psl_sha256 для алиаса | Выбор/поставка локального PSL, алгоритм проверки |
-| 3.4 | Чужой хост: needs_input до запроса, allow-host повтор | Полная фикстура needs_input, target/evidence связи | Runner, повторный запуск с allow-host, тест отсутствия целевого GET |
-| 3.4 | canonical/meta refresh не расширяют scope | Решение архитектуры, строгий scope | Наблюдения классификатора |
-| 4.1 | GET, TLS, UA, язык, no env/proxy/cookies/retries | Step0Config и протокол HTTPX Request | Защищённый HTTPX-адаптер; реальные настройки клиента |
-| 4.1 | Ограниченное потоковое тело до/после распаковки | Лимиты, bytes_read/decoded_bytes, EvidenceFile representations | Streaming, bounded decompression и запись |
-| 4.2 | 60/300 секунд, 15/150 попыток | Budget и BudgetSnapshot, unit-тест общей квоты | asyncio.timeout вокруг всех операций |
-| 4.2 | Таймауты 5/15/10/5 и 1 старт/хост/сек | Поля Step0Config | Передача в HTTPX и scheduler |
-| 4.3 | 2 retries, jitter, Retry-After, RETRY_DEFERRED | Поля config, retryable statuses и код причины | Планировщик и тесты дат/секунд Retry-After |
-| 4.4 | Public-only IPv4/IPv6/mapped, DNS rebinding | ResolvedTarget + отрицательные IP-тесты, контракты pinning | DNS resolver, связь проверенных IP с соединением и интеграционные тесты |
-| 5.1 | HTML/JS/barrier/soft404/empty/binary/HTTP errors | Все content_state определены, фикстуры и инварианты | Классификатор содержимого и основания/уверенность |
-| 5.1 | Sniff <=4KiB, encoding, replacements | Поля config/EvidenceRecord | Sniffing/ограниченное декодирование |
-| 5.2–5.3 | Все status и точные условия can_enter_step1 | Архитектурная таблица, model validators, негативные тесты | Сбор наблюдений и применение всей таблицы runner |
-| 5.3 | Недостаточно доказательств/ошибка хранения не дают успех | Publish/handoff сверяют файлы, тест отсутствующего raw и отказа replace | Перевод отказа обязательного сохранения runner в failed/OUTPUT_WRITE_FAILED |
-| 5.4 | Различать ошибки ввода/сети/TLS/HTTP/содержимого | Закрытый ErrorCode, ErrorDetail, FetchAttempt | Адаптер исключений транспорта и классификатор |
-| 6.1 | Полный site.json вместо учебного фрагмента | SiteValidationResult, schema и примеры 1.0.0 | Запись фактического аудита |
-| 6.2 | ID/parent, URL/target, purpose, headers, время, TLS, размеры | FetchAttempt/RedirectHop, связи валидируются | Фактические наблюдения адаптера |
-| 6.3 | raw, manifest, SHA-256, представления/полнота | EvidenceStore, EvidenceFile, реальные hash/write-тесты | Потоковая интеграция с сетью |
-| 6.3 | Секреты, повторные заголовки, атомарный JSON | Header allowlist, tuple, redaction metadata, безопасные ошибки CLI | Фильтрация реальных заголовков адаптера |
-| 7.1–7.3 | Клиент/бюджет инъецируются, API без input(), CLI | Async API и Protocol; step0 явно недоступен | Оркестрация с сохранением частичной истории |
-| 8.1–8.2 | Полная приёмка на контролируемом транспорте | Текущие contract-тесты не объявляются сетевой приёмкой | Все 13 сетевых сценариев, TLS, streaming, rebinding, факт числа GET |
-| 9.2; шаг1 §1.1 | HTML не загружается заново, scope/конфиг/бюджет не теряются | Step1Input, build/verify handoff, файлы/hash/deadline tests | Потребитель шага 1 вне текущего объёма |
-| 9.4 | Исходник сохранён, версии/решения фиксируются | Контекст обновлён, решения датированы, SHA-256 PDF проверяются | Следующее изменение методики потребует новой версии |
+| ID / промпт, алгоритм | Проверяемое требование | Компонент | Воспроизведение | Статус и фактический результат | Ограничение |
+|---|---|---|---|---|---|
+| 1.1 / П1 §7.3 | Восемь обязанностей, небольшой пакет | api/network/connection/policy/budget/evidence/handoff/cli | Архитектурный разбор; mypy strict | выполнено: зависимости однонаправленные, лишние Protocol удалены | Последовательный процесс |
+| 1.2 / П1 §6 | Полные typed модели, required/null, transport/HTTP/content | models/contracts/errors | C:test_positive_contract_rejects_inconsistent_artifacts; test_failed_result_cannot_claim_success | выполнено: противоречия отвергнуты | Schema не выражает все Python-инварианты |
+| 1.3 / П1 | Версии, config hash, совместимость примеров/схем | config/models/schemas, генератор | C:test_examples_validate_with_python_and_json_schema; test_generated_files_are_in_sync; A:test_artifact_forgery_rejected | выполнено: 32 артефакта; неизвестные/смешанные версии отвергнуты | Старые неполные каталоги требуют нового run |
+| 1.4 / П1 | Воспроизводимые зависимости и CLI/import | pyproject/uv.lock | uv sync --locked; lock --check; pip check; wheel smoke; C:test_cli_help_and_safe_validation_errors | выполнено: зависимости совместимы, wheel установлен и импортирован | Python 3.12.10 / Windows |
+| 1.5 / П1 | Инъекция клиента, времени, без input/global env | api/timing/network/config | A:test_virtual_retry_after_and_rate_limit; E:test_programming_defect_is_not_site_unavailability; код импортов | выполнено: clock/sleep/jitter и client подменяются, импорт не запускает audit | Доверенный custom client |
+| 2.1 / П2 §1.2 | HTTP/HTTPS/no scheme, IDN, регистр пути/query/fragment | urls | U:test_lossless_normalization_invariants; C:test_normalization_preserves_intent; A:test_scheme_and_no_extra_probe | выполнено: URL сохраняет намерение; один начальный GET | Неоднозначные URL отклоняются |
+| 2.2 / П2 §1.2 | Credentials/controls/ports/percent/parser differences | urls | U:test_ambiguous_inputs_are_rejected_without_rewriting; C:test_invalid_api_and_cli_fail_before_network | выполнено: отказ до GET, секреты не печатаются | Строже браузерной навигации |
+| 2.3 / П2 §1.3,3.1 | Точный host/origin/path_scope, глубокий путь | scope/urls | U:test_scope_is_segment_based_and_entry_path_is_independent; test_www_requires_an_observed_redirect_and_ports_require_permission | выполнено: /ru не разрешает /rub, корневой fallback отсутствует | Path scope задаётся отдельно |
+| 2.4 / П2 §3.3 | Локальный PSL/private/wildcard/exception, наблюдаемый www | psl/scope | U:test_www_uses_real_psl_private_wildcard_exception; A:test_relative_redirect_www_alias_survives_loading | выполнено: допустимый alias сохраняется с hash, другие tenants не объединены | PSL — фиксированный снимок |
+| 2.5 / П2 §2.1–2.2 | Все разрешённые fallback-причины и gates | policy/http_client | A:test_all_fallback_causes_and_gates; C:test_fallback_error_policy; H:test_read_retries_then_single_fallback | выполнено: один HTTP-кандидат, запреты disabled/used/no budget/HTTP/status | TLS handshake без повторного TLS |
+| 2.6 / П2 §2.1 | HTTP/барьер не запускает fallback | policy/content | A:test_http_never_starts_fallback; E:test_content_classification | выполнено: один запрос, fallback=false | Для retryable статусов повторы отдельно |
+| 2.7 / П2 §2.2 | HTTP обратно на неисправный HTTPS | scope/http_client | H:test_tls_fallback_cycle_never_retries_broken_https | выполнено: 2 попытки, третье соединение не открыто | — |
+| 2.8 / П2 §3.2 | Relative Location, циклы, hops, внешний хост | urls/scope/http_client | U:test_relative_location; A:test_stopped_redirect_no_get; test_redirect_limit_and_explicit_host | выполнено: остановка до запрещённого GET, host не добавлен | Внешний proposal проверяет DNS, без GET |
+| 2.9 / П2 §5 | status/can_enter/reasons/action согласованы | policy/models | U:test_exact_status_table; A:test_cli_exit_codes_real_runner; E:test_external_redirect_requires_concrete_action | выполнено: needs_input даёт точный --allow-host | Статус не означает robots |
+| 3.1 / П3 §4.4 | Public-only IPv4/IPv6/mapped/reserved/metadata | connection/urls/models | H:test_public_address_policy; test_mixed_dns_answer_never_reaches_connector; I:test_production_policy_never_connects_to_loopback | выполнено: до соединения, ноль списанных попыток | Первый IP из полностью публичного ответа |
+| 3.2 / П3 §4.4 | IP pin и peer до HTTP, без rebinding | connection.PinnedBackend | I:test_real_peer_mismatch_closed_before_http; test_new_request_rechecks_dns_instead_of_reusing_socket; A:test_dns_change_on_redirect_is_checked_again_before_connection | выполнено: numeric connect, mismatch закрыт до HTTP, DNS recheck | Прямой маршрут ОС доверенный |
+| 3.3 / П3 §4.1 | Host, SNI, certificate/hostname verification | connection._GuardedStream | I:test_real_tls_sni_host_and_certificate_validation (IPv4/IPv6, valid/wrong/untrusted) | выполнено: реальный TCP/TLS, неверный TLS без HTTP | Test-only loopback predicate, production без bypass |
+| 3.4 / П3 §4.1 | Proxy/env/cookies, скрытые retries | SafeHttpClient/PinnedTransport | H:test_redirect_get_count_host_sni_and_cookie_env_isolation; test_proxy_and_unverified_tls_fail_closed | выполнено: env не меняет маршрут/CA, Cookie не переходит, retries=0 | Proxy/HTTP2/keepalive не поддержаны |
+| 3.5 / П3 §4.1 | Поток/лимиты encoded/decoded, gzip/deflate/corruption | LimitedBody | H:test_bounded_decompression_and_connection_closure; test_encoded_body_limit; test_gzip_exact_boundary_and_multiple_members | выполнено: bounded decoder, лимит не превышен, потоки закрыты | br/raw-deflate/multiple members не поддержаны |
+| 3.6 / П3 §4.2 | Общий deadline поверх read timeout, slow drip | http_client/budget | H:test_slow_drip_exceeds_total_deadline_not_read_timeout; A:test_virtual_slow_stream_stops_at_shared_deadline; test_observer_work_cannot_extend_deadline | выполнено: остановка, нет положительного результата после deadline | Синхронная обработка не прерывается внутри CPU операции |
+| 3.7 / П3 §4.3 | Retry-After seconds/date, pacing, attempts | policy/http_client/budget | H:test_retry_after_http_date; test_retry_after_larger_than_deadline_is_not_ignored; test_fifteen_attempts_include_retries; A:test_virtual_retry_after_and_rate_limit | выполнено: delay не сокращён, 15 starts, без лишнего GET | Последовательный rate limit внутри клиента |
+| 3.8 / П3 | Cleanup при незавершённом TLS/отмене | connection/http_client | I:test_tls_handshake_deadline_closes_real_tcp_stream; H:test_explicit_cancel_closes_stream | выполнено: реальные сокеты и fixture streams закрыты | Hard kill завершается средствами ОС |
+| 4.1 / П4 §7 | Полный runner с injection, реальный проход | api/cli | E:test_success_save_reload_and_in_process_identity_without_network; I:test_real_runner_saved_input_in_new_process_without_get | выполнено: runner→TCP/TLS→disk→новый процесс | Без шага 1 crawl |
+| 4.2 / П4 §5.1 | HTML/JS/challenge/login/placeholder/short content | content | E:test_content_classification; A:test_small_contact_form_with_captcha_is_not_a_confirmed_barrier | выполнено: основания/confidence, короткий HTML допустим | Эвристики без browser rendering |
+| 4.3 / П4 §5.1 | 204/206/binary/incomplete; Content-Type/charset | content/body/policy | E:test_content_classification; test_http_states_without_fallback; A:test_http_never_starts_fallback; H:test_bounded_decompression_and_connection_closure | выполнено: нет ложного входа, charset replacement даёт warning | Ограниченный список text codecs |
+| 4.4 / П4 §6.2–6.3 | Attempts/redirects/raw/config/budget/hash, представления | api/evidence/models | E:test_tls_fallback_keeps_error_and_encoded_evidence; test_success_save_reload_and_in_process_identity_without_network | выполнено: encoded gzip отличается от entity и UTF-8 text | Не wire capture |
+| 4.5 / П4 §6.3 | Evidence-first, atomic commit, новая папка | evidence/secure_io | C:test_publish_refuses_dangling_files; A:test_repeat_run_never_overwrites_existing_data; test_interrupted_atomic_write_has_no_commit_or_temp | выполнено: без доказательств положительный site не опубликован | Не транзакция при потере питания |
+| 4.6 / П4 §7 | CLI options/exit codes/no input | cli/policy | A:test_cli_exit_codes_real_runner; C:test_invalid_api_and_cli_fail_before_network; CLI --help | выполнено: 0/1/2/3/4/5/70/130 документированы | CLI библиотеку не заменяет |
+| 5.1 / П5 §8 | TLS failure + HTTP пригоден | api/http_client | E:test_tls_fallback_keeps_error_and_encoded_evidence | выполнено: partial/true, TLS error сохранён, 2 соединения | Контролируемый stream; real TLS отдельно |
+| 5.2 / П5 §8 | NXDOMAIN/temporary DNS | SystemResolver/policy | A:test_system_dns_failures_do_not_charge_http_or_fallback | выполнено: 1/3 DNS, ноль connect/attempt charge; fallback=false | DNS ОС ошибки инъецированы |
+| 5.3 / П5 | Диск/подготовка/прерывание/отмена | api/evidence/secure_io | E:test_storage_failure_has_no_positive_commit; A:test_storage_preparation_failure_sends_nothing; test_cancel_runner_preserves_completed_observation; test_hard_process_exit_keeps_evidence_without_positive_commit | выполнено: ноль GET при disk preflight fail; сохранены наблюдения; crash без site | SIGKILL/power loss всего storage stack не симулировались |
+| 5.4 / П5 | Программный дефект отдельно от сайта | http_client/api/cli | E:test_programming_defect_is_not_site_unavailability; A:test_timeout_programming_bug_is_not_network_failure | выполнено: исходный RuntimeError/TimeoutError выходит из библиотеки, нет fake site | CLI редактирует traceback в IMPLEMENTATION_BUG |
+| 6.1 / П6 | SSRF/scope/TLS/proxy анализ независимо от отчётов | connection/urls/scope | I и H выше; ручной анализ actual network_backend | выполнено: scanner не принят за доказательство сети | Не аудит инфраструктуры ОС/маршрутизатора |
+| 6.2 / П6 | Секреты/query/cookie/log injection | redaction/cli/headers | A:test_network_logs_redact_url_headers_and_exception; C:test_cli_help_and_safe_validation_errors | выполнено: marker secret/FAKE отсутствуют в логах, Cookie исключён | Raw body/full URL локально могут быть чувствительными |
+| 6.3 / П6 | Traversal/hardlink/junction/reparse и гонка directory swap | secure_io/evidence | C:test_evidence_contract_rejects_path_escape; A:test_linked_evidence_rejected_before_read; test_windows_directory_swap_fails_while_pinned | выполнено: unsafe stream не открыт, rename запрещён до close | Проверено на Windows NTFS |
+| 6.4 / П6 | Реальная файловая symlink | secure_io | A:test_linked_evidence_rejected_before_read[symlink] | заблокировано: Windows WinError 1314, тест skipped | Требуется symlink privilege; hardlink/junction выполнены |
+| 6.5 / П6 | POSIX dir_fd races | secure_io/evidence | Проверка кода: relative rename/unlink/mkdir по FD | частично: исправлена ветка, Windows типы/линтер проходят | POSIX интеграция в этой среде не проводилась |
+| 6.6 / П6 | Safe deserialization / artifact consistency | handoff/evidence/models | A:test_artifact_forgery_rejected; E:test_corrupted_file_is_not_substituted | выполнено: JSON only, bounded read, hashes/версии/text/observation проверены | Нет криптографической подписи каталога |
+| 6.7 / П6 | Static checks/dependency audit/manual triage | Bandit/pip-audit/lock | Команды README; security review | выполнено: Bandit 0 findings; pip-audit 0 после pytest 9.0.3 | База только известных уязвимостей |
+| 7.1 / П7 | Пять сценариев, before/after, time/memory/DNS/HTTP/copies | tools/benchmark_step0.py | python -m tools.benchmark_step0 --output FILE --repeats 3 | выполнено: исходные samples и методика сохранены | tracemalloc не RSS; cold PSL отдельно |
+| 7.2 / П7 | Оптимизация только измеренных издержек | psl/http_client/body | before/after JSON; A:test_dns_change_on_redirect_is_checked_again_before_connection; полный suite | выполнено: DNS 7→4; HTTP неизменно; duplicate identity bytes→0 | DNS cache/pooling/stream-to-disk не добавлялись |
+| 8.1 / П8, шаг1 §1.1 | Готовый FetchResult + тот же Budget | api/prepare_step1 | E:test_success_save_reload_and_in_process_identity_without_network | выполнено: identity объектов сохранена, HTML/scope прежние | Только для живого результата runner |
+| 8.2 / П8, шаг1 §1.1 | Новый процесс, saved run, тот же HTML и ограничения | load_step1_input | I:test_real_runner_saved_input_in_new_process_without_get (6 cases) | выполнено: настоящий runner/TLS/disk; consumer network запрещён; GET остаётся 1 | Consumer в тесте разрешает только fixture loopback |
+| 8.3 / П8 | Неизвестная версия/нет файла/хэш/expiry/needs_input/failed | handoff | E:test_expired_and_unknown_version_rejected_before_body_open; test_external_redirect_requires_concrete_action; A:test_artifact_forgery_rejected; I:new_process | выполнено: INPUT_ARTIFACT_INVALID, без пустой подстановки и GET | Новый run нужен после expiry |
+| 8.4 / П8 | Монотонное время не переносится, квоты/простой сохранены | Budget.restore/handoff | E:test_success_save_reload_and_in_process_identity_without_network; I:new_process[expired] | выполнено: max(saved elapsed, UTC age), счётчики сохранены | Доверенные UTC часы |
+| 8.5 / П8 | can_enter != robots, loader не crawler | Step1Input/handoff | E:success; I:new_process | выполнено: crawl_permission=unknown, network calls=0 | Сам robots/обход неприменим: явно вне задачи |
+| 8.6 / П8 | README/context/PDF/repository | README, PROJECT_CONTEXT, git | Финальные команды/хэши в STEP_0_VALIDATION.md | выполнено: актуализировано, PDF совпадают с baseline | Живой внешний smoke не заявляется |
 
-Приоритет следующей реализации: (1) защищённый транспорт и общий deadline;
-(2) retries/redirects/fallback с записью попыток; (3) классификатор содержимого;
-(4) runner и CLI реального запуска; (5) полная приёмка §8. Шаг 1 не реализуется.
+Проверки, неприменимые в текущей области: реальные платные API, crawl, robots, browser egress,
+GEO-метрики. Это не незавершённые части шага 0. Непроведённые POSIX/symlink/live-public проверки
+обозначены явно и не засчитаны как прошедшие. Исторические записки NETWORK_* сохранены как история.

@@ -1,4 +1,4 @@
-"""GEO audit step 0 foundation: contracts and explicitly unfinished orchestration."""
+"""Evidence-first site validation and verified handoff; no step 1 crawl or paid APIs."""
 
 from .api import FetchResult, validate_site
 from .budget import Budget

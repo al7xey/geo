@@ -5,7 +5,10 @@ test server's loopback address. Peer pinning, TCP, SSL, SNI and hostname checks 
 """
 
 import asyncio
+import json
 import ssl
+import subprocess
+import sys
 
 import httpcore
 import pytest
@@ -19,6 +22,126 @@ from geo_audit.http_client import SafeHttpClient
 from geo_audit.psl import load_bundled_psl
 from geo_audit.scope import build_scope
 from geo_audit.urls import normalize_input
+
+
+@pytest.mark.parametrize("case", ["success", "partial", "denied", "corrupt", "version", "expired"])
+def test_real_runner_saved_input_in_new_process_without_get(monkeypatch, tmp_path, case):
+    """Real TCP+TLS+runner+disk, then a fresh process whose network APIs all fail.
+
+    Loopback permission is restricted to the test processes; no production flag exists.
+    """
+    import geo_audit.models as models
+    from geo_audit import validate_site
+
+    async def scenario():
+        allow_test_loopback(monkeypatch)
+        monkeypatch.setattr(models, "is_public_address", connection.is_public_address)
+        ca = trustme.CA()
+        cert = ca.issue_cert("site.test")
+        server_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        cert.configure_cert(server_context)
+        payload = (
+            b"<html><div id='root'></div><script src='/app.js'></script></html>"
+            if case == "partial"
+            else b"<html><p>Controlled company</p></html>"
+        )
+        requests, tasks, names = [], set(), []
+        server_context.set_servername_callback(lambda _s, name, _c: names.append(name))
+
+        async def handler(reader, writer):
+            task = asyncio.current_task()
+            tasks.add(task)
+            try:
+                requests.append(await reader.readuntil(b"\r\n\r\n"))
+                status = 403 if case == "denied" else 200
+                writer.write(
+                    f"HTTP/1.1 {status} Test\r\nContent-Type: text/html; charset=utf-8\r\n"
+                    f"Content-Length: {len(payload)}\r\nConnection: close\r\n\r\n".encode()
+                    + payload
+                )
+                await writer.drain()
+            finally:
+                writer.close()
+                await writer.wait_closed()
+                tasks.discard(task)
+
+        server = await asyncio.start_server(handler, "127.0.0.1", 0, ssl=server_context)
+        async with server:
+            port = server.sockets[0].getsockname()[1]
+            context = ssl.create_default_context()
+            ca.configure_trust(context)
+            cfg = options(port, path_scope=("/ru/",))
+            client = SafeHttpClient(cfg, resolver=Resolver(), ssl_context=context)
+            result = await validate_site(
+                f"https://site.test:{port}/ru/?city=msk", cfg, client, output_dir=tmp_path
+            )
+            root = result._run_directory
+            if tasks:
+                await asyncio.gather(*tasks)
+            assert len(requests) == 1 and names == ["site.test"]
+            assert result.status == (
+                "failed" if case == "denied" else "partial" if case == "partial" else "ok"
+            )
+            if case == "corrupt":
+                selected = next(
+                    f for f in result.evidence[-1].files if f.representation == "entity_bytes"
+                )
+                (root / selected.path).write_bytes(b"corrupted")
+            if case == "version":
+                site = json.loads((root / "site.json").read_bytes())
+                site["schema_version"] = "999.0.0"
+                (root / "site.json").write_text(json.dumps(site), encoding="utf-8")
+            program = r"""
+import json, socket, sys
+from datetime import timedelta
+from pathlib import Path
+import geo_audit.connection as connection
+import geo_audit.models as models
+from geo_audit import GeoAuditError, load_site_result, load_step1_input, TimeServices
+production = connection.is_public_address
+def public_for_fixture(ip):
+    return ip == "127.0.0.1" or production(ip)
+connection.is_public_address = models.is_public_address = public_for_fixture
+calls = []
+def forbidden(*args, **kwargs):
+    calls.append(True)
+    raise AssertionError("handoff attempted network I/O")
+socket.getaddrinfo = socket.create_connection = socket.socket.connect = forbidden
+root, case = Path(sys.argv[1]), sys.argv[2]
+try:
+    timing = None
+    if case == "expired":
+        site = load_site_result(root)
+        timing = TimeServices(utcnow=lambda: site.budget.total_deadline_at + timedelta(seconds=1))
+    loaded = load_step1_input(root, timing=timing)
+    output = {"html": loaded.html.decode(), "hosts": loaded.contract.site.allowed_hosts,
+              "path_scope": loaded.contract.site.path_scope, "status": loaded.contract.site.status,
+              "attempts": loaded.budget.snapshot().total_attempts,
+              "remaining": loaded.budget.remaining_seconds(step=1),
+              "crawl_permission": loaded.contract.crawl_permission}
+except GeoAuditError as error:
+    output = {"error": error.detail.code}
+assert calls == []
+print(json.dumps(output))
+"""
+            consumer = subprocess.run(
+                [sys.executable, "-c", program, str(root), case],
+                capture_output=True,
+                text=True,
+                timeout=30,
+                check=True,
+            )
+            loaded = json.loads(consumer.stdout)
+            if case in {"success", "partial"}:
+                assert loaded["html"].encode() == payload
+                assert loaded["hosts"] == ["site.test"] and loaded["path_scope"] == ["/ru/"]
+                assert loaded["attempts"] == 1 and 0 < loaded["remaining"] < 300
+                assert loaded["crawl_permission"] == "unknown"
+            else:
+                assert loaded == {"error": "INPUT_ARTIFACT_INVALID"}
+            assert len(requests) == 1  # The fresh consumer sent no second GET.
+
+    asyncio.run(scenario())
 
 
 @pytest.fixture(scope="module")

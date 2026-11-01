@@ -312,9 +312,10 @@ def test_publish_and_atomic_write_failure(tmp_path, monkeypatch):
     store = EvidenceStore(tmp_path)
     store.prepare()
     (tmp_path / "raw").mkdir(exist_ok=True)
-    (tmp_path / "raw/entry.html").write_bytes((EXAMPLES / "run/raw/entry.html").read_bytes())
+    for file in (EXAMPLES / "run/raw").iterdir():
+        (tmp_path / "raw" / file.name).write_bytes(file.read_bytes())
     store.publish(site)
-    assert (tmp_path / "manifest.json").exists()
+    assert (tmp_path / "raw/manifest.json").exists()
     assert SiteValidationResult.model_validate_json((tmp_path / "site.json").read_bytes()) == site
 
     def denied(*_):

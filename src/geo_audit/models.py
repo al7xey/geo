@@ -316,6 +316,22 @@ class SiteValidationResult(Contract):
 
     @model_validator(mode="after")
     def consistency(self) -> Self:
+        revision = self.schema_version.split(".")[1]
+        if (
+            self.algorithm_version != f"step0-1.{revision}"
+            or self.config_version != f"step0-config-1.{revision}.0"
+            or any(
+                version != self.schema_version
+                for version in (
+                    self.config.schema_version,
+                    self.budget.schema_version,
+                    *(item.schema_version for item in self.attempts),
+                    *(item.schema_version for item in self.redirect_chain),
+                    *(item.schema_version for item in self.evidence),
+                )
+            )
+        ):
+            raise ValueError("mixed schema/algorithm/configuration versions")
         if self.config_sha256 != self.config.fingerprint():
             raise ValueError("config fingerprint mismatch")
         if self.source_timezone != self.config.source_timezone:
@@ -485,6 +501,13 @@ class SiteValidationResult(Contract):
             )
             if selected is None or selected_attempt is None:
                 raise ValueError("selected response is missing")
+            if self.schema_version == "1.2.0" and (
+                {f.representation for f in selected.files}
+                != {"content_encoded", "entity_bytes", "decoded_text", "attempt_observation"}
+                or not all(f.complete for f in selected.files)
+                or selected.applied_encoding is None
+            ):
+                raise ValueError("current selected response requires all complete representations")
             if not selected.classification_basis:
                 raise ValueError("selected HTML requires recorded classification basis")
             if (
@@ -560,6 +583,8 @@ class Step1Input(Contract):
 
     @model_validator(mode="after")
     def handoff(self) -> Self:
+        if self.schema_version != self.site.schema_version:
+            raise ValueError("handoff schema differs from source result")
         if not self.site.can_enter_step1:
             raise ValueError("step 0 did not permit entry")
         if self.selected_evidence.evidence_id != self.site.selected_evidence_id:

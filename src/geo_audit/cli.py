@@ -5,6 +5,7 @@ import asyncio
 import json
 import sys
 from pathlib import Path
+from typing import NoReturn
 
 from pydantic import ValidationError
 
@@ -18,8 +19,15 @@ from .schemas import MODELS, schema_for, write_schemas
 from .urls import normalize_host
 
 
+class _SafeArgumentParser(argparse.ArgumentParser):
+    def error(self, message: str) -> NoReturn:
+        # argparse's default message may echo a rejected URL, credentials or query.
+        self.print_usage(sys.stderr)
+        self.exit(2, "geo-audit: invalid arguments; use --help.\n")
+
+
 def parser() -> argparse.ArgumentParser:
-    result = argparse.ArgumentParser(
+    result = _SafeArgumentParser(
         prog="geo-audit",
         description="GEO step 0: validate a public site and persist verifiable evidence.",
     )

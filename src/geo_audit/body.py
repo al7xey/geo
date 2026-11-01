@@ -19,7 +19,9 @@ class LimitedBody:
         )
         self.encoded_limit, self.decoded_limit = encoded_limit, decoded_limit
         self.encoded = bytearray()
-        self.decoded = bytearray()
+        self.decoded = (
+            self.encoded if self.decoder is None and encoded_limit == decoded_limit else bytearray()
+        )
         self.received_bytes = 0
 
     def feed(self, data: bytes) -> None:
@@ -28,6 +30,8 @@ class LimitedBody:
         self.encoded.extend(data[:remaining])
         if len(data) > remaining:
             raise problem("CONTENT_TOO_LARGE", "content", "Encoded body limit exceeded.")
+        if self.decoded is self.encoded:
+            return  # identity with equal bounds needs one buffer and no transformation.
         try:
             chunk = (
                 self.decoder.decompress(data, self.decoded_limit - len(self.decoded) + 1)

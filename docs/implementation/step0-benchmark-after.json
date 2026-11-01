@@ -1,0 +1,327 @@
+{
+  "python": "3.12.10",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "repeats": 3,
+  "scenarios": {
+    "https_html": {
+      "median": {
+        "wall_ms": 650.119,
+        "peak_mib": 0.348,
+        "virtual_seconds": 0.007,
+        "dns": 1,
+        "http": 1,
+        "sha256_calls": 11,
+        "hashed_bytes": 4119,
+        "psl_loads": 1,
+        "ssl_contexts": 1,
+        "classifications": 1,
+        "classified_bytes": 62,
+        "retained_body_bytes": 62,
+        "duplicate_identity_bytes": 0
+      },
+      "samples": [
+        {
+          "wall_ms": 3401.732,
+          "peak_mib": 4.177,
+          "virtual_seconds": 0.007,
+          "dns": 1,
+          "http": 1,
+          "sha256_calls": 13,
+          "hashed_bytes": 679953,
+          "psl_loads": 1,
+          "ssl_contexts": 1,
+          "classifications": 1,
+          "classified_bytes": 62,
+          "retained_body_bytes": 62,
+          "duplicate_identity_bytes": 0
+        },
+        {
+          "wall_ms": 650.119,
+          "peak_mib": 0.348,
+          "virtual_seconds": 0.007,
+          "dns": 1,
+          "http": 1,
+          "sha256_calls": 11,
+          "hashed_bytes": 4119,
+          "psl_loads": 1,
+          "ssl_contexts": 1,
+          "classifications": 1,
+          "classified_bytes": 62,
+          "retained_body_bytes": 62,
+          "duplicate_identity_bytes": 0
+        },
+        {
+          "wall_ms": 615.043,
+          "peak_mib": 0.345,
+          "virtual_seconds": 0.007,
+          "dns": 1,
+          "http": 1,
+          "sha256_calls": 11,
+          "hashed_bytes": 4119,
+          "psl_loads": 1,
+          "ssl_contexts": 1,
+          "classifications": 1,
+          "classified_bytes": 62,
+          "retained_body_bytes": 62,
+          "duplicate_identity_bytes": 0
+        }
+      ]
+    },
+    "redirects": {
+      "median": {
+        "wall_ms": 1011.228,
+        "peak_mib": 0.43,
+        "virtual_seconds": 3.007,
+        "dns": 4,
+        "http": 4,
+        "sha256_calls": 29,
+        "hashed_bytes": 8405,
+        "psl_loads": 1,
+        "ssl_contexts": 1,
+        "classifications": 4,
+        "classified_bytes": 62,
+        "retained_body_bytes": 62,
+        "duplicate_identity_bytes": 0
+      },
+      "samples": [
+        {
+          "wall_ms": 1083.043,
+          "peak_mib": 0.441,
+          "virtual_seconds": 3.007,
+          "dns": 4,
+          "http": 4,
+          "sha256_calls": 29,
+          "hashed_bytes": 8405,
+          "psl_loads": 1,
+          "ssl_contexts": 1,
+          "classifications": 4,
+          "classified_bytes": 62,
+          "retained_body_bytes": 62,
+          "duplicate_identity_bytes": 0
+        },
+        {
+          "wall_ms": 1006.174,
+          "peak_mib": 0.43,
+          "virtual_seconds": 3.007,
+          "dns": 4,
+          "http": 4,
+          "sha256_calls": 29,
+          "hashed_bytes": 8405,
+          "psl_loads": 1,
+          "ssl_contexts": 1,
+          "classifications": 4,
+          "classified_bytes": 62,
+          "retained_body_bytes": 62,
+          "duplicate_identity_bytes": 0
+        },
+        {
+          "wall_ms": 1011.228,
+          "peak_mib": 0.43,
+          "virtual_seconds": 3.007,
+          "dns": 4,
+          "http": 4,
+          "sha256_calls": 29,
+          "hashed_bytes": 8405,
+          "psl_loads": 1,
+          "ssl_contexts": 1,
+          "classifications": 4,
+          "classified_bytes": 62,
+          "retained_body_bytes": 62,
+          "duplicate_identity_bytes": 0
+        }
+      ]
+    },
+    "tls_fallback": {
+      "median": {
+        "wall_ms": 682.781,
+        "peak_mib": 0.374,
+        "virtual_seconds": 1.007,
+        "dns": 2,
+        "http": 2,
+        "sha256_calls": 13,
+        "hashed_bytes": 5725,
+        "psl_loads": 1,
+        "ssl_contexts": 1,
+        "classifications": 2,
+        "classified_bytes": 62,
+        "retained_body_bytes": 62,
+        "duplicate_identity_bytes": 0
+      },
+      "samples": [
+        {
+          "wall_ms": 682.781,
+          "peak_mib": 0.377,
+          "virtual_seconds": 1.007,
+          "dns": 2,
+          "http": 2,
+          "sha256_calls": 13,
+          "hashed_bytes": 5725,
+          "psl_loads": 1,
+          "ssl_contexts": 1,
+          "classifications": 2,
+          "classified_bytes": 62,
+          "retained_body_bytes": 62,
+          "duplicate_identity_bytes": 0
+        },
+        {
+          "wall_ms": 682.307,
+          "peak_mib": 0.374,
+          "virtual_seconds": 1.007,
+          "dns": 2,
+          "http": 2,
+          "sha256_calls": 13,
+          "hashed_bytes": 5725,
+          "psl_loads": 1,
+          "ssl_contexts": 1,
+          "classifications": 2,
+          "classified_bytes": 62,
+          "retained_body_bytes": 62,
+          "duplicate_identity_bytes": 0
+        },
+        {
+          "wall_ms": 706.81,
+          "peak_mib": 0.374,
+          "virtual_seconds": 1.007,
+          "dns": 2,
+          "http": 2,
+          "sha256_calls": 13,
+          "hashed_bytes": 5725,
+          "psl_loads": 1,
+          "ssl_contexts": 1,
+          "classifications": 2,
+          "classified_bytes": 62,
+          "retained_body_bytes": 62,
+          "duplicate_identity_bytes": 0
+        }
+      ]
+    },
+    "near_limit": {
+      "median": {
+        "wall_ms": 1232.091,
+        "peak_mib": 25.351,
+        "virtual_seconds": 0.007,
+        "dns": 1,
+        "http": 1,
+        "sha256_calls": 11,
+        "hashed_bytes": 31460577,
+        "psl_loads": 1,
+        "ssl_contexts": 1,
+        "classifications": 1,
+        "classified_bytes": 5242800,
+        "retained_body_bytes": 5242800,
+        "duplicate_identity_bytes": 0
+      },
+      "samples": [
+        {
+          "wall_ms": 1232.091,
+          "peak_mib": 25.351,
+          "virtual_seconds": 0.007,
+          "dns": 1,
+          "http": 1,
+          "sha256_calls": 11,
+          "hashed_bytes": 31460577,
+          "psl_loads": 1,
+          "ssl_contexts": 1,
+          "classifications": 1,
+          "classified_bytes": 5242800,
+          "retained_body_bytes": 5242800,
+          "duplicate_identity_bytes": 0
+        },
+        {
+          "wall_ms": 1225.606,
+          "peak_mib": 25.351,
+          "virtual_seconds": 0.007,
+          "dns": 1,
+          "http": 1,
+          "sha256_calls": 11,
+          "hashed_bytes": 31460577,
+          "psl_loads": 1,
+          "ssl_contexts": 1,
+          "classifications": 1,
+          "classified_bytes": 5242800,
+          "retained_body_bytes": 5242800,
+          "duplicate_identity_bytes": 0
+        },
+        {
+          "wall_ms": 1294.095,
+          "peak_mib": 25.35,
+          "virtual_seconds": 0.007,
+          "dns": 1,
+          "http": 1,
+          "sha256_calls": 11,
+          "hashed_bytes": 31460577,
+          "psl_loads": 1,
+          "ssl_contexts": 1,
+          "classifications": 1,
+          "classified_bytes": 5242800,
+          "retained_body_bytes": 5242800,
+          "duplicate_identity_bytes": 0
+        }
+      ]
+    },
+    "retries": {
+      "median": {
+        "wall_ms": 865.078,
+        "peak_mib": 0.413,
+        "virtual_seconds": 3.021,
+        "dns": 3,
+        "http": 3,
+        "sha256_calls": 23,
+        "hashed_bytes": 7055,
+        "psl_loads": 1,
+        "ssl_contexts": 1,
+        "classifications": 3,
+        "classified_bytes": 62,
+        "retained_body_bytes": 62,
+        "duplicate_identity_bytes": 0
+      },
+      "samples": [
+        {
+          "wall_ms": 865.078,
+          "peak_mib": 0.414,
+          "virtual_seconds": 3.021,
+          "dns": 3,
+          "http": 3,
+          "sha256_calls": 23,
+          "hashed_bytes": 7055,
+          "psl_loads": 1,
+          "ssl_contexts": 1,
+          "classifications": 3,
+          "classified_bytes": 62,
+          "retained_body_bytes": 62,
+          "duplicate_identity_bytes": 0
+        },
+        {
+          "wall_ms": 853.872,
+          "peak_mib": 0.413,
+          "virtual_seconds": 3.021,
+          "dns": 3,
+          "http": 3,
+          "sha256_calls": 23,
+          "hashed_bytes": 7055,
+          "psl_loads": 1,
+          "ssl_contexts": 1,
+          "classifications": 3,
+          "classified_bytes": 62,
+          "retained_body_bytes": 62,
+          "duplicate_identity_bytes": 0
+        },
+        {
+          "wall_ms": 965.986,
+          "peak_mib": 0.413,
+          "virtual_seconds": 3.021,
+          "dns": 3,
+          "http": 3,
+          "sha256_calls": 23,
+          "hashed_bytes": 7055,
+          "psl_loads": 1,
+          "ssl_contexts": 1,
+          "classifications": 3,
+          "classified_bytes": 62,
+          "retained_body_bytes": 62,
+          "duplicate_identity_bytes": 0
+        }
+      ]
+    }
+  }
+}

@@ -9,6 +9,7 @@ from datetime import datetime
 from typing import Literal, cast, get_args
 
 import anyio
+import certifi
 import httpcore
 import httpx
 
@@ -109,6 +110,10 @@ def _network_code(error: BaseException) -> ErrorCode:
     return "NETWORK_READ_ERROR"
 
 
+def _expired_deadline() -> GeoAuditError:
+    return GeoAuditError(_detail("BUDGET_DEADLINE"))
+
+
 class SafeHttpClient:
     """Owns no persistent sockets/cookies; reuse this object and the same Budget for step 1.
 
@@ -168,8 +173,9 @@ class SafeHttpClient:
         failed_https: set[str] = set()
         retry_count = 0
         purpose: Literal["initial", "retry", "http_fallback", "redirect"] = "initial"
+        deadline = asyncio.timeout(budget.remaining_seconds(step=step))
         try:
-            async with asyncio.timeout(budget.remaining_seconds(step=step)):
+            async with deadline:
                 async with self._lock:
                     while True:
                         reason = scope_reason(current, scope)
@@ -178,6 +184,9 @@ class SafeHttpClient:
                             break
                         await self._fetch_once(current, budget, step, attempts, purpose, observer)
                         last = attempts[-1]
+                        if budget.remaining_seconds(step=step) <= 0:
+                            error = _detail("BUDGET_DEADLINE", last.attempt_id)
+                            break
                         if last.error is None and last.status_code in REDIRECT_STATUSES:
                             locations = [
                                 h.value for h in last.response_headers if h.name == "location"
@@ -194,7 +203,7 @@ class SafeHttpClient:
                                 max_hops=self.config.max_redirect_hops,
                             )
                             # Validate an external proposal too, but never issue its GET.
-                            if decision.target is not None:
+                            if decision.target is not None and decision.action == "needs_input":
                                 try:
                                     await check_endpoint(decision.target, self.resolver)
                                 except GeoAuditError as blocked:
@@ -294,6 +303,8 @@ class SafeHttpClient:
                             )
                         break
         except TimeoutError:
+            if not deadline.expired():
+                raise  # An observer/resolver programming defect is not site unavailability.
             error = _detail("BUDGET_DEADLINE", attempts[-1].attempt_id if attempts else None)
         except GeoAuditError as caught:
             error = caught.detail
@@ -334,6 +345,7 @@ class SafeHttpClient:
         body: LimitedBody | None = None
         sent, complete = False, False
         error: ErrorDetail | None = None
+        defect = False
         log_scope = network_logging_scope.set(True)
         try:
             budget.check(step=step)
@@ -347,6 +359,8 @@ class SafeHttpClient:
             self._last_started[url.host_ascii] = self.time.monotonic()
             sent = True
             backend = PinnedBackend(endpoint)
+            if url.scheme == "https" and self.ssl_context is None:
+                self.ssl_context = ssl.create_default_context(cafile=certifi.where())
             transport = PinnedTransport(backend, ssl_context=self.ssl_context)
             timeout = httpx.Timeout(
                 connect=self.config.connect_timeout_seconds,
@@ -387,8 +401,12 @@ class SafeHttpClient:
                         self.config.max_decoded_bytes,
                     )
                     async for data in response.aiter_raw():
+                        if budget.remaining_seconds(step=step) <= 0:
+                            raise _expired_deadline()
                         body.feed(data)
                     body.finish()
+                    if budget.remaining_seconds(step=step) <= 0:
+                        raise _expired_deadline()
                     complete = True
         except GeoAuditError as caught:
             error = caught.detail.model_copy(update={"attempt_id": attempt_id})
@@ -401,6 +419,9 @@ class SafeHttpClient:
             error = _detail(_network_code(caught), attempt_id)
         except asyncio.CancelledError:
             error = _detail("NETWORK_CANCELLED", attempt_id)
+            raise
+        except BaseException:
+            defect = True
             raise
         finally:
             try:
@@ -417,27 +438,36 @@ class SafeHttpClient:
                     tls_state = "certificate_error"
                 elif error and error.code == "HTTPS_TLS_HANDSHAKE_ERROR":
                     tls_state = "handshake_error"
-            attempts.append(
-                HttpAttempt(
-                    attempt_id,
-                    parent,
-                    purpose,
-                    url.url,
-                    stamp,
-                    (self.time.monotonic() - started) * 1000,
-                    sent,
-                    endpoint,
-                    backend.connected_ip if backend else None,
-                    tls_state,
-                    status,
-                    headers,
-                    bytes(body.encoded) if body else b"",
-                    bytes(body.decoded) if body else b"",
-                    body.received_bytes if body else 0,
-                    complete,
-                    error,
+            if not defect:
+                encoded = bytes(body.encoded) if body else b""
+                decoded = (
+                    encoded
+                    if body and body.decoded is body.encoded
+                    else bytes(body.decoded)
+                    if body
+                    else b""
                 )
-            )
-            if observer is not None:
+                attempts.append(
+                    HttpAttempt(
+                        attempt_id,
+                        parent,
+                        purpose,
+                        url.url,
+                        stamp,
+                        (self.time.monotonic() - started) * 1000,
+                        sent,
+                        endpoint,
+                        backend.connected_ip if backend else None,
+                        tls_state,
+                        status,
+                        headers,
+                        encoded,
+                        decoded,
+                        body.received_bytes if body else 0,
+                        complete,
+                        error,
+                    )
+                )
+            if not defect and observer is not None:
                 with anyio.CancelScope(shield=True):
                     await observer(attempts[-1])

@@ -193,11 +193,22 @@ def assess_response(attempt: HttpAttempt, *, sniff_bytes: int = 4096) -> Content
             )
         )
         login_phrase = any(p in title for p in ("sign in", "log in", "login", "вход"))
-        if facts.captcha_widget and challenge_phrase and len(visible) < 500:
+        challenge_title = any(
+            p in title
+            for p in (
+                "just a moment",
+                "verify you are human",
+                "checking your browser",
+                "security check",
+                "подтвердите",
+                "проверка браузера",
+            )
+        )
+        if facts.captcha_widget and challenge_phrase and challenge_title and len(visible) < 500:
             state, confidence = "access_barrier", 0.98
             reasons.append("ACCESS_CHALLENGE")
             basis.append(
-                "Challenge widget plus human-verification instructions dominate the document"
+                "Challenge title, widget and human-verification instructions dominate the document"
             )
         elif facts.password and login_phrase and len(visible) < 500:
             state, confidence = "access_barrier", 0.95

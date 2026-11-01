@@ -3,6 +3,7 @@
 import hashlib
 import ipaddress
 from dataclasses import dataclass
+from functools import lru_cache
 from importlib.resources import files
 
 from .urls import normalize_host
@@ -76,7 +77,9 @@ class PublicSuffixList:
         return bool(left_known and right_known and left and left == right)
 
 
+@lru_cache(maxsize=1)
 def load_bundled_psl() -> PublicSuffixList:
+    """One immutable, integrity-checked package snapshot per process; never a DNS cache."""
     data = files("geo_audit").joinpath("data/public_suffix_list.dat").read_bytes()
     if hashlib.sha256(data).hexdigest() != PSL_SHA256:
         raise ValueError("bundled PSL integrity check failed")

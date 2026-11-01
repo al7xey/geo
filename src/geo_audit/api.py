@@ -174,6 +174,7 @@ async def validate_site(
         )
         attempts.append(model)
         evidence.append(record)
+        observed.clear()  # Only the final candidate can be handed off; prior evidence is on disk.
         observed[model.attempt_id] = (event, assessment)
         checkpoint("running")
 

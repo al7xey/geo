@@ -61,7 +61,7 @@ def artifacts():
         captured_at=STAMP,
         files=(blob,),
         declared_encoding="utf-8",
-        applied_encoding=None,
+        applied_encoding="utf-8",
         replacement_characters=0,
         sniffed_html=False,
         classification_basis=(
@@ -94,6 +94,31 @@ def artifacts():
         bytes_read=len(HTML),
         decoded_bytes=len(HTML),
         body_complete=True,
+    )
+    observation_bytes = attempt.model_dump_json().encode("utf-8")
+    extra_blobs = {
+        "encoded": (HTML, "content_encoded"),
+        "text": (HTML, "decoded_text"),
+        "attempt": (observation_bytes, "attempt_observation"),
+    }
+    evidence = evidence.model_copy(
+        update={
+            "files": (
+                blob,
+                *(
+                    EvidenceFile.model_validate(
+                        {
+                            "path": f"raw/{name}.bin",
+                            "sha256": hashlib.sha256(data).hexdigest(),
+                            "size_bytes": len(data),
+                            "representation": representation,
+                            "complete": True,
+                        }
+                    )
+                    for name, (data, representation) in extra_blobs.items()
+                ),
+            )
+        }
     )
     site = SiteValidationResult(
         schema_version="1.2.0",
@@ -292,7 +317,11 @@ def artifacts():
         complete=True,
     )
     tls_evidence = evidence.model_dump(mode="json")
-    tls_evidence.update(files=[observation_file.model_dump(mode="json")], declared_encoding=None)
+    tls_evidence.update(
+        files=[observation_file.model_dump(mode="json")],
+        declared_encoding=None,
+        applied_encoding=None,
+    )
     case(
         "failed-tls",
         {
@@ -354,6 +383,8 @@ def artifacts():
         }
     )
     result[Path("examples/contracts/run/raw/entry.html")] = HTML
+    for name, (data, _) in extra_blobs.items():
+        result[Path(f"examples/contracts/run/raw/{name}.bin")] = data
     result[Path("examples/contracts/run/raw/tls-observation.json")] = observation
     lines = [
         "# Поля контрактов шага 0",

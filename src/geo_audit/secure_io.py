@@ -1,7 +1,7 @@
 """Confined handle-based file access. No-follow leaves and pinned directory ancestors.
 
 Windows uses documented CreateFile/FILE_FLAG_OPEN_REPARSE_POINT and denies directory
-write/delete sharing while names are used. POSIX uses openat/O_NOFOLLOW directory FDs.
+delete sharing while names are used. POSIX uses openat/O_NOFOLLOW directory FDs.
 No root/admin privileges or custom filesystem driver required.
 """
 
@@ -53,13 +53,15 @@ if os.name == "nt":
     def _win_open(
         path: Path, *, directory: bool, writing: bool = False, modify_acl: bool = False
     ) -> int:
-        access = 0x80 if directory else 0x40000000 if writing else 0x80000000
+        # FILE_READ_ATTRIBUTES alone does not participate in Windows sharing checks.
+        # GENERIC_READ includes FILE_LIST_DIRECTORY, so denying DELETE sharing pins names.
+        access = 0x80000000 if directory else 0x40000000 if writing else 0x80000000
         if modify_acl:
             access |= 0x40000
         handle = _create(
             str(path),
             access,
-            1,
+            3 if directory else 1,  # Permit child writes, deny directory DELETE sharing.
             None,
             1 if writing else 3,
             0x00200000 | (0x02000000 if directory else 0),
