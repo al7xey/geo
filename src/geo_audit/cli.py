@@ -30,7 +30,10 @@ class _SafeArgumentParser(argparse.ArgumentParser):
 def parser() -> argparse.ArgumentParser:
     result = _SafeArgumentParser(
         prog="geo-audit",
-        description="Technical GEO site audit, verifiable evidence and offline recommendations.",
+        description=(
+            "Technical GEO audit: validate a public site, "
+            "persist verifiable evidence and generate offline recommendations."
+        ),
     )
     sub = result.add_subparsers(dest="command", required=True)
     sub.add_parser("config-defaults", help="Print versioned default configuration as JSON")
