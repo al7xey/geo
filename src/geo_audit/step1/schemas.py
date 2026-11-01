@@ -2,6 +2,7 @@
 
 from ..contracts import Contract
 from .config import Step1Config
+from .discovery import DiscoveredURL, DiscoveryResult
 from .models import (
     Candidate,
     ChecksResult,
@@ -14,6 +15,7 @@ from .models import (
     RobotsDecision,
     RobotsObservation,
     RunResult,
+    SitemapEntry,
     SitemapObservation,
     Step1Evidence,
     Step1Result,
@@ -38,6 +40,7 @@ MODELS: dict[str, type[Contract]] = {
         RobotsObservation,
         RunResult,
         SitemapObservation,
+        SitemapEntry,
         Step1Evidence,
         Step1Result,
         Step2Input,
@@ -46,6 +49,9 @@ MODELS: dict[str, type[Contract]] = {
         RobotRegistry,
     )
 }
+
+
+MODELS.update({m.__name__: m for m in (DiscoveredURL, DiscoveryResult)})
 
 
 def schema_for(name: str) -> dict[str, object]:

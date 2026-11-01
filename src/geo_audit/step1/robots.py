@@ -271,7 +271,13 @@ class RobotsService:
             self.runtime.note_cache_hit()
             return self.cache[origin]
         try:
-            trace = await self.runtime.fetch(origin + "/robots.txt", RequestPolicy("robots"))
+            trace = await self.runtime.fetch(
+                origin + "/robots.txt",
+                RequestPolicy(
+                    "robots",
+                    allowed_sitemap_hosts=frozenset(self.runtime.config.allowed_sitemap_hosts),
+                ),
+            )
         except asyncio.CancelledError:
             cancelled_trace = self.runtime.client.last_trace
             if cancelled_trace is not None:

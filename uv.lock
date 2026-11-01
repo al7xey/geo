@@ -413,6 +413,7 @@ source = { editable = "." }
 dependencies = [
     { name = "anyio" },
     { name = "certifi" },
+    { name = "defusedxml" },
     { name = "httpcore" },
     { name = "httpx" },
     { name = "idna" },
@@ -436,6 +437,7 @@ dev = [
 requires-dist = [
     { name = "anyio", specifier = "==4.15.1" },
     { name = "certifi", specifier = "==2026.10.23" },
+    { name = "defusedxml", specifier = "==0.7.1" },
     { name = "httpcore", specifier = "==1.0.9" },
     { name = "httpx", specifier = "==0.28.1" },
     { name = "idna", specifier = "==3.15" },

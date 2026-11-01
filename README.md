@@ -242,3 +242,13 @@ Robots API: `await runtime.robots.evaluate_all(url)` возвращает own + 
 и redirect target. Исходный GEOAudit UA не меняется при запрете; cache только на run.
 Реестр и исходные rules/lines сохраняются в publication. Unknown не означает Disallow.
 Google-Extended не имеет HTTP probe; UA probes выключены по умолчанию.
+
+
+Состояние step1 на 01.11.2026: Step1Runtime.discover_urls() использует сохранённый
+вход, robots и bounded sitemap/discovery. Protego0.7.0/defusedxml0.7.1 pinned;
+внешние карты через allowed_sitemap_hosts, без расширения HTML scope.
+**Сквозной step1 пока не принят:** runner выдаёт partial/SKELETON_ONLY; crawler,
+extraction, CLI цепочки и offline Step2 consumer отсутствуют. load_step1_result
+проверяет публикацию каркаса, не заменяет Step2 loader. Шаг 2 не реализован.
+Фактическая приёмка и ограничения:
+[STEP_1_VALIDATION.md](docs/implementation/STEP_1_VALIDATION.md).

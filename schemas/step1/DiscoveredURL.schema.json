@@ -1,0 +1,62 @@
+{
+  "$defs": {
+    "DiscoverySource": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "entry",
+            "html_link",
+            "sitemap",
+            "redirect",
+            "robots_directive",
+            "standard_path"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "source_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Source Id",
+          "type": "string"
+        },
+        "occurrence": {
+          "minimum": 0,
+          "title": "Occurrence",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "kind",
+        "source_id",
+        "occurrence"
+      ],
+      "title": "DiscoverySource",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "url": {
+      "format": "uri",
+      "pattern": "^https?://",
+      "title": "Url",
+      "type": "string"
+    },
+    "sources": {
+      "items": {
+        "$ref": "#/$defs/DiscoverySource"
+      },
+      "title": "Sources",
+      "type": "array"
+    }
+  },
+  "required": [
+    "url",
+    "sources"
+  ],
+  "title": "DiscoveredURL",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:DiscoveredURL:1.0.0"
+}

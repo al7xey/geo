@@ -17,6 +17,7 @@ dependencies = [
     "idna==3.15",
     "tzdata==2025.2",
     "protego==0.7.0",
+    "defusedxml==0.7.1",
 ]
 
 [project.scripts]

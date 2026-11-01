@@ -1,4 +1,4 @@
-name: Step 0 acceptance
+name: Step 0 and step 1 component checks
 
 on:
   push:
@@ -62,6 +62,8 @@ jobs:
         run: uv run --locked bandit -r src tools
       - name: Generated contracts
         run: uv run --locked python tools/generate_step0_artifacts.py --check
+      - name: Generated step 1 contracts
+        run: uv run --locked python tools/generate_step1_artifacts.py --check
       - name: Export hashed audit constraints
         run: uv export --locked --no-emit-project --format requirements-txt --output-file tmp/audit-requirements.txt --quiet
       - name: Audit dependencies with fresh cache

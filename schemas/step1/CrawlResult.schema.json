@@ -274,7 +274,9 @@
             "entry",
             "html_link",
             "sitemap",
-            "redirect"
+            "redirect",
+            "robots_directive",
+            "standard_path"
           ],
           "title": "Kind",
           "type": "string"
@@ -850,6 +852,83 @@
       "title": "Signal",
       "type": "object"
     },
+    "SitemapEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "ordinal": {
+          "exclusiveMaximum": 5000,
+          "minimum": 0,
+          "title": "Ordinal",
+          "type": "integer"
+        },
+        "raw_loc": {
+          "maxLength": 2048,
+          "title": "Raw Loc",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "pattern": "^https?://",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Url"
+        },
+        "state": {
+          "enum": [
+            "accepted",
+            "skipped"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "inferred_url": {
+          "const": false,
+          "default": false,
+          "title": "Inferred Url",
+          "type": "boolean"
+        },
+        "publisher_metadata": {
+          "items": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "type": "array"
+          },
+          "title": "Publisher Metadata",
+          "type": "array"
+        },
+        "issues": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Issues",
+          "type": "array"
+        }
+      },
+      "required": [
+        "ordinal",
+        "raw_loc",
+        "url",
+        "state",
+        "publisher_metadata",
+        "issues"
+      ],
+      "title": "SitemapEntry",
+      "type": "object"
+    },
     "SitemapObservation": {
       "additionalProperties": false,
       "properties": {
@@ -956,6 +1035,22 @@
         "truncated": {
           "title": "Truncated",
           "type": "boolean"
+        },
+        "entries": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/SitemapEntry"
+          },
+          "title": "Entries",
+          "type": "array"
+        },
+        "sources": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/DiscoverySource"
+          },
+          "title": "Sources",
+          "type": "array"
         }
       },
       "required": [

@@ -35,6 +35,7 @@ from .models import (
 from .storage import Step1Store, encoded_json
 
 if TYPE_CHECKING:
+    from .discovery import DiscoveryResult, DiscoveryService
     from .robots import RobotsService
 
 T = TypeVar("T")
@@ -151,6 +152,18 @@ class Step1Runtime:
         self._pending_urls: set[str] = set()
         self._stop_reason: str | None = None
         self._robots: RobotsService | None = None
+        self._discovery: DiscoveryService | None = None
+
+    @property
+    def discovery(self) -> "DiscoveryService":
+        from .discovery import DiscoveryService
+
+        if self._discovery is None:
+            self._discovery = DiscoveryService(self)
+        return self._discovery
+
+    async def discover_urls(self) -> "DiscoveryResult":
+        return await self.discovery.discover()
 
     @property
     def robots(self) -> "RobotsService":
@@ -418,7 +431,7 @@ class Step1Runtime:
                     pages=(page,),
                     robots=tuple(self._robots.observations) if self._robots else (),
                     robots_decisions=tuple(self._robots.decisions.values()) if self._robots else (),
-                    sitemaps=(),
+                    sitemaps=tuple(self._discovery.observations) if self._discovery else (),
                     pending_external_urls=(),
                     coverage=Coverage(
                         discovered_urls=1,
@@ -432,7 +445,9 @@ class Step1Runtime:
                         discarded_entries=0,
                         skip_examples=(),
                         skip_examples_truncated=False,
-                        sitemap_truncated=False,
+                        sitemap_truncated=self._discovery.sitemap_truncated
+                        if self._discovery
+                        else False,
                     ),
                     material=Material(
                         state="needs_description",

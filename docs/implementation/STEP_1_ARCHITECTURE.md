@@ -478,3 +478,53 @@ Google-Extended usage_control отличны от crawler access. Полные C
 401/403 unknown — продуктовая консервативная политика, не поведение всех операторов.
 Public audit/probes/LLM не запускались. Generic fetch остаётся trusted seam с явным
 authorizer; production crawler следующего этапа должен использовать fetch_html.
+
+
+## Реализация §5: служебные sitemap — 01.11.2026
+
+Владелец `step1/discovery.py:DiscoveryService`: одноразовый ledger на runtime;
+вход — проверенный сохранённый HTML и REP; выход — DiscoveryResult плюс карты/raw.
+Входной HTML не запрашивается повторно. Порядок: entry → HTML links (первый base,
+даже поздний) → directives REP (BFS) → только /sitemap.xml, /sitemap_index.xml,
+пока нет пригодных URL. Повторный discover возвращает cache; прерванный ledger
+нельзя перезапустить. Discovery не является crawler: найденные URL ещё не selected.
+
+Sitemap может быть вне HTML path_scope; host входит в allowed_hosts или отдельный
+allowed_sitemap_hosts, порты явно разрешены step0. До каждого GET карты, включая
+redirect destination, собственный REP соответствующего scheme+host+port.
+Разрешённый CDN получает собственный REP через тот же SafeHttpClient; robots
+redirects служебные, HTML scope не расширяется. Unknown не разрешает service/HTML GET.
+Loc — только hint, будущий HTML GET отдельно проверяет scope/REP. Других клиентов нет.
+
+Владелец step1/sitemap.py: defusedxml==0.7.1, прямой pin + uv.lock; iterparse с
+явными forbid_dtd/entities/external=True; BytesIO только bounded entity. Namespace0.9
+и префиксы поддержаны; missing namespace — SITEMAP_NAMESPACE_MISSING, чужой root
+namespace invalid. DTD/XXE/expansion/повреждение дают invalid: завершённые записи
+сохраняются evidence, но malformed map не допускает loc в очередь. При ресурсном
+truncation завершённые loc остаются hints, skipped_entries=null + причина/флаг.
+Relative loc не восстанавливается: raw_loc/issues/inferred_url=false. Metadata
+lastmod/priority/changefreq — заявления издателя. Источник сохраняет исходный ordinal
+после skipped entries. SitemapEntry требует соответствия URL/state.
+
+5 file slots резервируются до чтения, включая index/404/REP-skip; retry/redirect
+расходуют общий HTTP Budget без нового file slot. Все loc, включая повторные,
+невалидные/index, делят 5000 slots. Root depth=1, максимум3. Visited включает реальные
+redirect aliases. HTTP encoded/decoded entity каждый ≤min(step0 cap,5 MiB), один gzip
+file layer также ≤5 MiB input/output через LimitedBody. Без gzip.decompress/read-all;
+concat members отклонены. Суммарно каждый слой ≤5×5 MiB; XML производные расходуют
+тот же logical storage cap256 MiB/file64 MiB. Нет нового deadline: проверки до/после,
+каждые128 XML start nodes и64 KiB gzip input. Это cooperative, не hard CPU preemption.
+XML element depth≤64 и постоянный MAX_XML_NODES=100000 — защитные work caps.
+Новый default config не добавляется: он изменил бы fingerprint прежних публикаций.
+HTML scan≤5000 различных href; проблемы агрегируются, примеры≤max_skip_examples
+с флагом усечения; raw loc≤2048, metadata≤1024 chars + issue. Полный исходник сохранён.
+Программные ошибки не подавляются; disk failure не обещает JSON. Retry-After вне
+deadline останавливает ветвь, fallback не используется для обхода ожидания.
+
+Официальные источники, проверка 01.11.2026:
+- https://www.sitemaps.org/protocol.html — namespace/urlset/index/loc/gzip/hints.
+- https://pypi.org/project/defusedxml/0.7.1/ — API/security.
+- https://raw.githubusercontent.com/tiran/defusedxml/v0.7.1/defusedxml/common.py —
+  flags iterparse, forbid_dtd задан явно.
+- https://docs.python.org/3.12/library/zlib.html#zlib.Decompress.decompress —
+  max_length/unconsumed_tail/eof/unused_data; переиспользован LimitedBody.

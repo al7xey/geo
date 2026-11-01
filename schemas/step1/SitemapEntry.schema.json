@@ -1,0 +1,79 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "ordinal": {
+      "exclusiveMaximum": 5000,
+      "minimum": 0,
+      "title": "Ordinal",
+      "type": "integer"
+    },
+    "raw_loc": {
+      "maxLength": 2048,
+      "title": "Raw Loc",
+      "type": "string"
+    },
+    "url": {
+      "anyOf": [
+        {
+          "format": "uri",
+          "pattern": "^https?://",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Url"
+    },
+    "state": {
+      "enum": [
+        "accepted",
+        "skipped"
+      ],
+      "title": "State",
+      "type": "string"
+    },
+    "inferred_url": {
+      "const": false,
+      "default": false,
+      "title": "Inferred Url",
+      "type": "boolean"
+    },
+    "publisher_metadata": {
+      "items": {
+        "maxItems": 2,
+        "minItems": 2,
+        "prefixItems": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "string"
+          }
+        ],
+        "type": "array"
+      },
+      "title": "Publisher Metadata",
+      "type": "array"
+    },
+    "issues": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Issues",
+      "type": "array"
+    }
+  },
+  "required": [
+    "ordinal",
+    "raw_loc",
+    "url",
+    "state",
+    "publisher_metadata",
+    "issues"
+  ],
+  "title": "SitemapEntry",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:SitemapEntry:1.0.0"
+}

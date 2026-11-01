@@ -1,0 +1,159 @@
+{
+  "$defs": {
+    "DiscoveredURL": {
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "format": "uri",
+          "pattern": "^https?://",
+          "title": "Url",
+          "type": "string"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/DiscoverySource"
+          },
+          "title": "Sources",
+          "type": "array"
+        }
+      },
+      "required": [
+        "url",
+        "sources"
+      ],
+      "title": "DiscoveredURL",
+      "type": "object"
+    },
+    "DiscoverySource": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "entry",
+            "html_link",
+            "sitemap",
+            "redirect",
+            "robots_directive",
+            "standard_path"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "source_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Source Id",
+          "type": "string"
+        },
+        "occurrence": {
+          "minimum": 0,
+          "title": "Occurrence",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "kind",
+        "source_id",
+        "occurrence"
+      ],
+      "title": "DiscoverySource",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "discovery-1.0.0",
+      "default": "discovery-1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "urls": {
+      "items": {
+        "$ref": "#/$defs/DiscoveredURL"
+      },
+      "maxItems": 5000,
+      "title": "Urls",
+      "type": "array"
+    },
+    "sitemap_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "maxItems": 5,
+      "title": "Sitemap Ids",
+      "type": "array"
+    },
+    "problem_counts": {
+      "items": {
+        "maxItems": 2,
+        "minItems": 2,
+        "prefixItems": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "integer"
+          }
+        ],
+        "type": "array"
+      },
+      "title": "Problem Counts",
+      "type": "array"
+    },
+    "problem_examples": {
+      "items": {
+        "maxItems": 2,
+        "minItems": 2,
+        "prefixItems": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "string"
+          }
+        ],
+        "type": "array"
+      },
+      "title": "Problem Examples",
+      "type": "array"
+    },
+    "examples_truncated": {
+      "title": "Examples Truncated",
+      "type": "boolean"
+    },
+    "sitemap_truncated": {
+      "title": "Sitemap Truncated",
+      "type": "boolean"
+    },
+    "discovery_truncated": {
+      "title": "Discovery Truncated",
+      "type": "boolean"
+    },
+    "skipped_sitemaps": {
+      "minimum": 0,
+      "title": "Skipped Sitemaps",
+      "type": "integer"
+    },
+    "unpacked_bytes": {
+      "minimum": 0,
+      "title": "Unpacked Bytes",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "urls",
+    "sitemap_ids",
+    "problem_counts",
+    "problem_examples",
+    "examples_truncated",
+    "sitemap_truncated",
+    "discovery_truncated",
+    "skipped_sitemaps",
+    "unpacked_bytes"
+  ],
+  "title": "DiscoveryResult",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:DiscoveryResult:1.0.0"
+}

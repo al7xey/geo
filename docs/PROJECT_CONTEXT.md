@@ -8,7 +8,7 @@ GEO — Generative Engine Optimization: анализ видимости комп
 систем. Пользователь поручил последовательно разбирать и улучшать алгоритм, включая код.
 Шаг 0 и контракт входа шага 1 реализованы. 01.11.2026 пользователь поручил выполнить
 цепочку разработки шага 1 (PROMPTS_STEP_1, 1–13) с последовательными gates.
-Подготовлены спецификация, модели, runtime-каркас и robots/реестр.
+Подготовлены спецификация, модели, runtime-каркас, robots/реестр и sitemap/discovery.
 Автоматический обход пока отсутствует; public audit-сеть не запускалась.
 Шаг 2, LLM и платные API не входят в это поручение. Browser/UA probes выключены по умолчанию.
 
@@ -250,3 +250,26 @@ Google-Extended UA null. Два дефекта объяснителя воспр
 Итог gate промпта 4: полный pytest 467 passed / 3 прежних platform skips;
 strict mypy win32/linux, Ruff, Bandit, lock/pip check, generators (32 + 22 artifacts)
 и diff check успешны. Public audit и UA probes не запускались.
+
+
+## Промпт 5 и повторная проверка готовности — 01.11.2026
+
+DiscoveryService/DiscoveryResult, SitemapEntry и bounded XML/gzip реализованы;
+defusedxml0.7.1 закреплён вместе с lock. Решение: отдельные service hosts со своим
+REP перед каждым GET; visited/file/loc/depth quotas в общем Budget, publisher
+metadata не превращаются в факты. Источники/caps/ошибки записаны в архитектуре.
+Новый real TLS CDN-тест проверяет SNI/evidence/запрет HTML и точные HTTP counters.
+
+Completion audit выявил блокирующую неполноту: §§6–14 как сквозной pipeline нет,
+runner выдаёт SKELETON_ONLY. Нет material/extraction/diagnostics/CLI/Step2 loader.
+Приёмка всего step1 не пройдена; модели/сканеры не заменяют поведение.
+STEP_1_VALIDATION/SECURITY_REVIEW/PERFORMANCE фиксируют факты и ограничения.
+
+Итог проверок доступных компонентов: final tracked-only copy с новым venv/no-cache/
+locked —500 passed/3 прежних platform skips; Ruff, strict mypy win32/linux,
+generators32/25, Bandit0 findings, hashed runtime/dev audit (DB доступна), lock/pip
+check, build wheel43/sdist45 — pass. Installed wheel из site-packages:7 passed
+(6 realTLS+golden legacy hash); полноценного Step2 e2e нет. До коммита исправлен
+S3: XML node work cap — constant, старые config fingerprints сохранены.
+Локальная очистка tmp test dirs отклонена auto-review (blocked by policy);
+окружения/логи/сборки ignored и не попадают в Git, свои небольшие scripts удалены.

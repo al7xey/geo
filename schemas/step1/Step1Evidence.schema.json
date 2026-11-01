@@ -61,7 +61,9 @@
         "robots_text",
         "robots_decision",
         "sitemap_observation",
-        "registry_snapshot"
+        "registry_snapshot",
+        "sitemap_xml",
+        "discovery_observation"
       ],
       "title": "Representation",
       "type": "string"

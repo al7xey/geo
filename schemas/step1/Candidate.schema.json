@@ -8,7 +8,9 @@
             "entry",
             "html_link",
             "sitemap",
-            "redirect"
+            "redirect",
+            "robots_directive",
+            "standard_path"
           ],
           "title": "Kind",
           "type": "string"

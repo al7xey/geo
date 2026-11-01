@@ -462,3 +462,26 @@ RobotsService; generic fetch с authorizer остаётся доверенным
 Итог gate промпта 4: полный pytest 467 passed / 3 прежних platform skips;
 strict mypy win32/linux, Ruff, Bandit, lock/pip check, generators (32 + 22 artifacts)
 и diff check успешны. Public audit и UA probes не запускались.
+
+
+### Sitemap/discovery, промпт 5 — 01.11.2026
+
+R05.01–12 реализованы в step1/discovery.py/sitemap.py; API/caps/ошибки — в архитектуре.
+Это не закрывает crawler/R14: crawl пока содержит входную страницу, discovery
+сохранён отдельным raw observation/списком карт, без выдуманного coverage обхода.
+
+| Требование | Прямые тесты tests/test_step1_sitemap*.py |
+|---|---|
+| R05.01–03 | test_namespace_loc_publisher_metadata_and_exact_ordinals; test_successful_standard_map_stops_fallback |
+| R05.04–05 | test_http_gzip_and_gzip_file_are_separate_evidence_layers; test_hostile_xml_never_opens_network; test_xml_work_and_time_limits; test_gzip_file_caps_and_incomplete |
+| R05.06,10 | test_namespace_loc_publisher_metadata_and_exact_ordinals; test_missing_duplicate_nested_loc_and_namespace_extensions |
+| R05.07 | test_cycles_duplicates_depth_and_global_file_limit; test_all_entries_share_limit_including_index_and_invalid; test_default_5000_entry_boundary_is_shared_work_cap |
+| R05.08–09 | test_cdn_requires_explicit_service_scope_and_own_robots; test_robots_denies_both_standard_maps_before_get; test_map_redirect_checks_cdn_robots_before_destination; test_real_tls_cdn_maps_and_no_html_scope_expansion |
+| R05.11–12 | test_limited_standard_paths_and_unknown_keeps_html_links; test_malformed_map_entries_are_not_admitted_and_links_survive; test_bounded_link_and_problem_examples_keep_late_base; test_retry_after_does_not_trigger_fallback_to_evade_wait |
+
+SitemapEntry URL/state: два отрицательных теста до исправления падали DID NOT RAISE,
+после исправления проходят. Генератор step1 —25 artifacts, step0 —32 без изменений.
+Отдельный golden regression выявил изменение старого config hash из-за нового default;
+cap XML nodes вынесен в constant, config/schema/example hashes сохранены (S3 отчёта).
+Статусы всех атомарных требований при повторной проверке — STEP_1_VALIDATION.md;
+исторические D в исходной матрице отражают момент спецификации, не новую приёмку.

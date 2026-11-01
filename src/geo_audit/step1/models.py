@@ -41,6 +41,8 @@ Representation = Literal[
     "robots_decision",
     "sitemap_observation",
     "registry_snapshot",
+    "sitemap_xml",
+    "discovery_observation",
 ]
 Role = Literal["entry", "about", "services", "prices", "contacts", "faq", "other"]
 
@@ -159,7 +161,7 @@ class QuoteRef(Contract):
 
 
 class DiscoverySource(Contract):
-    kind: Literal["entry", "html_link", "sitemap", "redirect"]
+    kind: Literal["entry", "html_link", "sitemap", "redirect", "robots_directive", "standard_path"]
     source_id: Identifier
     occurrence: int = Field(ge=0)
 
@@ -239,6 +241,22 @@ class RobotsDecision(Contract):
         return self
 
 
+class SitemapEntry(Contract):
+    ordinal: int = Field(ge=0, lt=5000)
+    raw_loc: str = Field(max_length=2048)
+    url: URL | None
+    state: Literal["accepted", "skipped"]
+    inferred_url: Literal[False] = False
+    publisher_metadata: tuple[tuple[str, str], ...]
+    issues: tuple[str, ...]
+
+    @model_validator(mode="after")
+    def admission(self) -> Self:
+        if (self.state == "accepted") != (self.url is not None):
+            raise ValueError("sitemap entry state must agree with normalized URL")
+        return self
+
+
 class SitemapObservation(Contract):
     sitemap_id: Identifier
     url: URL
@@ -252,6 +270,8 @@ class SitemapObservation(Contract):
     skipped_entries: int | None = Field(ge=0)
     reason_code: str | None
     truncated: bool
+    entries: tuple[SitemapEntry, ...] = ()
+    sources: tuple[DiscoverySource, ...] = ()
 
 
 class DirectiveObservation(Contract):
@@ -568,10 +588,18 @@ class Step1Result(Contract):
         )
         evidence = {e.evidence_id: e for e in self.evidence}
         pages = {p.page_id: p for p in self.crawl.pages}
-        known_sources = set(evidence) | set(pages) | {s.sitemap_id for s in self.crawl.sitemaps}
+        known_sources = (
+            set(evidence)
+            | set(pages)
+            | {s.sitemap_id for s in self.crawl.sitemaps}
+            | {r.observation_id for r in self.crawl.robots}
+        )
         for candidate in self.crawl.candidates:
             if any(s.source_id not in known_sources for s in candidate.sources):
                 raise ValueError("dangling discovery source")
+        for sitemap in self.crawl.sitemaps:
+            if any(s.source_id not in known_sources for s in sitemap.sources):
+                raise ValueError("dangling sitemap source")
         if not any(
             e.evidence_id == self.source.selected_evidence_id
             or e.original_evidence_id == self.source.selected_evidence_id
