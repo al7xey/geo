@@ -267,3 +267,7 @@ SeCreateSymbolicLinkPrivilege не назначена текущему токе�
 Hardlink, junction и directory rename race проверены; эти результаты не подменяют file
 symlink тест. Остальные ограничения security review сохраняются. Полное завершение
 строгого security gate до этой внешней проверки не заявляется.
+
+## Подготовка внешней платформенной проверки
+
+По возобновлённому поручению добавлен .github/workflows/step0.yml: Windows 2025 / Ubuntu 24.04, Python 3.12.10, uv 0.9.7, read-only contents permission, SHA-pinned actions, без caches и с timeout 15 минут. Все тесты, типы, lint/security/dependency audit, генерация и сборка выполняются заново. Отдельный JUnit gate требует один реально выполненный file-symlink case, ноль skip/failure. До получения результата это подготовка, а не успешная проверка. GitHub Actions для репозитория включён; системные настройки пользователя не менялись. Новый tracked workflow увеличивает инвентаризацию до 101 файла.

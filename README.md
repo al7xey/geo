@@ -158,6 +158,11 @@ pyproject/lock и метаданные, без tests/docs/PDF/audit data. Пол
 (ReportLab, pdfplumber, pypdf, Pillow), Windows fonts и для QA — подготовленных рендеров.
 Это исторический workflow подготовки PDF, не зависимость и не команда приёмки шага 0.
 
+`.github/workflows/step0.yml` повторяет приёмку на Windows 2025 и Ubuntu 24.04.
+Отдельный gate требует фактического выполнения file-symlink теста без skip. У workflow
+read-only token, actions закреплены SHA, caches отключены, время каждой job ограничено.
+Наличие workflow не означает успешного CI: фактические результаты фиксируются в отчёте приёмки.
+
 Документы: [архитектура](docs/implementation/STEP_0_ARCHITECTURE.md),
 [матрица требований](docs/implementation/STEP_0_REQUIREMENTS.md),
 [проверки](docs/implementation/STEP_0_VALIDATION.md),
