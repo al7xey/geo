@@ -1,6 +1,7 @@
 """Keep the Windows TLS-cancellation regression separate from subprocess tests."""
 
 import asyncio
+import errno
 import sys
 
 import pytest
@@ -24,26 +25,20 @@ def windows_tls_deadline_loop(request):
 
 
 @pytest.fixture(autouse=True)
-def macos_test_server_close(request, monkeypatch):
-    if sys.platform != "darwin" or request.node.name != (
-        "test_real_tls_fifteen_step0_starts_then_step1_and_expired_handoff"
-    ):
+def macos_test_server_close(monkeypatch):
+    if sys.platform != "darwin":
         return
     original = asyncio.start_server
 
     async def start_server(callback, *args, **kwargs):
+        if kwargs.get("ssl") is None:
+            return await original(callback, *args, **kwargs)
+
         async def handler(reader, writer):
             wait_closed = writer.wait_closed
 
             async def closing_server_writer():
-                try:
-                    await wait_closed()
-                except ConnectionResetError:
-                    # macOS reports the client's forced TLS close as ECONNRESET.
-                    # Only the synthetic server's already-closing writer is covered;
-                    # request reading, assertions and all production clients are untouched.
-                    if not writer.is_closing():
-                        raise
+                await wait_for_test_server_close(writer, wait_closed)
 
             writer.wait_closed = closing_server_writer
             await callback(reader, writer)
@@ -51,3 +46,13 @@ def macos_test_server_close(request, monkeypatch):
         return await original(handler, *args, **kwargs)
 
     monkeypatch.setattr(asyncio, "start_server", start_server)
+
+
+async def wait_for_test_server_close(writer, wait_closed):
+    try:
+        await wait_closed()
+    except ConnectionResetError as error:
+        # Only an already-closing synthetic TLS server writer is covered.
+        # Reads, response writes/assertions and all production clients are untouched.
+        if not writer.is_closing() or error.errno != errno.ECONNRESET:
+            raise
