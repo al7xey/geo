@@ -1,0 +1,123 @@
+{
+  "properties": {
+    "answer_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Answer Id",
+      "type": "string"
+    },
+    "prompt_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Prompt Id",
+      "type": "string"
+    },
+    "system": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "System",
+      "type": "string"
+    },
+    "model": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Model",
+      "type": "string"
+    },
+    "effort": {
+      "anyOf": [
+        {
+          "maxLength": 200,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Effort"
+    },
+    "repeat": {
+      "maximum": 10000,
+      "minimum": 1,
+      "title": "Repeat",
+      "type": "integer"
+    },
+    "status": {
+      "enum": [
+        "ok",
+        "empty",
+        "error",
+        "skipped"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "text": {
+      "default": "",
+      "maxLength": 500000,
+      "title": "Text",
+      "type": "string"
+    },
+    "sources": {
+      "items": {
+        "maxLength": 4096,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 200,
+      "title": "Sources",
+      "type": "array"
+    },
+    "created_at": {
+      "anyOf": [
+        {
+          "maxLength": 100,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Created At"
+    },
+    "raw_file": {
+      "anyOf": [
+        {
+          "maxLength": 1000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Raw File"
+    },
+    "raw_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Raw Sha256"
+    }
+  },
+  "required": [
+    "answer_id",
+    "prompt_id",
+    "system",
+    "model",
+    "repeat",
+    "status"
+  ],
+  "title": "CollectorAnswer",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step5:CollectorAnswer:1.0"
+}

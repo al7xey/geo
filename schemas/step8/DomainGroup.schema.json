@@ -1,0 +1,102 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "host": {
+      "title": "Host",
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "review",
+        "media",
+        "directory",
+        "forum",
+        "company",
+        "other",
+        "unknown"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "owner": {
+      "enum": [
+        "first_party",
+        "external"
+      ],
+      "title": "Owner",
+      "type": "string"
+    },
+    "method": {
+      "enum": [
+        "target_profile",
+        "manual_catalog",
+        "unclassified"
+      ],
+      "title": "Method",
+      "type": "string"
+    },
+    "reason": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Reason"
+    },
+    "answer_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "title": "Answer Ids",
+      "type": "array"
+    },
+    "eligible_citation_answer_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "title": "Eligible Citation Answer Ids",
+      "type": "array"
+    },
+    "eligible_text_answer_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "title": "Eligible Text Answer Ids",
+      "type": "array"
+    },
+    "urls": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Urls",
+      "type": "array"
+    },
+    "resolution_status": {
+      "const": "not_attempted",
+      "default": "not_attempted",
+      "title": "Resolution Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "host",
+    "kind",
+    "owner",
+    "method",
+    "reason",
+    "answer_ids",
+    "eligible_citation_answer_ids",
+    "eligible_text_answer_ids",
+    "urls"
+  ],
+  "title": "DomainGroup",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step8:DomainGroup:1.0"
+}

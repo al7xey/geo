@@ -1,0 +1,75 @@
+{
+  "$defs": {
+    "PublicationFile": {
+      "additionalProperties": false,
+      "properties": {
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "size_bytes": {
+          "maximum": 67108864,
+          "minimum": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "sha256",
+        "size_bytes"
+      ],
+      "title": "PublicationFile",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "step5-publication-1.1",
+      "default": "step5-publication-1.1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "committed": {
+      "const": true,
+      "default": true,
+      "title": "Committed",
+      "type": "boolean"
+    },
+    "algorithm_version": {
+      "const": "step5-rules-2",
+      "default": "step5-rules-2",
+      "title": "Algorithm Version",
+      "type": "string"
+    },
+    "psl_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Psl Sha256",
+      "type": "string"
+    },
+    "input_fingerprint": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Input Fingerprint",
+      "type": "string"
+    },
+    "files": {
+      "additionalProperties": {
+        "$ref": "#/$defs/PublicationFile"
+      },
+      "maxProperties": 32,
+      "minProperties": 1,
+      "title": "Files",
+      "type": "object"
+    }
+  },
+  "required": [
+    "psl_sha256",
+    "input_fingerprint",
+    "files"
+  ],
+  "title": "PublicationManifest",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step5:PublicationManifest:1.0"
+}

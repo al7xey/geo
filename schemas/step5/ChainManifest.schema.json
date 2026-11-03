@@ -1,0 +1,50 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "steps5-8-chain-1.0",
+      "default": "steps5-8-chain-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "committed": {
+      "const": true,
+      "default": true,
+      "title": "Committed",
+      "type": "boolean"
+    },
+    "stages": {
+      "additionalProperties": {
+        "pattern": "^[a-f0-9]{64}$",
+        "type": "string"
+      },
+      "title": "Stages",
+      "type": "object"
+    },
+    "report_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Report Sha256",
+      "type": "string"
+    },
+    "model_calls": {
+      "const": 0,
+      "default": 0,
+      "title": "Model Calls",
+      "type": "integer"
+    },
+    "network_requests": {
+      "const": 0,
+      "default": 0,
+      "title": "Network Requests",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "stages",
+    "report_sha256"
+  ],
+  "title": "ChainManifest",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step5:ChainManifest:1.0"
+}

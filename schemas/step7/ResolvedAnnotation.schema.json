@@ -1,0 +1,275 @@
+{
+  "$defs": {
+    "BrandDisagreement": {
+      "additionalProperties": false,
+      "properties": {
+        "primary_brand_index": {
+          "minimum": 0,
+          "title": "Primary Brand Index",
+          "type": "integer"
+        },
+        "reviewed_name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Reviewed Name",
+          "type": "string"
+        },
+        "fields": {
+          "items": {
+            "enum": [
+              "is_target",
+              "recommended",
+              "discouraged"
+            ],
+            "type": "string"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "title": "Fields",
+          "type": "array"
+        },
+        "review_job_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Review Job Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "primary_brand_index",
+        "reviewed_name",
+        "fields",
+        "review_job_id"
+      ],
+      "title": "BrandDisagreement",
+      "type": "object"
+    },
+    "BrandOverride": {
+      "additionalProperties": false,
+      "properties": {
+        "primary_brand_index": {
+          "minimum": 0,
+          "title": "Primary Brand Index",
+          "type": "integer"
+        },
+        "reviewed_name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Reviewed Name",
+          "type": "string"
+        },
+        "changes": {
+          "additionalProperties": {
+            "enum": [
+              "yes",
+              "no"
+            ],
+            "type": "string"
+          },
+          "maxProperties": 3,
+          "minProperties": 1,
+          "propertyNames": {
+            "enum": [
+              "is_target",
+              "recommended",
+              "discouraged"
+            ]
+          },
+          "title": "Changes",
+          "type": "object"
+        },
+        "review_job_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Review Job Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "primary_brand_index",
+        "reviewed_name",
+        "changes",
+        "review_job_id"
+      ],
+      "title": "BrandOverride",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "step7-effective-1.1",
+      "default": "step7-effective-1.1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "answer_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Answer Id",
+      "type": "string"
+    },
+    "primary_text_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Primary Text Sha256",
+      "type": "string"
+    },
+    "primary_annotation_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Primary Annotation Sha256",
+      "type": "string"
+    },
+    "target_presence": {
+      "anyOf": [
+        {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Target Presence"
+    },
+    "target_recommended": {
+      "anyOf": [
+        {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Target Recommended"
+    },
+    "target_discouraged": {
+      "anyOf": [
+        {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Target Discouraged"
+    },
+    "target_cited": {
+      "anyOf": [
+        {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Target Cited"
+    },
+    "measurement_eligible": {
+      "title": "Measurement Eligible",
+      "type": "boolean"
+    },
+    "field_sources": {
+      "additionalProperties": {
+        "enum": [
+          "primary_rules",
+          "imported_model",
+          "imported_manual"
+        ],
+        "type": "string"
+      },
+      "title": "Field Sources",
+      "type": "object"
+    },
+    "brand_overrides": {
+      "items": {
+        "$ref": "#/$defs/BrandOverride"
+      },
+      "title": "Brand Overrides",
+      "type": "array"
+    },
+    "brand_disagreements": {
+      "items": {
+        "$ref": "#/$defs/BrandDisagreement"
+      },
+      "title": "Brand Disagreements",
+      "type": "array"
+    },
+    "outstanding_fields": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Outstanding Fields",
+      "type": "array"
+    },
+    "confident_disagreements": {
+      "items": {
+        "enum": [
+          "target_presence",
+          "target_recommended",
+          "target_discouraged"
+        ],
+        "type": "string"
+      },
+      "title": "Confident Disagreements",
+      "type": "array"
+    },
+    "review_job_id": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Review Job Id"
+    },
+    "review_state": {
+      "enum": [
+        "pending",
+        "not_selected",
+        "imported_model",
+        "imported_manual"
+      ],
+      "title": "Review State",
+      "type": "string"
+    }
+  },
+  "required": [
+    "answer_id",
+    "primary_text_sha256",
+    "primary_annotation_sha256",
+    "target_presence",
+    "target_recommended",
+    "target_discouraged",
+    "target_cited",
+    "measurement_eligible",
+    "field_sources",
+    "brand_overrides",
+    "outstanding_fields",
+    "confident_disagreements",
+    "review_job_id",
+    "review_state"
+  ],
+  "title": "ResolvedAnnotation",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step7:ResolvedAnnotation:1.1"
+}

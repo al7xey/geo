@@ -4,7 +4,8 @@ This project provides an evidence-first technical GEO site audit in Python3.12+.
 Steps0–1 implement URL/scope validation, pinned HTTP/TLS, robots, bounded sitemap and
 HTML discovery/crawl, extraction, technical checks and an offline corpus handoff.
 Technical recommendations are deterministic observations, not measured AI visibility.
-No company profile, LLM calls or paid API integration is implemented.
+The supplied tools/ programs implement profile/questions (step2), human approval
+(step3) and model-answer collection (step4); their source is kept unchanged.
 `geo-audit serve` provides a minimal loopback-only web UI over the same audit pipeline;
 it displays coverage, technical checks, signals and evidence-linked recommendations.
 
@@ -18,3 +19,15 @@ no scope expansion through service resources/canonical, bounded parsing/decoding
 read-only source and new publication namespaces, hashes/IDs/quotes verified offline.
 Browser/UA modes are off by default. Browser rendering is unavailable without a
 verified actual-egress adapter; enabling it returns unknown, never an unsafe launch.
+
+Integration 0-8: the supplied upstream runtime and tools for steps 0-4 are imported
+unchanged; hashes are pinned in UPSTREAM_0_4_SHA256.json. Only steps 5-8 adapt their
+exports: step5.collector validates approved questions/profile, selects the latest
+collector slot, preserves branded exclusions/ambiguity and marks systems failing
+the collector's strict >20% rule as collection_eligible=false. No raw API envelopes
+are opened. step5.workflow runs/publishes/verifies the whole offline tail; bounded
+per-operation replay reuse accelerates steps6/7 without skipping file integrity.
+tools/steps0_8.py delegates prepare/review/collect to the unchanged upstream scripts,
+then analyzes saved answers. No paid calls occur in analyze; live tools require
+normal upstream credentials and operator invocation. Personal prompts stay private.
+See INTEGRATION_0_8.md. Model review executors and percentages remain future work.

@@ -1,0 +1,50 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "step8-policy-1.0",
+      "default": "step8-policy-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "max_distinct_groups": {
+      "default": 10000,
+      "maximum": 10000,
+      "minimum": 1,
+      "title": "Max Distinct Groups",
+      "type": "integer"
+    },
+    "max_occurrences": {
+      "default": 50000,
+      "maximum": 50000,
+      "minimum": 1,
+      "title": "Max Occurrences",
+      "type": "integer"
+    },
+    "max_pair_evaluations": {
+      "default": 10000,
+      "maximum": 100000,
+      "minimum": 1,
+      "title": "Max Pair Evaluations",
+      "type": "integer"
+    },
+    "max_pair_jobs": {
+      "default": 100,
+      "maximum": 1000,
+      "minimum": 0,
+      "title": "Max Pair Jobs",
+      "type": "integer"
+    },
+    "max_domain_jobs": {
+      "default": 100,
+      "maximum": 1000,
+      "minimum": 0,
+      "title": "Max Domain Jobs",
+      "type": "integer"
+    }
+  },
+  "title": "Step8Policy",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step8:Step8Policy:1.0"
+}

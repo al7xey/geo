@@ -1,0 +1,62 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "step7-policy-1.0",
+      "default": "step7-policy-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "seed": {
+      "default": 20261103,
+      "maximum": 4294967295,
+      "minimum": 0,
+      "title": "Seed",
+      "type": "integer"
+    },
+    "sample_percent": {
+      "const": 5,
+      "default": 5,
+      "title": "Sample Percent",
+      "type": "integer"
+    },
+    "minimum_comparable": {
+      "default": 20,
+      "maximum": 10000,
+      "minimum": 1,
+      "title": "Minimum Comparable",
+      "type": "integer"
+    },
+    "minimum_distinct_answers": {
+      "anyOf": [
+        {
+          "maximum": 10000,
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Minimum Distinct Answers"
+    },
+    "minimum_comparison_coverage": {
+      "default": 0.8,
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Minimum Comparison Coverage",
+      "type": "number"
+    },
+    "agreement_threshold_percent": {
+      "const": 90,
+      "default": 90,
+      "title": "Agreement Threshold Percent",
+      "type": "integer"
+    }
+  },
+  "title": "ReviewPolicy",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step7:ReviewPolicy:1.0"
+}

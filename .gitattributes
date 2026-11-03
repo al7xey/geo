@@ -4,3 +4,4 @@
 *.bin binary
 *.dat -text
 examples/contracts/run/raw/* -text
+examples/mock_answers_v1/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

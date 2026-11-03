@@ -1,0 +1,273 @@
+{
+  "$defs": {
+    "Quote": {
+      "additionalProperties": false,
+      "properties": {
+        "quote": {
+          "maxLength": 500000,
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "exclusiveMinimum": 0,
+          "title": "End",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "quote",
+        "start",
+        "end"
+      ],
+      "title": "Quote",
+      "type": "object"
+    },
+    "ReviewedBrand": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "is_target": {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "title": "Is Target",
+          "type": "string"
+        },
+        "recommended": {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "title": "Recommended",
+          "type": "string"
+        },
+        "discouraged": {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "title": "Discouraged",
+          "type": "string"
+        },
+        "identity_evidence": {
+          "items": {
+            "$ref": "#/$defs/Quote"
+          },
+          "maxItems": 2000,
+          "minItems": 1,
+          "title": "Identity Evidence",
+          "type": "array"
+        },
+        "recommendation_evidence": {
+          "items": {
+            "$ref": "#/$defs/Quote"
+          },
+          "maxItems": 2000,
+          "title": "Recommendation Evidence",
+          "type": "array"
+        },
+        "discouragement_evidence": {
+          "items": {
+            "$ref": "#/$defs/Quote"
+          },
+          "maxItems": 2000,
+          "title": "Discouragement Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "is_target",
+        "recommended",
+        "discouraged",
+        "identity_evidence"
+      ],
+      "title": "ReviewedBrand",
+      "type": "object"
+    },
+    "Reviewer": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "model",
+            "manual",
+            "synthetic"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "provider": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Provider",
+          "type": "string"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model"
+        },
+        "family": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Family"
+        }
+      },
+      "required": [
+        "kind",
+        "provider"
+      ],
+      "title": "Reviewer",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "step7-review-1.0",
+      "default": "step7-review-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "job_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Job Id",
+      "type": "string"
+    },
+    "text_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Text Sha256",
+      "type": "string"
+    },
+    "reviewer": {
+      "$ref": "#/$defs/Reviewer"
+    },
+    "status": {
+      "enum": [
+        "ok",
+        "error"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "target_presence": {
+      "anyOf": [
+        {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Target Presence"
+    },
+    "target_recommended": {
+      "anyOf": [
+        {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Target Recommended"
+    },
+    "target_discouraged": {
+      "anyOf": [
+        {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Target Discouraged"
+    },
+    "brands": {
+      "items": {
+        "$ref": "#/$defs/ReviewedBrand"
+      },
+      "maxItems": 1000,
+      "title": "Brands",
+      "type": "array"
+    },
+    "error_code": {
+      "anyOf": [
+        {
+          "enum": [
+            "network",
+            "rate_limit",
+            "refusal",
+            "invalid_response"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Error Code"
+    }
+  },
+  "required": [
+    "job_id",
+    "text_sha256",
+    "reviewer",
+    "status",
+    "target_presence",
+    "target_recommended",
+    "target_discouraged"
+  ],
+  "title": "ReviewResult",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step7:ReviewResult:1.0"
+}

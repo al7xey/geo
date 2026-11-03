@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0",
+  "dataset_id": "synthetic-gogetlinks-20-v1",
+  "synthetic": true,
+  "seed": 20261102,
+  "prompt_count": 20,
+  "answer_count": 480,
+  "providers": [
+    "mock_openai",
+    "mock_anthropic",
+    "mock_google"
+  ],
+  "repeats_per_prompt_provider": 8,
+  "groups": {
+    "A": 120,
+    "B": 120,
+    "C": 120,
+    "D": 120
+  },
+  "delivery_statuses": {
+    "ok": 445,
+    "empty": 15,
+    "error": 12,
+    "truncated": 8
+  },
+  "cases": {
+    "positive": 33,
+    "positive_cyrillic": 27,
+    "positive_case": 22,
+    "ranked": 19,
+    "recommended_list": 9,
+    "negative": 31,
+    "negative_cyrillic": 24,
+    "neutral": 39,
+    "comparison": 14,
+    "absent": 6,
+    "generic": 11,
+    "citation_only": 13,
+    "ambiguous_acronym": 29,
+    "unresolved_pronoun": 15,
+    "conditional_unknown": 22,
+    "mixed_roles": 25,
+    "negation_trap": 8,
+    "quoted_claim": 11,
+    "false_domain": 5,
+    "refusal": 4,
+    "off_topic": 5,
+    "empty": 15,
+    "api_error": 12,
+    "truncated": 8,
+    "positive_cited": 18,
+    "acronym_resolved": 9,
+    "unicode": 1,
+    "untrusted_instruction": 7,
+    "brand_substring": 7,
+    "negative_other_brand": 7,
+    "implicit_unresolved": 18,
+    "body_domain_only": 6
+  },
+  "review_status": "not_executed",
+  "file_sha256": {
+    "groups/A.jsonl": "53262ce339dae73241a5a9c37b0a4901ec22ead5c41c74a6d057e5df081e0d3f",
+    "groups/B.jsonl": "21bd843da7ad7e227ad9cec3a4c03bb5e9ee706b33698d0a6eded4aac9aad0e3",
+    "groups/C.jsonl": "ccaa566c555662263b34b6c12b4a966776927877f54e0a74e52ff756374855fa",
+    "groups/D.jsonl": "88438eec1b916b7f4b2877a14b75a151fc04e526162ac0546ffb9860c222fe29",
+    "input/answers.jsonl": "71099b233b2557f23c45c2582a2b22f0de6986170b27dbabd91418c78bfabd99",
+    "input/prompts.json": "a3aba99e10bd410865db323f6a419d6aa38f1f507e320d427d4d75aae4f08db9",
+    "input/target.json": "8e7e4de8603c58f9246081f991d754406df0224f7d17158355a84cbd94aae064",
+    "oracle/expected_aggregates.json": "706c616412828a1c2b81dfe7bc029141a6897493ee53a0b65b04b341b189448a",
+    "oracle/expected_decisions.jsonl": "bf06646f85b865170ae16db094103b6c7b469744f6073764b3e3f6e50061821b",
+    "oracle/expected_review_selection.json": "4d1e0aed33a99189c08fbdaa68c37af16d7a6baaa0b4760f3e6266b5eb320005"
+  }
+}

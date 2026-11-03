@@ -1,0 +1,188 @@
+{
+  "$defs": {
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "quote": {
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "exclusiveMinimum": 0,
+          "title": "End",
+          "type": "integer"
+        },
+        "rule": {
+          "minLength": 1,
+          "title": "Rule",
+          "type": "string"
+        }
+      },
+      "required": [
+        "quote",
+        "start",
+        "end",
+        "rule"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "occurrence_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Occurrence Id",
+      "type": "string"
+    },
+    "answer_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Answer Id",
+      "type": "string"
+    },
+    "primary_brand_index": {
+      "minimum": 0,
+      "title": "Primary Brand Index",
+      "type": "integer"
+    },
+    "primary_annotation_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Primary Annotation Sha256",
+      "type": "string"
+    },
+    "text_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Text Sha256",
+      "type": "string"
+    },
+    "raw_name": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Raw Name",
+      "type": "string"
+    },
+    "observed_variants": {
+      "items": {
+        "maxLength": 200,
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Observed Variants",
+      "type": "array"
+    },
+    "entity_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Entity Id",
+      "type": "string"
+    },
+    "identity_scope": {
+      "enum": [
+        "target",
+        "non_target_candidate",
+        "unresolved"
+      ],
+      "title": "Identity Scope",
+      "type": "string"
+    },
+    "is_target": {
+      "enum": [
+        "yes",
+        "no",
+        "uncertain"
+      ],
+      "title": "Is Target",
+      "type": "string"
+    },
+    "recommended": {
+      "enum": [
+        "yes",
+        "no",
+        "uncertain"
+      ],
+      "title": "Recommended",
+      "type": "string"
+    },
+    "discouraged": {
+      "enum": [
+        "yes",
+        "no",
+        "uncertain"
+      ],
+      "title": "Discouraged",
+      "type": "string"
+    },
+    "measurement_eligible": {
+      "title": "Measurement Eligible",
+      "type": "boolean"
+    },
+    "rank": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Rank"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/Evidence"
+      },
+      "minItems": 1,
+      "title": "Evidence",
+      "type": "array"
+    },
+    "review_job_id": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Review Job Id"
+    },
+    "role_sources": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Role Sources",
+      "type": "object"
+    }
+  },
+  "required": [
+    "occurrence_id",
+    "answer_id",
+    "primary_brand_index",
+    "primary_annotation_sha256",
+    "text_sha256",
+    "raw_name",
+    "observed_variants",
+    "entity_id",
+    "identity_scope",
+    "is_target",
+    "recommended",
+    "discouraged",
+    "measurement_eligible",
+    "evidence",
+    "role_sources"
+  ],
+  "title": "BrandOccurrence",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step8:BrandOccurrence:1.0"
+}

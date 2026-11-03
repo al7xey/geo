@@ -1,0 +1,175 @@
+{
+  "$defs": {
+    "Target": {
+      "additionalProperties": false,
+      "properties": {
+        "target_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Target Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "aliases": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 100,
+          "minItems": 1,
+          "title": "Aliases",
+          "type": "array"
+        },
+        "ambiguous_aliases": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Ambiguous Aliases",
+          "type": "array"
+        },
+        "domains": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 100,
+          "minItems": 1,
+          "title": "Domains",
+          "type": "array"
+        },
+        "synthetic": {
+          "default": false,
+          "title": "Synthetic",
+          "type": "boolean"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "maxLength": 10000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "required": [
+        "target_id",
+        "name",
+        "aliases",
+        "domains"
+      ],
+      "title": "Target",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "step6-job-1.1",
+      "default": "step6-job-1.1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "job_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Job Id",
+      "type": "string"
+    },
+    "answer_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Answer Id",
+      "type": "string"
+    },
+    "task_type": {
+      "const": "semantic_annotation",
+      "default": "semantic_annotation",
+      "title": "Task Type",
+      "type": "string"
+    },
+    "prompt_version": {
+      "const": "semantic-2",
+      "default": "semantic-2",
+      "title": "Prompt Version",
+      "type": "string"
+    },
+    "status": {
+      "const": "pending_api_key",
+      "default": "pending_api_key",
+      "title": "Status",
+      "type": "string"
+    },
+    "executed": {
+      "const": false,
+      "default": false,
+      "title": "Executed",
+      "type": "boolean"
+    },
+    "text_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Text Sha256",
+      "type": "string"
+    },
+    "text": {
+      "title": "Text",
+      "type": "string"
+    },
+    "prompt_text": {
+      "title": "Prompt Text",
+      "type": "string"
+    },
+    "target": {
+      "$ref": "#/$defs/Target"
+    },
+    "requested_fields": {
+      "items": {
+        "enum": [
+          "target_presence",
+          "target_recommended",
+          "target_discouraged",
+          "brands"
+        ],
+        "type": "string"
+      },
+      "maxItems": 4,
+      "minItems": 1,
+      "title": "Requested Fields",
+      "type": "array"
+    },
+    "synthetic": {
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "instruction": {
+      "title": "Instruction",
+      "type": "string"
+    }
+  },
+  "required": [
+    "job_id",
+    "answer_id",
+    "text_sha256",
+    "text",
+    "prompt_text",
+    "target",
+    "requested_fields",
+    "synthetic",
+    "instruction"
+  ],
+  "title": "SemanticJob",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step6:SemanticJob:1.1"
+}

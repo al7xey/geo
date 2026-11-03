@@ -1,0 +1,111 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "entity_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Entity Id",
+      "type": "string"
+    },
+    "canonical_name": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Canonical Name",
+      "type": "string"
+    },
+    "identity_scope": {
+      "enum": [
+        "target",
+        "non_target_candidate",
+        "unresolved"
+      ],
+      "title": "Identity Scope",
+      "type": "string"
+    },
+    "variants": {
+      "items": {
+        "maxLength": 200,
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Variants",
+      "type": "array"
+    },
+    "normalized_names": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Normalized Names",
+      "type": "array"
+    },
+    "occurrence_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Occurrence Ids",
+      "type": "array"
+    },
+    "answer_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Answer Ids",
+      "type": "array"
+    },
+    "eligible_answer_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "title": "Eligible Answer Ids",
+      "type": "array"
+    },
+    "merge_basis": {
+      "enum": [
+        "target_dictionary_context",
+        "normalized_spelling",
+        "manual_catalog"
+      ],
+      "title": "Merge Basis",
+      "type": "string"
+    },
+    "catalog_reasons": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Catalog Reasons",
+      "type": "array"
+    },
+    "identity_status": {
+      "enum": [
+        "declared_target",
+        "observed_name_candidate",
+        "awaiting_step7"
+      ],
+      "title": "Identity Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "entity_id",
+    "canonical_name",
+    "identity_scope",
+    "variants",
+    "normalized_names",
+    "occurrence_ids",
+    "answer_ids",
+    "eligible_answer_ids",
+    "merge_basis",
+    "catalog_reasons",
+    "identity_status"
+  ],
+  "title": "EntityGroup",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step8:EntityGroup:1.0"
+}

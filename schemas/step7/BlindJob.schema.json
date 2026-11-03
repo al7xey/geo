@@ -1,0 +1,94 @@
+{
+  "$defs": {
+    "TargetContext": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "aliases": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Aliases",
+          "type": "array"
+        },
+        "ambiguous_aliases": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Ambiguous Aliases",
+          "type": "array"
+        },
+        "domains": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Domains",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "aliases",
+        "ambiguous_aliases",
+        "domains"
+      ],
+      "title": "TargetContext",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "step7-blind-job-1.0",
+      "default": "step7-blind-job-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "job_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Job Id",
+      "type": "string"
+    },
+    "text_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Text Sha256",
+      "type": "string"
+    },
+    "text": {
+      "title": "Text",
+      "type": "string"
+    },
+    "prompt_text": {
+      "title": "Prompt Text",
+      "type": "string"
+    },
+    "target": {
+      "$ref": "#/$defs/TargetContext"
+    },
+    "instruction": {
+      "title": "Instruction",
+      "type": "string"
+    },
+    "response_schema": {
+      "const": "step7-review-1.0",
+      "default": "step7-review-1.0",
+      "title": "Response Schema",
+      "type": "string"
+    }
+  },
+  "required": [
+    "job_id",
+    "text_sha256",
+    "text",
+    "prompt_text",
+    "target",
+    "instruction"
+  ],
+  "title": "BlindJob",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step7:BlindJob:1.0"
+}

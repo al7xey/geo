@@ -1,0 +1,131 @@
+{
+  "additionalProperties": false,
+  "description": "A fact ABOUT a collected answer, never a verified claim about the business.",
+  "properties": {
+    "fact_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Fact Id",
+      "type": "string"
+    },
+    "category": {
+      "const": "observed_fact",
+      "default": "observed_fact",
+      "title": "Category",
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "answer_record",
+        "name_match"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "answer_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Answer Id",
+      "type": "string"
+    },
+    "source_line": {
+      "title": "Source Line",
+      "type": "integer"
+    },
+    "text_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Text Sha256",
+      "type": "string"
+    },
+    "quote": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Quote"
+    },
+    "start": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Start"
+    },
+    "end": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "End"
+    },
+    "ambiguous_identity": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Ambiguous Identity"
+    },
+    "location": {
+      "anyOf": [
+        {
+          "enum": [
+            "body",
+            "text_url"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Location"
+    },
+    "delivery_status": {
+      "enum": [
+        "ok",
+        "empty",
+        "error",
+        "truncated"
+      ],
+      "title": "Delivery Status",
+      "type": "string"
+    },
+    "scope": {
+      "const": "collected_answer_only",
+      "default": "collected_answer_only",
+      "title": "Scope",
+      "type": "string"
+    }
+  },
+  "required": [
+    "fact_id",
+    "kind",
+    "answer_id",
+    "source_line",
+    "text_sha256",
+    "delivery_status"
+  ],
+  "title": "ObservedFact",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step5:ObservedFact:1.0"
+}

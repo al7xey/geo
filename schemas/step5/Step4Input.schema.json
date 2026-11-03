@@ -1,0 +1,119 @@
+{
+  "$defs": {
+    "UpstreamQuestion": {
+      "properties": {
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 10000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "level": {
+          "enum": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "title": "Level",
+          "type": "integer"
+        },
+        "origin": {
+          "enum": [
+            "suggested",
+            "edited",
+            "custom"
+          ],
+          "title": "Origin",
+          "type": "string"
+        },
+        "has_brand": {
+          "title": "Has Brand",
+          "type": "boolean"
+        },
+        "counts_in_organic_visibility": {
+          "title": "Counts In Organic Visibility",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "text",
+        "level",
+        "origin",
+        "has_brand",
+        "counts_in_organic_visibility"
+      ],
+      "title": "UpstreamQuestion",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "schema_version": {
+      "const": "step4-input-1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "domain": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Domain",
+      "type": "string"
+    },
+    "language": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Language",
+      "type": "string"
+    },
+    "country": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Country",
+      "type": "string"
+    },
+    "name_variants": {
+      "items": {
+        "maxLength": 200,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 100,
+      "minItems": 1,
+      "title": "Name Variants",
+      "type": "array"
+    },
+    "prompts": {
+      "items": {
+        "$ref": "#/$defs/UpstreamQuestion"
+      },
+      "maxItems": 50,
+      "minItems": 1,
+      "title": "Prompts",
+      "type": "array"
+    },
+    "prompts_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Prompts Sha256",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "domain",
+    "language",
+    "country",
+    "name_variants",
+    "prompts",
+    "prompts_sha256"
+  ],
+  "title": "Step4Input",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step5:Step4Input:1.0"
+}

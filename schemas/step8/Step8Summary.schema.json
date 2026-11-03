@@ -1,0 +1,115 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "step8-1.0",
+      "default": "step8-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "algorithm_version": {
+      "const": "step8-rules-1",
+      "default": "step8-rules-1",
+      "title": "Algorithm Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "complete",
+        "partial"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "source_answers": {
+      "minimum": 0,
+      "title": "Source Answers",
+      "type": "integer"
+    },
+    "occurrences": {
+      "minimum": 0,
+      "title": "Occurrences",
+      "type": "integer"
+    },
+    "entity_groups": {
+      "minimum": 0,
+      "title": "Entity Groups",
+      "type": "integer"
+    },
+    "non_target_groups": {
+      "minimum": 0,
+      "title": "Non Target Groups",
+      "type": "integer"
+    },
+    "unresolved_identity_groups": {
+      "minimum": 0,
+      "title": "Unresolved Identity Groups",
+      "type": "integer"
+    },
+    "source_hosts": {
+      "minimum": 0,
+      "title": "Source Hosts",
+      "type": "integer"
+    },
+    "unknown_source_types": {
+      "minimum": 0,
+      "title": "Unknown Source Types",
+      "type": "integer"
+    },
+    "pair_jobs": {
+      "minimum": 0,
+      "title": "Pair Jobs",
+      "type": "integer"
+    },
+    "domain_jobs": {
+      "minimum": 0,
+      "title": "Domain Jobs",
+      "type": "integer"
+    },
+    "pair_evaluations": {
+      "minimum": 0,
+      "title": "Pair Evaluations",
+      "type": "integer"
+    },
+    "pair_search_complete": {
+      "title": "Pair Search Complete",
+      "type": "boolean"
+    },
+    "domains_deferred": {
+      "minimum": 0,
+      "title": "Domains Deferred",
+      "type": "integer"
+    },
+    "model_calls": {
+      "const": 0,
+      "default": 0,
+      "title": "Model Calls",
+      "type": "integer"
+    },
+    "network_requests": {
+      "const": 0,
+      "default": 0,
+      "title": "Network Requests",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "status",
+    "source_answers",
+    "occurrences",
+    "entity_groups",
+    "non_target_groups",
+    "unresolved_identity_groups",
+    "source_hosts",
+    "unknown_source_types",
+    "pair_jobs",
+    "domain_jobs",
+    "pair_evaluations",
+    "pair_search_complete",
+    "domains_deferred"
+  ],
+  "title": "Step8Summary",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step8:Step8Summary:1.0"
+}

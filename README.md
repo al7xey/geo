@@ -103,6 +103,31 @@ uv run --locked --no-dev python tools/step3_review.py private/step2_fast/<пап
 `profile.json` и `step4_input.json` — вход шага 4 с контрольной суммой вопросов.
 Офлайн-тесты: `tests/test_step3_review.py`.
 
+## Шаги 5-8: обработка собранных ответов
+
+Шаги 0-4 перенесены из предоставленного архива без изменений кода. Шаги 5-8
+адаптированы к его файлам. Полный порядок работы и единая команда запуска:
+[docs/INTEGRATION_0_8.md](docs/INTEGRATION_0_8.md).
+
+Если ответы уже собраны, новые запросы и оплата не нужны:
+
+```powershell
+uv run --locked python tools/steps0_8.py analyze --step4-input private/step3/PROJECT/step4_input.json --answers-dir private/step4/PROJECT --output-dir private/complete/PROJECT
+```
+
+Откройте `private/complete/PROJECT/report.html`. Папка результата должна быть новой.
+Для проверки результата:
+
+```powershell
+uv run --locked python -m geo_audit.step5.workflow --verify private/complete/PROJECT
+```
+
+Профиль по умолчанию читается рядом с `step4_input.json`; другой утверждённый файл
+можно передать через `--profile`. Повторы сбора не учитываются дважды. Брендовые
+вопросы и исключённые сборщиком системы не возвращаются в измерение видимости.
+Неопределённые случаи сохраняются для проверки; обращения к моделям на шагах
+5-8 пока отключены. Итоговые проценты видимости относятся к шагу 9.
+
 ## Шаг 4: ответы ИИ-систем (tools/, alpha)
 
 ```sh

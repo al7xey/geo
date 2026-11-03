@@ -1,0 +1,17 @@
+{
+  "target_id": "synthetic-gogetlinks",
+  "name": "GoGetLinks",
+  "aliases": [
+    "GoGetLinks",
+    "ГоГетЛинкс",
+    "GGL"
+  ],
+  "ambiguous_aliases": [
+    "GGL"
+  ],
+  "domains": [
+    "gogetlinks.example.test"
+  ],
+  "synthetic": true,
+  "note": "Домен тестовый; все утверждения о брендах вымышлены."
+}

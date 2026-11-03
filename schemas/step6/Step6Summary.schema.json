@@ -1,0 +1,124 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "step6-1.1",
+      "default": "step6-1.1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "algorithm_version": {
+      "const": "step6-rules-2",
+      "default": "step6-rules-2",
+      "title": "Algorithm Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "complete",
+        "partial"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "input_answers": {
+      "minimum": 0,
+      "title": "Input Answers",
+      "type": "integer"
+    },
+    "annotated": {
+      "minimum": 0,
+      "title": "Annotated",
+      "type": "integer"
+    },
+    "not_eligible": {
+      "minimum": 0,
+      "title": "Not Eligible",
+      "type": "integer"
+    },
+    "rules_complete": {
+      "minimum": 0,
+      "title": "Rules Complete",
+      "type": "integer"
+    },
+    "pending_model": {
+      "minimum": 0,
+      "title": "Pending Model",
+      "type": "integer"
+    },
+    "target_presence": {
+      "additionalProperties": {
+        "minimum": 0,
+        "type": "integer"
+      },
+      "title": "Target Presence",
+      "type": "object"
+    },
+    "target_recommended": {
+      "additionalProperties": {
+        "minimum": 0,
+        "type": "integer"
+      },
+      "title": "Target Recommended",
+      "type": "object"
+    },
+    "target_discouraged": {
+      "additionalProperties": {
+        "minimum": 0,
+        "type": "integer"
+      },
+      "title": "Target Discouraged",
+      "type": "object"
+    },
+    "prompt_groups": {
+      "additionalProperties": {
+        "minimum": 0,
+        "type": "integer"
+      },
+      "title": "Prompt Groups",
+      "type": "object"
+    },
+    "pending_reasons": {
+      "additionalProperties": {
+        "minimum": 0,
+        "type": "integer"
+      },
+      "title": "Pending Reasons",
+      "type": "object"
+    },
+    "independent_review": {
+      "const": "not_performed",
+      "default": "not_performed",
+      "title": "Independent Review",
+      "type": "string"
+    },
+    "network_requests": {
+      "const": 0,
+      "default": 0,
+      "title": "Network Requests",
+      "type": "integer"
+    },
+    "model_calls": {
+      "const": 0,
+      "default": 0,
+      "title": "Model Calls",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "status",
+    "input_answers",
+    "annotated",
+    "not_eligible",
+    "rules_complete",
+    "pending_model",
+    "target_presence",
+    "target_recommended",
+    "target_discouraged",
+    "prompt_groups"
+  ],
+  "title": "Step6Summary",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step6:Step6Summary:1.1"
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": "step8-catalog-1.0",
+  "alias_groups": [
+    {
+      "aliases": [
+        "Synthetic Brand",
+        "Синтетик Бренд"
+      ],
+      "reason": "Synthetic fixture; not evidence about a real company."
+    }
+  ],
+  "domain_labels": [
+    {
+      "host": "directory.example.test",
+      "kind": "directory",
+      "reason": "Controlled synthetic directory fixture."
+    }
+  ]
+}

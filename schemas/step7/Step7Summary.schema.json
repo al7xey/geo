@@ -1,0 +1,315 @@
+{
+  "$defs": {
+    "AgreementMetric": {
+      "additionalProperties": false,
+      "properties": {
+        "assigned_comparisons": {
+          "minimum": 0,
+          "title": "Assigned Comparisons",
+          "type": "integer"
+        },
+        "comparable": {
+          "minimum": 0,
+          "title": "Comparable",
+          "type": "integer"
+        },
+        "comparable_answers": {
+          "minimum": 0,
+          "title": "Comparable Answers",
+          "type": "integer"
+        },
+        "matches": {
+          "minimum": 0,
+          "title": "Matches",
+          "type": "integer"
+        },
+        "disagreements": {
+          "minimum": 0,
+          "title": "Disagreements",
+          "type": "integer"
+        },
+        "comparison_coverage": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Comparison Coverage"
+        },
+        "agreement_percent": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Agreement Percent"
+        },
+        "reliability": {
+          "enum": [
+            "not_assessed",
+            "insufficient_sample",
+            "medium",
+            "low"
+          ],
+          "title": "Reliability",
+          "type": "string"
+        },
+        "basis": {
+          "const": "declared_model_imports_only",
+          "default": "declared_model_imports_only",
+          "title": "Basis",
+          "type": "string"
+        }
+      },
+      "required": [
+        "assigned_comparisons",
+        "comparable",
+        "comparable_answers",
+        "matches",
+        "disagreements",
+        "comparison_coverage",
+        "agreement_percent",
+        "reliability"
+      ],
+      "title": "AgreementMetric",
+      "type": "object"
+    },
+    "Reviewer": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "model",
+            "manual",
+            "synthetic"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "provider": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Provider",
+          "type": "string"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model"
+        },
+        "family": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Family"
+        }
+      },
+      "required": [
+        "kind",
+        "provider"
+      ],
+      "title": "Reviewer",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "step7-1.1",
+      "default": "step7-1.1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "algorithm_version": {
+      "const": "step7-rules-2",
+      "default": "step7-rules-2",
+      "title": "Algorithm Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "pending_api_key",
+        "partial",
+        "complete"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "eligible_answers": {
+      "minimum": 0,
+      "title": "Eligible Answers",
+      "type": "integer"
+    },
+    "synthetic_input_answers": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Synthetic Input Answers",
+      "type": "integer"
+    },
+    "random_sample_count": {
+      "minimum": 0,
+      "title": "Random Sample Count",
+      "type": "integer"
+    },
+    "uncertain_count": {
+      "minimum": 0,
+      "title": "Uncertain Count",
+      "type": "integer"
+    },
+    "overlap_count": {
+      "minimum": 0,
+      "title": "Overlap Count",
+      "type": "integer"
+    },
+    "selected_count": {
+      "minimum": 0,
+      "title": "Selected Count",
+      "type": "integer"
+    },
+    "accepted_results": {
+      "minimum": 0,
+      "title": "Accepted Results",
+      "type": "integer"
+    },
+    "quarantined_rows": {
+      "minimum": 0,
+      "title": "Quarantined Rows",
+      "type": "integer"
+    },
+    "duplicate_rows": {
+      "minimum": 0,
+      "title": "Duplicate Rows",
+      "type": "integer"
+    },
+    "model_reviews": {
+      "minimum": 0,
+      "title": "Model Reviews",
+      "type": "integer"
+    },
+    "manual_reviews": {
+      "minimum": 0,
+      "title": "Manual Reviews",
+      "type": "integer"
+    },
+    "synthetic_reviews": {
+      "minimum": 0,
+      "title": "Synthetic Reviews",
+      "type": "integer"
+    },
+    "error_results": {
+      "minimum": 0,
+      "title": "Error Results",
+      "type": "integer"
+    },
+    "pending_jobs": {
+      "minimum": 0,
+      "title": "Pending Jobs",
+      "type": "integer"
+    },
+    "resolved_fields": {
+      "minimum": 0,
+      "title": "Resolved Fields",
+      "type": "integer"
+    },
+    "unresolved_answers": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Unresolved Answers",
+      "type": "integer"
+    },
+    "conflicting_answers": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Conflicting Answers",
+      "type": "integer"
+    },
+    "rank_outside_scope_answers": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Rank Outside Scope Answers",
+      "type": "integer"
+    },
+    "model_reviewer": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Reviewer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "independent_review": {
+      "enum": [
+        "not_performed",
+        "imported_declarations_only"
+      ],
+      "title": "Independent Review",
+      "type": "string"
+    },
+    "metrics": {
+      "additionalProperties": {
+        "$ref": "#/$defs/AgreementMetric"
+      },
+      "title": "Metrics",
+      "type": "object"
+    },
+    "network_requests": {
+      "const": 0,
+      "default": 0,
+      "title": "Network Requests",
+      "type": "integer"
+    },
+    "model_calls": {
+      "const": 0,
+      "default": 0,
+      "title": "Model Calls",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "status",
+    "eligible_answers",
+    "random_sample_count",
+    "uncertain_count",
+    "overlap_count",
+    "selected_count",
+    "accepted_results",
+    "quarantined_rows",
+    "duplicate_rows",
+    "model_reviews",
+    "manual_reviews",
+    "synthetic_reviews",
+    "error_results",
+    "pending_jobs",
+    "resolved_fields",
+    "independent_review",
+    "metrics"
+  ],
+  "title": "Step7Summary",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step7:Step7Summary:1.1"
+}

@@ -1,0 +1,98 @@
+{
+  "$defs": {
+    "AliasGroup": {
+      "additionalProperties": false,
+      "properties": {
+        "aliases": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 100,
+          "minItems": 2,
+          "title": "Aliases",
+          "type": "array"
+        },
+        "reason": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "aliases",
+        "reason"
+      ],
+      "title": "AliasGroup",
+      "type": "object"
+    },
+    "DomainLabel": {
+      "additionalProperties": false,
+      "properties": {
+        "host": {
+          "maxLength": 253,
+          "minLength": 1,
+          "title": "Host",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "review",
+            "media",
+            "directory",
+            "forum",
+            "company",
+            "other",
+            "unknown"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "reason": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "host",
+        "kind",
+        "reason"
+      ],
+      "title": "DomainLabel",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "step8-catalog-1.0",
+      "default": "step8-catalog-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "alias_groups": {
+      "items": {
+        "$ref": "#/$defs/AliasGroup"
+      },
+      "maxItems": 1000,
+      "title": "Alias Groups",
+      "type": "array"
+    },
+    "domain_labels": {
+      "items": {
+        "$ref": "#/$defs/DomainLabel"
+      },
+      "maxItems": 1000,
+      "title": "Domain Labels",
+      "type": "array"
+    }
+  },
+  "title": "EntityCatalog",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step8:EntityCatalog:1.0"
+}

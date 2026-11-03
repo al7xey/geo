@@ -1,0 +1,115 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "step5-1.0",
+      "default": "step5-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "algorithm_version": {
+      "const": "step5-rules-2",
+      "default": "step5-rules-2",
+      "title": "Algorithm Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "complete",
+        "partial"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "input_lines": {
+      "title": "Input Lines",
+      "type": "integer"
+    },
+    "accepted": {
+      "title": "Accepted",
+      "type": "integer"
+    },
+    "duplicates": {
+      "title": "Duplicates",
+      "type": "integer"
+    },
+    "quarantined": {
+      "title": "Quarantined",
+      "type": "integer"
+    },
+    "prompt_groups": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Prompt Groups",
+      "type": "object"
+    },
+    "evidence_categories": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Evidence Categories",
+      "type": "object"
+    },
+    "delivery_statuses": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Delivery Statuses",
+      "type": "object"
+    },
+    "target_name_candidates": {
+      "title": "Target Name Candidates",
+      "type": "integer"
+    },
+    "target_citation_host_matches": {
+      "title": "Target Citation Host Matches",
+      "type": "integer"
+    },
+    "ambiguous_name_candidates": {
+      "default": 0,
+      "title": "Ambiguous Name Candidates",
+      "type": "integer"
+    },
+    "invalid_sources": {
+      "default": 0,
+      "title": "Invalid Sources",
+      "type": "integer"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    },
+    "network_requests": {
+      "const": 0,
+      "default": 0,
+      "title": "Network Requests",
+      "type": "integer"
+    },
+    "model_calls": {
+      "const": 0,
+      "default": 0,
+      "title": "Model Calls",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "status",
+    "input_lines",
+    "accepted",
+    "duplicates",
+    "quarantined",
+    "prompt_groups",
+    "evidence_categories",
+    "delivery_statuses",
+    "target_name_candidates",
+    "target_citation_host_matches"
+  ],
+  "title": "Step5Summary",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step5:Step5Summary:1.0"
+}

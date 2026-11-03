@@ -1,0 +1,5442 @@
+[
+  {
+    "provider": "all",
+    "group": "A",
+    "prompt_id": "all",
+    "input_count": 120,
+    "excluded_count": 12,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 56,
+        "no_count": 50,
+        "uncertain_count": 2,
+        "eligible_count": 108,
+        "confirmed_percent": 51.851851851851855,
+        "possible_upper_percent": 53.7037037037037,
+        "decision_coverage_percent": 98.14814814814815
+      },
+      "target_recommended": {
+        "yes_count": 32,
+        "no_count": 72,
+        "uncertain_count": 4,
+        "eligible_count": 108,
+        "confirmed_percent": 29.62962962962963,
+        "possible_upper_percent": 33.333333333333336,
+        "decision_coverage_percent": 96.29629629629629
+      },
+      "target_discouraged": {
+        "yes_count": 6,
+        "no_count": 100,
+        "uncertain_count": 2,
+        "eligible_count": 108,
+        "confirmed_percent": 5.555555555555555,
+        "possible_upper_percent": 7.407407407407407,
+        "decision_coverage_percent": 98.14814814814815
+      },
+      "target_cited": {
+        "yes_count": 6,
+        "no_count": 102,
+        "uncertain_count": 0,
+        "eligible_count": 108,
+        "confirmed_percent": 5.555555555555555,
+        "possible_upper_percent": 5.555555555555555,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 51.476190476190474,
+        "possible_upper_percent": 53.14285714285714,
+        "decision_coverage_percent": 98.33333333333333
+      },
+      "target_recommended": {
+        "confirmed_percent": 29.349206349206348,
+        "possible_upper_percent": 32.682539682539684,
+        "decision_coverage_percent": 96.66666666666667
+      },
+      "target_discouraged": {
+        "confirmed_percent": 5.238095238095238,
+        "possible_upper_percent": 6.904761904761904,
+        "decision_coverage_percent": 98.33333333333333
+      },
+      "target_cited": {
+        "confirmed_percent": 5.1190476190476195,
+        "possible_upper_percent": 5.1190476190476195,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 15
+  },
+  {
+    "provider": "all",
+    "group": "B",
+    "prompt_id": "all",
+    "input_count": 120,
+    "excluded_count": 8,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 93,
+        "no_count": 0,
+        "uncertain_count": 19,
+        "eligible_count": 112,
+        "confirmed_percent": 83.03571428571429,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 83.03571428571429
+      },
+      "target_recommended": {
+        "yes_count": 44,
+        "no_count": 26,
+        "uncertain_count": 42,
+        "eligible_count": 112,
+        "confirmed_percent": 39.285714285714285,
+        "possible_upper_percent": 76.78571428571429,
+        "decision_coverage_percent": 62.5
+      },
+      "target_discouraged": {
+        "yes_count": 18,
+        "no_count": 75,
+        "uncertain_count": 19,
+        "eligible_count": 112,
+        "confirmed_percent": 16.071428571428573,
+        "possible_upper_percent": 33.035714285714285,
+        "decision_coverage_percent": 83.03571428571429
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 112,
+        "uncertain_count": 0,
+        "eligible_count": 112,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 83.09523809523809,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 83.09523809523809
+      },
+      "target_recommended": {
+        "confirmed_percent": 38.80952380952381,
+        "possible_upper_percent": 75.63492063492065,
+        "decision_coverage_percent": 63.17460317460317
+      },
+      "target_discouraged": {
+        "confirmed_percent": 16.11111111111111,
+        "possible_upper_percent": 33.01587301587302,
+        "decision_coverage_percent": 83.09523809523809
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 15
+  },
+  {
+    "provider": "all",
+    "group": "C",
+    "prompt_id": "all",
+    "input_count": 120,
+    "excluded_count": 8,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 112,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 112,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 65,
+        "no_count": 47,
+        "uncertain_count": 0,
+        "eligible_count": 112,
+        "confirmed_percent": 58.035714285714285,
+        "possible_upper_percent": 58.035714285714285,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 45,
+        "no_count": 67,
+        "uncertain_count": 0,
+        "eligible_count": 112,
+        "confirmed_percent": 40.17857142857143,
+        "possible_upper_percent": 40.17857142857143,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 8,
+        "no_count": 104,
+        "uncertain_count": 0,
+        "eligible_count": 112,
+        "confirmed_percent": 7.142857142857143,
+        "possible_upper_percent": 7.142857142857143,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 58.17460317460317,
+        "possible_upper_percent": 58.17460317460317,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 40.476190476190474,
+        "possible_upper_percent": 40.476190476190474,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 7.579365079365079,
+        "possible_upper_percent": 7.579365079365079,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 15
+  },
+  {
+    "provider": "all",
+    "group": "D",
+    "prompt_id": "all",
+    "input_count": 120,
+    "excluded_count": 7,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 73,
+        "no_count": 14,
+        "uncertain_count": 26,
+        "eligible_count": 113,
+        "confirmed_percent": 64.60176991150442,
+        "possible_upper_percent": 87.61061946902655,
+        "decision_coverage_percent": 76.99115044247787
+      },
+      "target_recommended": {
+        "yes_count": 29,
+        "no_count": 46,
+        "uncertain_count": 38,
+        "eligible_count": 113,
+        "confirmed_percent": 25.663716814159294,
+        "possible_upper_percent": 59.29203539823009,
+        "decision_coverage_percent": 66.3716814159292
+      },
+      "target_discouraged": {
+        "yes_count": 11,
+        "no_count": 76,
+        "uncertain_count": 26,
+        "eligible_count": 113,
+        "confirmed_percent": 9.734513274336283,
+        "possible_upper_percent": 32.743362831858406,
+        "decision_coverage_percent": 76.99115044247787
+      },
+      "target_cited": {
+        "yes_count": 17,
+        "no_count": 96,
+        "uncertain_count": 0,
+        "eligible_count": 113,
+        "confirmed_percent": 15.044247787610619,
+        "possible_upper_percent": 15.044247787610619,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 65.5952380952381,
+        "possible_upper_percent": 88.21428571428572,
+        "decision_coverage_percent": 77.38095238095238
+      },
+      "target_recommended": {
+        "confirmed_percent": 27.380952380952383,
+        "possible_upper_percent": 60.238095238095234,
+        "decision_coverage_percent": 67.14285714285714
+      },
+      "target_discouraged": {
+        "confirmed_percent": 10.238095238095239,
+        "possible_upper_percent": 32.857142857142854,
+        "decision_coverage_percent": 77.38095238095238
+      },
+      "target_cited": {
+        "confirmed_percent": 15.238095238095239,
+        "possible_upper_percent": 15.238095238095239,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 15
+  },
+  {
+    "provider": "all",
+    "group": "all",
+    "prompt_id": "all",
+    "input_count": 480,
+    "excluded_count": 35,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 334,
+        "no_count": 64,
+        "uncertain_count": 47,
+        "eligible_count": 445,
+        "confirmed_percent": 75.0561797752809,
+        "possible_upper_percent": 85.61797752808988,
+        "decision_coverage_percent": 89.43820224719101
+      },
+      "target_recommended": {
+        "yes_count": 170,
+        "no_count": 191,
+        "uncertain_count": 84,
+        "eligible_count": 445,
+        "confirmed_percent": 38.20224719101124,
+        "possible_upper_percent": 57.07865168539326,
+        "decision_coverage_percent": 81.12359550561797
+      },
+      "target_discouraged": {
+        "yes_count": 80,
+        "no_count": 318,
+        "uncertain_count": 47,
+        "eligible_count": 445,
+        "confirmed_percent": 17.97752808988764,
+        "possible_upper_percent": 28.53932584269663,
+        "decision_coverage_percent": 89.43820224719101
+      },
+      "target_cited": {
+        "yes_count": 31,
+        "no_count": 414,
+        "uncertain_count": 0,
+        "eligible_count": 445,
+        "confirmed_percent": 6.966292134831461,
+        "possible_upper_percent": 6.966292134831461,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 75.04166666666667,
+        "possible_upper_percent": 85.33928571428572,
+        "decision_coverage_percent": 89.70238095238095
+      },
+      "target_recommended": {
+        "confirmed_percent": 38.42857142857143,
+        "possible_upper_percent": 56.68253968253968,
+        "decision_coverage_percent": 81.74603174603175
+      },
+      "target_discouraged": {
+        "confirmed_percent": 18.015873015873016,
+        "possible_upper_percent": 28.313492063492063,
+        "decision_coverage_percent": 89.70238095238095
+      },
+      "target_cited": {
+        "confirmed_percent": 6.984126984126984,
+        "possible_upper_percent": 6.984126984126984,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 60
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "A",
+    "prompt_id": "A01",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 4,
+        "no_count": 3,
+        "uncertain_count": 1,
+        "eligible_count": 8,
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 87.5
+      },
+      "target_recommended": {
+        "yes_count": 1,
+        "no_count": 4,
+        "uncertain_count": 3,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 62.5
+      },
+      "target_discouraged": {
+        "yes_count": 1,
+        "no_count": 6,
+        "uncertain_count": 1,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 87.5
+      },
+      "target_cited": {
+        "yes_count": 1,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 87.5
+      },
+      "target_recommended": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 62.5
+      },
+      "target_discouraged": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 87.5
+      },
+      "target_cited": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "A",
+    "prompt_id": "A02",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 3,
+        "no_count": 5,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 3,
+        "no_count": 5,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 1,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "A",
+    "prompt_id": "A03",
+    "input_count": 8,
+    "excluded_count": 2,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 3,
+        "no_count": 3,
+        "uncertain_count": 0,
+        "eligible_count": 6,
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 2,
+        "no_count": 4,
+        "uncertain_count": 0,
+        "eligible_count": 6,
+        "confirmed_percent": 33.333333333333336,
+        "possible_upper_percent": 33.333333333333336,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 6,
+        "uncertain_count": 0,
+        "eligible_count": 6,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 6,
+        "uncertain_count": 0,
+        "eligible_count": 6,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 33.333333333333336,
+        "possible_upper_percent": 33.333333333333336,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "A",
+    "prompt_id": "A04",
+    "input_count": 8,
+    "excluded_count": 1,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 5,
+        "no_count": 2,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 71.42857142857143,
+        "possible_upper_percent": 71.42857142857143,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 3,
+        "no_count": 4,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 42.857142857142854,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 1,
+        "no_count": 6,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 14.285714285714286,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 71.42857142857143,
+        "possible_upper_percent": 71.42857142857143,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 42.857142857142854,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 14.285714285714286,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "A",
+    "prompt_id": "A05",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 4,
+        "no_count": 4,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 3,
+        "no_count": 5,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 1,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 1,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "A",
+    "prompt_id": "all",
+    "input_count": 40,
+    "excluded_count": 3,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 19,
+        "no_count": 17,
+        "uncertain_count": 1,
+        "eligible_count": 37,
+        "confirmed_percent": 51.351351351351354,
+        "possible_upper_percent": 54.054054054054056,
+        "decision_coverage_percent": 97.29729729729729
+      },
+      "target_recommended": {
+        "yes_count": 12,
+        "no_count": 22,
+        "uncertain_count": 3,
+        "eligible_count": 37,
+        "confirmed_percent": 32.432432432432435,
+        "possible_upper_percent": 40.54054054054054,
+        "decision_coverage_percent": 91.89189189189189
+      },
+      "target_discouraged": {
+        "yes_count": 3,
+        "no_count": 33,
+        "uncertain_count": 1,
+        "eligible_count": 37,
+        "confirmed_percent": 8.108108108108109,
+        "possible_upper_percent": 10.81081081081081,
+        "decision_coverage_percent": 97.29729729729729
+      },
+      "target_cited": {
+        "yes_count": 3,
+        "no_count": 34,
+        "uncertain_count": 0,
+        "eligible_count": 37,
+        "confirmed_percent": 8.108108108108109,
+        "possible_upper_percent": 8.108108108108109,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 51.78571428571429,
+        "possible_upper_percent": 54.28571428571429,
+        "decision_coverage_percent": 97.5
+      },
+      "target_recommended": {
+        "confirmed_percent": 32.73809523809524,
+        "possible_upper_percent": 40.23809523809524,
+        "decision_coverage_percent": 92.5
+      },
+      "target_discouraged": {
+        "confirmed_percent": 7.857142857142857,
+        "possible_upper_percent": 10.357142857142858,
+        "decision_coverage_percent": 97.5
+      },
+      "target_cited": {
+        "confirmed_percent": 7.5,
+        "possible_upper_percent": 7.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 5
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "B",
+    "prompt_id": "B06",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 4,
+        "no_count": 0,
+        "uncertain_count": 4,
+        "eligible_count": 8,
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 50.0
+      },
+      "target_recommended": {
+        "yes_count": 2,
+        "no_count": 1,
+        "uncertain_count": 5,
+        "eligible_count": 8,
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 37.5
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 4,
+        "uncertain_count": 4,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 50.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 50.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 37.5
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 50.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "B",
+    "prompt_id": "B07",
+    "input_count": 8,
+    "excluded_count": 2,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 6,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 6,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 0,
+        "no_count": 5,
+        "uncertain_count": 1,
+        "eligible_count": 6,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 16.666666666666668,
+        "decision_coverage_percent": 83.33333333333333
+      },
+      "target_discouraged": {
+        "yes_count": 1,
+        "no_count": 5,
+        "uncertain_count": 0,
+        "eligible_count": 6,
+        "confirmed_percent": 16.666666666666668,
+        "possible_upper_percent": 16.666666666666668,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 6,
+        "uncertain_count": 0,
+        "eligible_count": 6,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 16.666666666666668,
+        "decision_coverage_percent": 83.33333333333333
+      },
+      "target_discouraged": {
+        "confirmed_percent": 16.666666666666668,
+        "possible_upper_percent": 16.666666666666668,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "B",
+    "prompt_id": "B08",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 8,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 4,
+        "no_count": 1,
+        "uncertain_count": 3,
+        "eligible_count": 8,
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 62.5
+      },
+      "target_discouraged": {
+        "yes_count": 3,
+        "no_count": 5,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 62.5
+      },
+      "target_discouraged": {
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "B",
+    "prompt_id": "B09",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 7,
+        "no_count": 0,
+        "uncertain_count": 1,
+        "eligible_count": 8,
+        "confirmed_percent": 87.5,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 87.5
+      },
+      "target_recommended": {
+        "yes_count": 3,
+        "no_count": 0,
+        "uncertain_count": 5,
+        "eligible_count": 8,
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 37.5
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 1,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 87.5
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 87.5,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 87.5
+      },
+      "target_recommended": {
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 37.5
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 87.5
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "B",
+    "prompt_id": "B10",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 7,
+        "no_count": 0,
+        "uncertain_count": 1,
+        "eligible_count": 8,
+        "confirmed_percent": 87.5,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 87.5
+      },
+      "target_recommended": {
+        "yes_count": 3,
+        "no_count": 2,
+        "uncertain_count": 3,
+        "eligible_count": 8,
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 75.0,
+        "decision_coverage_percent": 62.5
+      },
+      "target_discouraged": {
+        "yes_count": 2,
+        "no_count": 5,
+        "uncertain_count": 1,
+        "eligible_count": 8,
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 87.5
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 87.5,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 87.5
+      },
+      "target_recommended": {
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 75.0,
+        "decision_coverage_percent": 62.5
+      },
+      "target_discouraged": {
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 87.5
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "B",
+    "prompt_id": "all",
+    "input_count": 40,
+    "excluded_count": 2,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 32,
+        "no_count": 0,
+        "uncertain_count": 6,
+        "eligible_count": 38,
+        "confirmed_percent": 84.21052631578948,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 84.21052631578948
+      },
+      "target_recommended": {
+        "yes_count": 12,
+        "no_count": 9,
+        "uncertain_count": 17,
+        "eligible_count": 38,
+        "confirmed_percent": 31.57894736842105,
+        "possible_upper_percent": 76.3157894736842,
+        "decision_coverage_percent": 55.26315789473684
+      },
+      "target_discouraged": {
+        "yes_count": 6,
+        "no_count": 26,
+        "uncertain_count": 6,
+        "eligible_count": 38,
+        "confirmed_percent": 15.789473684210526,
+        "possible_upper_percent": 31.57894736842105,
+        "decision_coverage_percent": 84.21052631578948
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 38,
+        "uncertain_count": 0,
+        "eligible_count": 38,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 85.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 85.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 30.0,
+        "possible_upper_percent": 73.33333333333334,
+        "decision_coverage_percent": 56.666666666666664
+      },
+      "target_discouraged": {
+        "confirmed_percent": 15.833333333333334,
+        "possible_upper_percent": 30.833333333333332,
+        "decision_coverage_percent": 85.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 5
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "C",
+    "prompt_id": "C11",
+    "input_count": 8,
+    "excluded_count": 1,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 7,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 2,
+        "no_count": 5,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 28.571428571428573,
+        "possible_upper_percent": 28.571428571428573,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 5,
+        "no_count": 2,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 71.42857142857143,
+        "possible_upper_percent": 71.42857142857143,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 28.571428571428573,
+        "possible_upper_percent": 28.571428571428573,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 71.42857142857143,
+        "possible_upper_percent": 71.42857142857143,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "C",
+    "prompt_id": "C12",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 8,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 2,
+        "no_count": 6,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 5,
+        "no_count": 3,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 62.5,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 62.5,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "C",
+    "prompt_id": "C13",
+    "input_count": 8,
+    "excluded_count": 1,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 7,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 2,
+        "no_count": 5,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 28.571428571428573,
+        "possible_upper_percent": 28.571428571428573,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 5,
+        "no_count": 2,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 71.42857142857143,
+        "possible_upper_percent": 71.42857142857143,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 28.571428571428573,
+        "possible_upper_percent": 28.571428571428573,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 71.42857142857143,
+        "possible_upper_percent": 71.42857142857143,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "C",
+    "prompt_id": "C14",
+    "input_count": 8,
+    "excluded_count": 1,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 7,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 6,
+        "no_count": 1,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 85.71428571428571,
+        "possible_upper_percent": 85.71428571428571,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 3,
+        "no_count": 4,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 42.857142857142854,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 2,
+        "no_count": 5,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 28.571428571428573,
+        "possible_upper_percent": 28.571428571428573,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 85.71428571428571,
+        "possible_upper_percent": 85.71428571428571,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 42.857142857142854,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 28.571428571428573,
+        "possible_upper_percent": 28.571428571428573,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "C",
+    "prompt_id": "C15",
+    "input_count": 8,
+    "excluded_count": 1,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 7,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 4,
+        "no_count": 3,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 57.142857142857146,
+        "possible_upper_percent": 57.142857142857146,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 4,
+        "no_count": 3,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 57.142857142857146,
+        "possible_upper_percent": 57.142857142857146,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 57.142857142857146,
+        "possible_upper_percent": 57.142857142857146,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 57.142857142857146,
+        "possible_upper_percent": 57.142857142857146,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "C",
+    "prompt_id": "all",
+    "input_count": 40,
+    "excluded_count": 4,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 36,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 36,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 16,
+        "no_count": 20,
+        "uncertain_count": 0,
+        "eligible_count": 36,
+        "confirmed_percent": 44.44444444444444,
+        "possible_upper_percent": 44.44444444444444,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 22,
+        "no_count": 14,
+        "uncertain_count": 0,
+        "eligible_count": 36,
+        "confirmed_percent": 61.111111111111114,
+        "possible_upper_percent": 61.111111111111114,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 2,
+        "no_count": 34,
+        "uncertain_count": 0,
+        "eligible_count": 36,
+        "confirmed_percent": 5.555555555555555,
+        "possible_upper_percent": 5.555555555555555,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 45.0,
+        "possible_upper_percent": 45.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 61.07142857142858,
+        "possible_upper_percent": 61.07142857142858,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 5.714285714285714,
+        "possible_upper_percent": 5.714285714285714,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 5
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "D",
+    "prompt_id": "D16",
+    "input_count": 8,
+    "excluded_count": 1,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 5,
+        "no_count": 0,
+        "uncertain_count": 2,
+        "eligible_count": 7,
+        "confirmed_percent": 71.42857142857143,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 71.42857142857143
+      },
+      "target_recommended": {
+        "yes_count": 3,
+        "no_count": 1,
+        "uncertain_count": 3,
+        "eligible_count": 7,
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 85.71428571428571,
+        "decision_coverage_percent": 57.142857142857146
+      },
+      "target_discouraged": {
+        "yes_count": 1,
+        "no_count": 4,
+        "uncertain_count": 2,
+        "eligible_count": 7,
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 42.857142857142854,
+        "decision_coverage_percent": 71.42857142857143
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 71.42857142857143,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 71.42857142857143
+      },
+      "target_recommended": {
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 85.71428571428571,
+        "decision_coverage_percent": 57.142857142857146
+      },
+      "target_discouraged": {
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 42.857142857142854,
+        "decision_coverage_percent": 71.42857142857143
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "D",
+    "prompt_id": "D17",
+    "input_count": 8,
+    "excluded_count": 1,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 5,
+        "no_count": 1,
+        "uncertain_count": 1,
+        "eligible_count": 7,
+        "confirmed_percent": 71.42857142857143,
+        "possible_upper_percent": 85.71428571428571,
+        "decision_coverage_percent": 85.71428571428571
+      },
+      "target_recommended": {
+        "yes_count": 3,
+        "no_count": 3,
+        "uncertain_count": 1,
+        "eligible_count": 7,
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 57.142857142857146,
+        "decision_coverage_percent": 85.71428571428571
+      },
+      "target_discouraged": {
+        "yes_count": 1,
+        "no_count": 5,
+        "uncertain_count": 1,
+        "eligible_count": 7,
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 28.571428571428573,
+        "decision_coverage_percent": 85.71428571428571
+      },
+      "target_cited": {
+        "yes_count": 2,
+        "no_count": 5,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 28.571428571428573,
+        "possible_upper_percent": 28.571428571428573,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 71.42857142857143,
+        "possible_upper_percent": 85.71428571428571,
+        "decision_coverage_percent": 85.71428571428571
+      },
+      "target_recommended": {
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 57.142857142857146,
+        "decision_coverage_percent": 85.71428571428571
+      },
+      "target_discouraged": {
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 28.571428571428573,
+        "decision_coverage_percent": 85.71428571428571
+      },
+      "target_cited": {
+        "confirmed_percent": 28.571428571428573,
+        "possible_upper_percent": 28.571428571428573,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "D",
+    "prompt_id": "D18",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 4,
+        "no_count": 1,
+        "uncertain_count": 3,
+        "eligible_count": 8,
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 62.5
+      },
+      "target_recommended": {
+        "yes_count": 4,
+        "no_count": 1,
+        "uncertain_count": 3,
+        "eligible_count": 8,
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 62.5
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 5,
+        "uncertain_count": 3,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 62.5
+      },
+      "target_cited": {
+        "yes_count": 3,
+        "no_count": 5,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 62.5
+      },
+      "target_recommended": {
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 62.5
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 62.5
+      },
+      "target_cited": {
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "D",
+    "prompt_id": "D19",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 4,
+        "no_count": 2,
+        "uncertain_count": 2,
+        "eligible_count": 8,
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 75.0,
+        "decision_coverage_percent": 75.0
+      },
+      "target_recommended": {
+        "yes_count": 3,
+        "no_count": 3,
+        "uncertain_count": 2,
+        "eligible_count": 8,
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 75.0
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 6,
+        "uncertain_count": 2,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 75.0
+      },
+      "target_cited": {
+        "yes_count": 4,
+        "no_count": 4,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 75.0,
+        "decision_coverage_percent": 75.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 75.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 75.0
+      },
+      "target_cited": {
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "D",
+    "prompt_id": "D20",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 5,
+        "no_count": 2,
+        "uncertain_count": 1,
+        "eligible_count": 8,
+        "confirmed_percent": 62.5,
+        "possible_upper_percent": 75.0,
+        "decision_coverage_percent": 87.5
+      },
+      "target_recommended": {
+        "yes_count": 1,
+        "no_count": 4,
+        "uncertain_count": 3,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 62.5
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 1,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 87.5
+      },
+      "target_cited": {
+        "yes_count": 1,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 62.5,
+        "possible_upper_percent": 75.0,
+        "decision_coverage_percent": 87.5
+      },
+      "target_recommended": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 62.5
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 87.5
+      },
+      "target_cited": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "D",
+    "prompt_id": "all",
+    "input_count": 40,
+    "excluded_count": 2,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 23,
+        "no_count": 6,
+        "uncertain_count": 9,
+        "eligible_count": 38,
+        "confirmed_percent": 60.526315789473685,
+        "possible_upper_percent": 84.21052631578948,
+        "decision_coverage_percent": 76.3157894736842
+      },
+      "target_recommended": {
+        "yes_count": 14,
+        "no_count": 12,
+        "uncertain_count": 12,
+        "eligible_count": 38,
+        "confirmed_percent": 36.8421052631579,
+        "possible_upper_percent": 68.42105263157895,
+        "decision_coverage_percent": 68.42105263157895
+      },
+      "target_discouraged": {
+        "yes_count": 2,
+        "no_count": 27,
+        "uncertain_count": 9,
+        "eligible_count": 38,
+        "confirmed_percent": 5.2631578947368425,
+        "possible_upper_percent": 28.94736842105263,
+        "decision_coverage_percent": 76.3157894736842
+      },
+      "target_cited": {
+        "yes_count": 10,
+        "no_count": 28,
+        "uncertain_count": 0,
+        "eligible_count": 38,
+        "confirmed_percent": 26.31578947368421,
+        "possible_upper_percent": 26.31578947368421,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 61.07142857142858,
+        "possible_upper_percent": 84.64285714285714,
+        "decision_coverage_percent": 76.42857142857142
+      },
+      "target_recommended": {
+        "confirmed_percent": 37.142857142857146,
+        "possible_upper_percent": 68.57142857142857,
+        "decision_coverage_percent": 68.57142857142857
+      },
+      "target_discouraged": {
+        "confirmed_percent": 5.714285714285714,
+        "possible_upper_percent": 29.285714285714285,
+        "decision_coverage_percent": 76.42857142857142
+      },
+      "target_cited": {
+        "confirmed_percent": 25.714285714285715,
+        "possible_upper_percent": 25.714285714285715,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 5
+  },
+  {
+    "provider": "mock_anthropic",
+    "group": "all",
+    "prompt_id": "all",
+    "input_count": 160,
+    "excluded_count": 11,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 110,
+        "no_count": 23,
+        "uncertain_count": 16,
+        "eligible_count": 149,
+        "confirmed_percent": 73.8255033557047,
+        "possible_upper_percent": 84.56375838926175,
+        "decision_coverage_percent": 89.26174496644295
+      },
+      "target_recommended": {
+        "yes_count": 54,
+        "no_count": 63,
+        "uncertain_count": 32,
+        "eligible_count": 149,
+        "confirmed_percent": 36.241610738255034,
+        "possible_upper_percent": 57.718120805369125,
+        "decision_coverage_percent": 78.52348993288591
+      },
+      "target_discouraged": {
+        "yes_count": 33,
+        "no_count": 100,
+        "uncertain_count": 16,
+        "eligible_count": 149,
+        "confirmed_percent": 22.14765100671141,
+        "possible_upper_percent": 32.88590604026846,
+        "decision_coverage_percent": 89.26174496644295
+      },
+      "target_cited": {
+        "yes_count": 15,
+        "no_count": 134,
+        "uncertain_count": 0,
+        "eligible_count": 149,
+        "confirmed_percent": 10.06711409395973,
+        "possible_upper_percent": 10.06711409395973,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 74.46428571428571,
+        "possible_upper_percent": 84.73214285714286,
+        "decision_coverage_percent": 89.73214285714286
+      },
+      "target_recommended": {
+        "confirmed_percent": 36.220238095238095,
+        "possible_upper_percent": 56.78571428571429,
+        "decision_coverage_percent": 79.43452380952381
+      },
+      "target_discouraged": {
+        "confirmed_percent": 22.61904761904762,
+        "possible_upper_percent": 32.886904761904766,
+        "decision_coverage_percent": 89.73214285714286
+      },
+      "target_cited": {
+        "confirmed_percent": 9.732142857142858,
+        "possible_upper_percent": 9.732142857142858,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 20
+  },
+  {
+    "provider": "mock_google",
+    "group": "A",
+    "prompt_id": "A01",
+    "input_count": 8,
+    "excluded_count": 3,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 2,
+        "no_count": 3,
+        "uncertain_count": 0,
+        "eligible_count": 5,
+        "confirmed_percent": 40.0,
+        "possible_upper_percent": 40.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 1,
+        "no_count": 4,
+        "uncertain_count": 0,
+        "eligible_count": 5,
+        "confirmed_percent": 20.0,
+        "possible_upper_percent": 20.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 5,
+        "uncertain_count": 0,
+        "eligible_count": 5,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 5,
+        "uncertain_count": 0,
+        "eligible_count": 5,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 40.0,
+        "possible_upper_percent": 40.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 20.0,
+        "possible_upper_percent": 20.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_google",
+    "group": "A",
+    "prompt_id": "A02",
+    "input_count": 8,
+    "excluded_count": 2,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 3,
+        "no_count": 3,
+        "uncertain_count": 0,
+        "eligible_count": 6,
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 2,
+        "no_count": 4,
+        "uncertain_count": 0,
+        "eligible_count": 6,
+        "confirmed_percent": 33.333333333333336,
+        "possible_upper_percent": 33.333333333333336,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 6,
+        "uncertain_count": 0,
+        "eligible_count": 6,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 6,
+        "uncertain_count": 0,
+        "eligible_count": 6,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 33.333333333333336,
+        "possible_upper_percent": 33.333333333333336,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_google",
+    "group": "A",
+    "prompt_id": "A03",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 4,
+        "no_count": 4,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 3,
+        "no_count": 5,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_google",
+    "group": "A",
+    "prompt_id": "A04",
+    "input_count": 8,
+    "excluded_count": 1,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 4,
+        "no_count": 3,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 57.142857142857146,
+        "possible_upper_percent": 57.142857142857146,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 3,
+        "no_count": 4,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 42.857142857142854,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 57.142857142857146,
+        "possible_upper_percent": 57.142857142857146,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 42.857142857142854,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_google",
+    "group": "A",
+    "prompt_id": "A05",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 3,
+        "no_count": 5,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 1,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 1,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_google",
+    "group": "A",
+    "prompt_id": "all",
+    "input_count": 40,
+    "excluded_count": 6,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 16,
+        "no_count": 18,
+        "uncertain_count": 0,
+        "eligible_count": 34,
+        "confirmed_percent": 47.05882352941177,
+        "possible_upper_percent": 47.05882352941177,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 10,
+        "no_count": 24,
+        "uncertain_count": 0,
+        "eligible_count": 34,
+        "confirmed_percent": 29.41176470588235,
+        "possible_upper_percent": 29.41176470588235,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 34,
+        "uncertain_count": 0,
+        "eligible_count": 34,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 1,
+        "no_count": 33,
+        "uncertain_count": 0,
+        "eligible_count": 34,
+        "confirmed_percent": 2.9411764705882355,
+        "possible_upper_percent": 2.9411764705882355,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 46.92857142857143,
+        "possible_upper_percent": 46.92857142857143,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 29.23809523809524,
+        "possible_upper_percent": 29.23809523809524,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 2.5,
+        "possible_upper_percent": 2.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 5
+  },
+  {
+    "provider": "mock_google",
+    "group": "B",
+    "prompt_id": "B06",
+    "input_count": 8,
+    "excluded_count": 1,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 5,
+        "no_count": 0,
+        "uncertain_count": 2,
+        "eligible_count": 7,
+        "confirmed_percent": 71.42857142857143,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 71.42857142857143
+      },
+      "target_recommended": {
+        "yes_count": 3,
+        "no_count": 2,
+        "uncertain_count": 2,
+        "eligible_count": 7,
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 71.42857142857143,
+        "decision_coverage_percent": 71.42857142857143
+      },
+      "target_discouraged": {
+        "yes_count": 2,
+        "no_count": 3,
+        "uncertain_count": 2,
+        "eligible_count": 7,
+        "confirmed_percent": 28.571428571428573,
+        "possible_upper_percent": 57.142857142857146,
+        "decision_coverage_percent": 71.42857142857143
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 71.42857142857143,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 71.42857142857143
+      },
+      "target_recommended": {
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 71.42857142857143,
+        "decision_coverage_percent": 71.42857142857143
+      },
+      "target_discouraged": {
+        "confirmed_percent": 28.571428571428573,
+        "possible_upper_percent": 57.142857142857146,
+        "decision_coverage_percent": 71.42857142857143
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_google",
+    "group": "B",
+    "prompt_id": "B07",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 8,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 3,
+        "no_count": 2,
+        "uncertain_count": 3,
+        "eligible_count": 8,
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 75.0,
+        "decision_coverage_percent": 62.5
+      },
+      "target_discouraged": {
+        "yes_count": 1,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 75.0,
+        "decision_coverage_percent": 62.5
+      },
+      "target_discouraged": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_google",
+    "group": "B",
+    "prompt_id": "B08",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 7,
+        "no_count": 0,
+        "uncertain_count": 1,
+        "eligible_count": 8,
+        "confirmed_percent": 87.5,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 87.5
+      },
+      "target_recommended": {
+        "yes_count": 5,
+        "no_count": 1,
+        "uncertain_count": 2,
+        "eligible_count": 8,
+        "confirmed_percent": 62.5,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 75.0
+      },
+      "target_discouraged": {
+        "yes_count": 1,
+        "no_count": 6,
+        "uncertain_count": 1,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 87.5
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 87.5,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 87.5
+      },
+      "target_recommended": {
+        "confirmed_percent": 62.5,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 75.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 87.5
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_google",
+    "group": "B",
+    "prompt_id": "B09",
+    "input_count": 8,
+    "excluded_count": 1,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 7,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 3,
+        "no_count": 4,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 42.857142857142854,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 42.857142857142854,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_google",
+    "group": "B",
+    "prompt_id": "B10",
+    "input_count": 8,
+    "excluded_count": 1,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 6,
+        "no_count": 0,
+        "uncertain_count": 1,
+        "eligible_count": 7,
+        "confirmed_percent": 85.71428571428571,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 85.71428571428571
+      },
+      "target_recommended": {
+        "yes_count": 4,
+        "no_count": 0,
+        "uncertain_count": 3,
+        "eligible_count": 7,
+        "confirmed_percent": 57.142857142857146,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 57.142857142857146
+      },
+      "target_discouraged": {
+        "yes_count": 1,
+        "no_count": 5,
+        "uncertain_count": 1,
+        "eligible_count": 7,
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 28.571428571428573,
+        "decision_coverage_percent": 85.71428571428571
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 85.71428571428571,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 85.71428571428571
+      },
+      "target_recommended": {
+        "confirmed_percent": 57.142857142857146,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 57.142857142857146
+      },
+      "target_discouraged": {
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 28.571428571428573,
+        "decision_coverage_percent": 85.71428571428571
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_google",
+    "group": "B",
+    "prompt_id": "all",
+    "input_count": 40,
+    "excluded_count": 3,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 33,
+        "no_count": 0,
+        "uncertain_count": 4,
+        "eligible_count": 37,
+        "confirmed_percent": 89.1891891891892,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 89.1891891891892
+      },
+      "target_recommended": {
+        "yes_count": 18,
+        "no_count": 9,
+        "uncertain_count": 10,
+        "eligible_count": 37,
+        "confirmed_percent": 48.648648648648646,
+        "possible_upper_percent": 75.67567567567568,
+        "decision_coverage_percent": 72.97297297297297
+      },
+      "target_discouraged": {
+        "yes_count": 5,
+        "no_count": 28,
+        "uncertain_count": 4,
+        "eligible_count": 37,
+        "confirmed_percent": 13.513513513513514,
+        "possible_upper_percent": 24.324324324324323,
+        "decision_coverage_percent": 89.1891891891892
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 37,
+        "uncertain_count": 0,
+        "eligible_count": 37,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 88.92857142857142,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 88.92857142857142
+      },
+      "target_recommended": {
+        "confirmed_percent": 48.57142857142857,
+        "possible_upper_percent": 75.35714285714286,
+        "decision_coverage_percent": 73.21428571428571
+      },
+      "target_discouraged": {
+        "confirmed_percent": 13.571428571428573,
+        "possible_upper_percent": 24.642857142857146,
+        "decision_coverage_percent": 88.92857142857142
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 5
+  },
+  {
+    "provider": "mock_google",
+    "group": "C",
+    "prompt_id": "C11",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 8,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 5,
+        "no_count": 3,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 62.5,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 2,
+        "no_count": 6,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 62.5,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_google",
+    "group": "C",
+    "prompt_id": "C12",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 8,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 6,
+        "no_count": 2,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 75.0,
+        "possible_upper_percent": 75.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 3,
+        "no_count": 5,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 1,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 75.0,
+        "possible_upper_percent": 75.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_google",
+    "group": "C",
+    "prompt_id": "C13",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 8,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 5,
+        "no_count": 3,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 62.5,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 2,
+        "no_count": 6,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 62.5,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_google",
+    "group": "C",
+    "prompt_id": "C14",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 8,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 6,
+        "no_count": 2,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 75.0,
+        "possible_upper_percent": 75.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 1,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 1,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 75.0,
+        "possible_upper_percent": 75.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_google",
+    "group": "C",
+    "prompt_id": "C15",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 8,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 3,
+        "no_count": 5,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 2,
+        "no_count": 6,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 1,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_google",
+    "group": "C",
+    "prompt_id": "all",
+    "input_count": 40,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 40,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 40,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 25,
+        "no_count": 15,
+        "uncertain_count": 0,
+        "eligible_count": 40,
+        "confirmed_percent": 62.5,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 10,
+        "no_count": 30,
+        "uncertain_count": 0,
+        "eligible_count": 40,
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 3,
+        "no_count": 37,
+        "uncertain_count": 0,
+        "eligible_count": 40,
+        "confirmed_percent": 7.5,
+        "possible_upper_percent": 7.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 62.5,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 7.5,
+        "possible_upper_percent": 7.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 5
+  },
+  {
+    "provider": "mock_google",
+    "group": "D",
+    "prompt_id": "D16",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 6,
+        "no_count": 0,
+        "uncertain_count": 2,
+        "eligible_count": 8,
+        "confirmed_percent": 75.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 75.0
+      },
+      "target_recommended": {
+        "yes_count": 4,
+        "no_count": 1,
+        "uncertain_count": 3,
+        "eligible_count": 8,
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 62.5
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 6,
+        "uncertain_count": 2,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 75.0
+      },
+      "target_cited": {
+        "yes_count": 1,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 75.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 75.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 62.5
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 75.0
+      },
+      "target_cited": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_google",
+    "group": "D",
+    "prompt_id": "D17",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 4,
+        "no_count": 3,
+        "uncertain_count": 1,
+        "eligible_count": 8,
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 87.5
+      },
+      "target_recommended": {
+        "yes_count": 1,
+        "no_count": 6,
+        "uncertain_count": 1,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 87.5
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 1,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 87.5
+      },
+      "target_cited": {
+        "yes_count": 2,
+        "no_count": 6,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 87.5
+      },
+      "target_recommended": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 87.5
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 87.5
+      },
+      "target_cited": {
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_google",
+    "group": "D",
+    "prompt_id": "D18",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 4,
+        "no_count": 1,
+        "uncertain_count": 3,
+        "eligible_count": 8,
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 62.5
+      },
+      "target_recommended": {
+        "yes_count": 0,
+        "no_count": 2,
+        "uncertain_count": 6,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 75.0,
+        "decision_coverage_percent": 25.0
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 5,
+        "uncertain_count": 3,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 62.5
+      },
+      "target_cited": {
+        "yes_count": 1,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 62.5
+      },
+      "target_recommended": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 75.0,
+        "decision_coverage_percent": 25.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 62.5
+      },
+      "target_cited": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_google",
+    "group": "D",
+    "prompt_id": "D19",
+    "input_count": 8,
+    "excluded_count": 1,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 2,
+        "no_count": 0,
+        "uncertain_count": 5,
+        "eligible_count": 7,
+        "confirmed_percent": 28.571428571428573,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 28.571428571428573
+      },
+      "target_recommended": {
+        "yes_count": 0,
+        "no_count": 1,
+        "uncertain_count": 6,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 85.71428571428571,
+        "decision_coverage_percent": 14.285714285714286
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 2,
+        "uncertain_count": 5,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 71.42857142857143,
+        "decision_coverage_percent": 28.571428571428573
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 28.571428571428573,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 28.571428571428573
+      },
+      "target_recommended": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 85.71428571428571,
+        "decision_coverage_percent": 14.285714285714286
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 71.42857142857143,
+        "decision_coverage_percent": 28.571428571428573
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_google",
+    "group": "D",
+    "prompt_id": "D20",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 7,
+        "no_count": 1,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 87.5,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 1,
+        "no_count": 5,
+        "uncertain_count": 2,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 75.0
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 87.5,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 75.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_google",
+    "group": "D",
+    "prompt_id": "all",
+    "input_count": 40,
+    "excluded_count": 1,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 23,
+        "no_count": 5,
+        "uncertain_count": 11,
+        "eligible_count": 39,
+        "confirmed_percent": 58.97435897435897,
+        "possible_upper_percent": 87.17948717948718,
+        "decision_coverage_percent": 71.7948717948718
+      },
+      "target_recommended": {
+        "yes_count": 6,
+        "no_count": 15,
+        "uncertain_count": 18,
+        "eligible_count": 39,
+        "confirmed_percent": 15.384615384615385,
+        "possible_upper_percent": 61.53846153846154,
+        "decision_coverage_percent": 53.84615384615385
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 28,
+        "uncertain_count": 11,
+        "eligible_count": 39,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 28.205128205128204,
+        "decision_coverage_percent": 71.7948717948718
+      },
+      "target_cited": {
+        "yes_count": 4,
+        "no_count": 35,
+        "uncertain_count": 0,
+        "eligible_count": 39,
+        "confirmed_percent": 10.256410256410257,
+        "possible_upper_percent": 10.256410256410257,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 58.21428571428571,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 70.71428571428571
+      },
+      "target_recommended": {
+        "confirmed_percent": 15.0,
+        "possible_upper_percent": 62.142857142857146,
+        "decision_coverage_percent": 52.857142857142854
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 29.28571428571429,
+        "decision_coverage_percent": 70.71428571428571
+      },
+      "target_cited": {
+        "confirmed_percent": 10.0,
+        "possible_upper_percent": 10.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 5
+  },
+  {
+    "provider": "mock_google",
+    "group": "all",
+    "prompt_id": "all",
+    "input_count": 160,
+    "excluded_count": 10,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 112,
+        "no_count": 23,
+        "uncertain_count": 15,
+        "eligible_count": 150,
+        "confirmed_percent": 74.66666666666667,
+        "possible_upper_percent": 84.66666666666667,
+        "decision_coverage_percent": 90.0
+      },
+      "target_recommended": {
+        "yes_count": 59,
+        "no_count": 63,
+        "uncertain_count": 28,
+        "eligible_count": 150,
+        "confirmed_percent": 39.333333333333336,
+        "possible_upper_percent": 58.0,
+        "decision_coverage_percent": 81.33333333333333
+      },
+      "target_discouraged": {
+        "yes_count": 15,
+        "no_count": 120,
+        "uncertain_count": 15,
+        "eligible_count": 150,
+        "confirmed_percent": 10.0,
+        "possible_upper_percent": 20.0,
+        "decision_coverage_percent": 90.0
+      },
+      "target_cited": {
+        "yes_count": 8,
+        "no_count": 142,
+        "uncertain_count": 0,
+        "eligible_count": 150,
+        "confirmed_percent": 5.333333333333333,
+        "possible_upper_percent": 5.333333333333333,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 73.51785714285714,
+        "possible_upper_percent": 83.60714285714286,
+        "decision_coverage_percent": 89.91071428571429
+      },
+      "target_recommended": {
+        "confirmed_percent": 38.82738095238095,
+        "possible_upper_percent": 57.30952380952381,
+        "decision_coverage_percent": 81.51785714285714
+      },
+      "target_discouraged": {
+        "confirmed_percent": 9.642857142857142,
+        "possible_upper_percent": 19.732142857142858,
+        "decision_coverage_percent": 89.91071428571429
+      },
+      "target_cited": {
+        "confirmed_percent": 5.0,
+        "possible_upper_percent": 5.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 20
+  },
+  {
+    "provider": "mock_openai",
+    "group": "A",
+    "prompt_id": "A01",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 8,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 5,
+        "no_count": 3,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 62.5,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 2,
+        "no_count": 6,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 62.5,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_openai",
+    "group": "A",
+    "prompt_id": "A02",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 4,
+        "no_count": 3,
+        "uncertain_count": 1,
+        "eligible_count": 8,
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 87.5
+      },
+      "target_recommended": {
+        "yes_count": 2,
+        "no_count": 5,
+        "uncertain_count": 1,
+        "eligible_count": 8,
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 87.5
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 1,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 87.5
+      },
+      "target_cited": {
+        "yes_count": 1,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 87.5
+      },
+      "target_recommended": {
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 87.5
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 87.5
+      },
+      "target_cited": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_openai",
+    "group": "A",
+    "prompt_id": "A03",
+    "input_count": 8,
+    "excluded_count": 1,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 3,
+        "no_count": 4,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 42.857142857142854,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 1,
+        "no_count": 6,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 14.285714285714286,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 1,
+        "no_count": 6,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 14.285714285714286,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 1,
+        "no_count": 6,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 14.285714285714286,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 42.857142857142854,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 14.285714285714286,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 14.285714285714286,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 14.285714285714286,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_openai",
+    "group": "A",
+    "prompt_id": "A04",
+    "input_count": 8,
+    "excluded_count": 1,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 3,
+        "no_count": 4,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 42.857142857142854,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 1,
+        "no_count": 6,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 14.285714285714286,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 42.857142857142854,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 14.285714285714286,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_openai",
+    "group": "A",
+    "prompt_id": "A05",
+    "input_count": 8,
+    "excluded_count": 1,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 3,
+        "no_count": 4,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 42.857142857142854,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 1,
+        "no_count": 6,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 14.285714285714286,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 42.857142857142854,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 14.285714285714286,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_openai",
+    "group": "A",
+    "prompt_id": "all",
+    "input_count": 40,
+    "excluded_count": 3,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 21,
+        "no_count": 15,
+        "uncertain_count": 1,
+        "eligible_count": 37,
+        "confirmed_percent": 56.75675675675676,
+        "possible_upper_percent": 59.45945945945946,
+        "decision_coverage_percent": 97.29729729729729
+      },
+      "target_recommended": {
+        "yes_count": 10,
+        "no_count": 26,
+        "uncertain_count": 1,
+        "eligible_count": 37,
+        "confirmed_percent": 27.027027027027028,
+        "possible_upper_percent": 29.72972972972973,
+        "decision_coverage_percent": 97.29729729729729
+      },
+      "target_discouraged": {
+        "yes_count": 3,
+        "no_count": 33,
+        "uncertain_count": 1,
+        "eligible_count": 37,
+        "confirmed_percent": 8.108108108108109,
+        "possible_upper_percent": 10.81081081081081,
+        "decision_coverage_percent": 97.29729729729729
+      },
+      "target_cited": {
+        "yes_count": 2,
+        "no_count": 35,
+        "uncertain_count": 0,
+        "eligible_count": 37,
+        "confirmed_percent": 5.405405405405405,
+        "possible_upper_percent": 5.405405405405405,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 55.71428571428571,
+        "possible_upper_percent": 58.21428571428571,
+        "decision_coverage_percent": 97.5
+      },
+      "target_recommended": {
+        "confirmed_percent": 26.071428571428573,
+        "possible_upper_percent": 28.571428571428573,
+        "decision_coverage_percent": 97.5
+      },
+      "target_discouraged": {
+        "confirmed_percent": 7.857142857142857,
+        "possible_upper_percent": 10.357142857142858,
+        "decision_coverage_percent": 97.5
+      },
+      "target_cited": {
+        "confirmed_percent": 5.357142857142857,
+        "possible_upper_percent": 5.357142857142857,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 5
+  },
+  {
+    "provider": "mock_openai",
+    "group": "B",
+    "prompt_id": "B06",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 8,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 3,
+        "no_count": 2,
+        "uncertain_count": 3,
+        "eligible_count": 8,
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 75.0,
+        "decision_coverage_percent": 62.5
+      },
+      "target_discouraged": {
+        "yes_count": 1,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 75.0,
+        "decision_coverage_percent": 62.5
+      },
+      "target_discouraged": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_openai",
+    "group": "B",
+    "prompt_id": "B07",
+    "input_count": 8,
+    "excluded_count": 1,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 6,
+        "no_count": 0,
+        "uncertain_count": 1,
+        "eligible_count": 7,
+        "confirmed_percent": 85.71428571428571,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 85.71428571428571
+      },
+      "target_recommended": {
+        "yes_count": 4,
+        "no_count": 2,
+        "uncertain_count": 1,
+        "eligible_count": 7,
+        "confirmed_percent": 57.142857142857146,
+        "possible_upper_percent": 71.42857142857143,
+        "decision_coverage_percent": 85.71428571428571
+      },
+      "target_discouraged": {
+        "yes_count": 1,
+        "no_count": 5,
+        "uncertain_count": 1,
+        "eligible_count": 7,
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 28.571428571428573,
+        "decision_coverage_percent": 85.71428571428571
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 85.71428571428571,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 85.71428571428571
+      },
+      "target_recommended": {
+        "confirmed_percent": 57.142857142857146,
+        "possible_upper_percent": 71.42857142857143,
+        "decision_coverage_percent": 85.71428571428571
+      },
+      "target_discouraged": {
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 28.571428571428573,
+        "decision_coverage_percent": 85.71428571428571
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_openai",
+    "group": "B",
+    "prompt_id": "B08",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 5,
+        "no_count": 0,
+        "uncertain_count": 3,
+        "eligible_count": 8,
+        "confirmed_percent": 62.5,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 62.5
+      },
+      "target_recommended": {
+        "yes_count": 3,
+        "no_count": 1,
+        "uncertain_count": 4,
+        "eligible_count": 8,
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 50.0
+      },
+      "target_discouraged": {
+        "yes_count": 2,
+        "no_count": 3,
+        "uncertain_count": 3,
+        "eligible_count": 8,
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 62.5
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 62.5,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 62.5
+      },
+      "target_recommended": {
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 50.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 62.5
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_openai",
+    "group": "B",
+    "prompt_id": "B09",
+    "input_count": 8,
+    "excluded_count": 1,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 5,
+        "no_count": 0,
+        "uncertain_count": 2,
+        "eligible_count": 7,
+        "confirmed_percent": 71.42857142857143,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 71.42857142857143
+      },
+      "target_recommended": {
+        "yes_count": 3,
+        "no_count": 2,
+        "uncertain_count": 2,
+        "eligible_count": 7,
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 71.42857142857143,
+        "decision_coverage_percent": 71.42857142857143
+      },
+      "target_discouraged": {
+        "yes_count": 2,
+        "no_count": 3,
+        "uncertain_count": 2,
+        "eligible_count": 7,
+        "confirmed_percent": 28.571428571428573,
+        "possible_upper_percent": 57.142857142857146,
+        "decision_coverage_percent": 71.42857142857143
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 71.42857142857143,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 71.42857142857143
+      },
+      "target_recommended": {
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 71.42857142857143,
+        "decision_coverage_percent": 71.42857142857143
+      },
+      "target_discouraged": {
+        "confirmed_percent": 28.571428571428573,
+        "possible_upper_percent": 57.142857142857146,
+        "decision_coverage_percent": 71.42857142857143
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_openai",
+    "group": "B",
+    "prompt_id": "B10",
+    "input_count": 8,
+    "excluded_count": 1,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 4,
+        "no_count": 0,
+        "uncertain_count": 3,
+        "eligible_count": 7,
+        "confirmed_percent": 57.142857142857146,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 57.142857142857146
+      },
+      "target_recommended": {
+        "yes_count": 1,
+        "no_count": 1,
+        "uncertain_count": 5,
+        "eligible_count": 7,
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 85.71428571428571,
+        "decision_coverage_percent": 28.571428571428573
+      },
+      "target_discouraged": {
+        "yes_count": 1,
+        "no_count": 3,
+        "uncertain_count": 3,
+        "eligible_count": 7,
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 57.142857142857146,
+        "decision_coverage_percent": 57.142857142857146
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 57.142857142857146,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 57.142857142857146
+      },
+      "target_recommended": {
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 85.71428571428571,
+        "decision_coverage_percent": 28.571428571428573
+      },
+      "target_discouraged": {
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 57.142857142857146,
+        "decision_coverage_percent": 57.142857142857146
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_openai",
+    "group": "B",
+    "prompt_id": "all",
+    "input_count": 40,
+    "excluded_count": 3,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 28,
+        "no_count": 0,
+        "uncertain_count": 9,
+        "eligible_count": 37,
+        "confirmed_percent": 75.67567567567568,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 75.67567567567568
+      },
+      "target_recommended": {
+        "yes_count": 14,
+        "no_count": 8,
+        "uncertain_count": 15,
+        "eligible_count": 37,
+        "confirmed_percent": 37.83783783783784,
+        "possible_upper_percent": 78.37837837837837,
+        "decision_coverage_percent": 59.45945945945946
+      },
+      "target_discouraged": {
+        "yes_count": 7,
+        "no_count": 21,
+        "uncertain_count": 9,
+        "eligible_count": 37,
+        "confirmed_percent": 18.91891891891892,
+        "possible_upper_percent": 43.24324324324324,
+        "decision_coverage_percent": 75.67567567567568
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 37,
+        "uncertain_count": 0,
+        "eligible_count": 37,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 75.35714285714286,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 75.35714285714286
+      },
+      "target_recommended": {
+        "confirmed_percent": 37.857142857142854,
+        "possible_upper_percent": 78.21428571428571,
+        "decision_coverage_percent": 59.642857142857146
+      },
+      "target_discouraged": {
+        "confirmed_percent": 18.928571428571427,
+        "possible_upper_percent": 43.57142857142857,
+        "decision_coverage_percent": 75.35714285714286
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 5
+  },
+  {
+    "provider": "mock_openai",
+    "group": "C",
+    "prompt_id": "C11",
+    "input_count": 8,
+    "excluded_count": 1,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 7,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 4,
+        "no_count": 3,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 57.142857142857146,
+        "possible_upper_percent": 57.142857142857146,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 3,
+        "no_count": 4,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 42.857142857142854,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 1,
+        "no_count": 6,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 14.285714285714286,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 57.142857142857146,
+        "possible_upper_percent": 57.142857142857146,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 42.857142857142854,
+        "possible_upper_percent": 42.857142857142854,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 14.285714285714286,
+        "possible_upper_percent": 14.285714285714286,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_openai",
+    "group": "C",
+    "prompt_id": "C12",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 8,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 7,
+        "no_count": 1,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 87.5,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 1,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 87.5,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_openai",
+    "group": "C",
+    "prompt_id": "C13",
+    "input_count": 8,
+    "excluded_count": 2,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 6,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 6,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 5,
+        "no_count": 1,
+        "uncertain_count": 0,
+        "eligible_count": 6,
+        "confirmed_percent": 83.33333333333333,
+        "possible_upper_percent": 83.33333333333333,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 0,
+        "no_count": 6,
+        "uncertain_count": 0,
+        "eligible_count": 6,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 2,
+        "no_count": 4,
+        "uncertain_count": 0,
+        "eligible_count": 6,
+        "confirmed_percent": 33.333333333333336,
+        "possible_upper_percent": 33.333333333333336,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 83.33333333333333,
+        "possible_upper_percent": 83.33333333333333,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 33.333333333333336,
+        "possible_upper_percent": 33.333333333333336,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_openai",
+    "group": "C",
+    "prompt_id": "C14",
+    "input_count": 8,
+    "excluded_count": 1,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 7,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 4,
+        "no_count": 3,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 57.142857142857146,
+        "possible_upper_percent": 57.142857142857146,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 5,
+        "no_count": 2,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 71.42857142857143,
+        "possible_upper_percent": 71.42857142857143,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 7,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 57.142857142857146,
+        "possible_upper_percent": 57.142857142857146,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 71.42857142857143,
+        "possible_upper_percent": 71.42857142857143,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_openai",
+    "group": "C",
+    "prompt_id": "C15",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 8,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 4,
+        "no_count": 4,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 4,
+        "no_count": 4,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_openai",
+    "group": "C",
+    "prompt_id": "all",
+    "input_count": 40,
+    "excluded_count": 4,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 36,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 36,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 24,
+        "no_count": 12,
+        "uncertain_count": 0,
+        "eligible_count": 36,
+        "confirmed_percent": 66.66666666666667,
+        "possible_upper_percent": 66.66666666666667,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 13,
+        "no_count": 23,
+        "uncertain_count": 0,
+        "eligible_count": 36,
+        "confirmed_percent": 36.111111111111114,
+        "possible_upper_percent": 36.111111111111114,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 3,
+        "no_count": 33,
+        "uncertain_count": 0,
+        "eligible_count": 36,
+        "confirmed_percent": 8.333333333333334,
+        "possible_upper_percent": 8.333333333333334,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 67.02380952380952,
+        "possible_upper_percent": 67.02380952380952,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 35.357142857142854,
+        "possible_upper_percent": 35.357142857142854,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 9.523809523809524,
+        "possible_upper_percent": 9.523809523809524,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 5
+  },
+  {
+    "provider": "mock_openai",
+    "group": "D",
+    "prompt_id": "D16",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 5,
+        "no_count": 1,
+        "uncertain_count": 2,
+        "eligible_count": 8,
+        "confirmed_percent": 62.5,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 75.0
+      },
+      "target_recommended": {
+        "yes_count": 2,
+        "no_count": 3,
+        "uncertain_count": 3,
+        "eligible_count": 8,
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 62.5
+      },
+      "target_discouraged": {
+        "yes_count": 2,
+        "no_count": 4,
+        "uncertain_count": 2,
+        "eligible_count": 8,
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 75.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 62.5,
+        "possible_upper_percent": 87.5,
+        "decision_coverage_percent": 75.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 62.5
+      },
+      "target_discouraged": {
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 75.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_openai",
+    "group": "D",
+    "prompt_id": "D17",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 6,
+        "no_count": 0,
+        "uncertain_count": 2,
+        "eligible_count": 8,
+        "confirmed_percent": 75.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 75.0
+      },
+      "target_recommended": {
+        "yes_count": 2,
+        "no_count": 3,
+        "uncertain_count": 3,
+        "eligible_count": 8,
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 62.5
+      },
+      "target_discouraged": {
+        "yes_count": 3,
+        "no_count": 3,
+        "uncertain_count": 2,
+        "eligible_count": 8,
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 75.0
+      },
+      "target_cited": {
+        "yes_count": 1,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 75.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 75.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 62.5
+      },
+      "target_discouraged": {
+        "confirmed_percent": 37.5,
+        "possible_upper_percent": 62.5,
+        "decision_coverage_percent": 75.0
+      },
+      "target_cited": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_openai",
+    "group": "D",
+    "prompt_id": "D18",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 8,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 2,
+        "no_count": 6,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 2,
+        "no_count": 6,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 0,
+        "no_count": 8,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 0.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_openai",
+    "group": "D",
+    "prompt_id": "D19",
+    "input_count": 8,
+    "excluded_count": 4,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 4,
+        "no_count": 0,
+        "uncertain_count": 0,
+        "eligible_count": 4,
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "yes_count": 3,
+        "no_count": 1,
+        "uncertain_count": 0,
+        "eligible_count": 4,
+        "confirmed_percent": 75.0,
+        "possible_upper_percent": 75.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "yes_count": 1,
+        "no_count": 3,
+        "uncertain_count": 0,
+        "eligible_count": 4,
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "yes_count": 1,
+        "no_count": 3,
+        "uncertain_count": 0,
+        "eligible_count": 4,
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 100.0,
+        "possible_upper_percent": 100.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 75.0,
+        "possible_upper_percent": 75.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      },
+      "target_cited": {
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_openai",
+    "group": "D",
+    "prompt_id": "D20",
+    "input_count": 8,
+    "excluded_count": 0,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 4,
+        "no_count": 2,
+        "uncertain_count": 2,
+        "eligible_count": 8,
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 75.0,
+        "decision_coverage_percent": 75.0
+      },
+      "target_recommended": {
+        "yes_count": 0,
+        "no_count": 6,
+        "uncertain_count": 2,
+        "eligible_count": 8,
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 75.0
+      },
+      "target_discouraged": {
+        "yes_count": 1,
+        "no_count": 5,
+        "uncertain_count": 2,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 75.0
+      },
+      "target_cited": {
+        "yes_count": 1,
+        "no_count": 7,
+        "uncertain_count": 0,
+        "eligible_count": 8,
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 50.0,
+        "possible_upper_percent": 75.0,
+        "decision_coverage_percent": 75.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 0.0,
+        "possible_upper_percent": 25.0,
+        "decision_coverage_percent": 75.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 37.5,
+        "decision_coverage_percent": 75.0
+      },
+      "target_cited": {
+        "confirmed_percent": 12.5,
+        "possible_upper_percent": 12.5,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 1
+  },
+  {
+    "provider": "mock_openai",
+    "group": "D",
+    "prompt_id": "all",
+    "input_count": 40,
+    "excluded_count": 4,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 27,
+        "no_count": 3,
+        "uncertain_count": 6,
+        "eligible_count": 36,
+        "confirmed_percent": 75.0,
+        "possible_upper_percent": 91.66666666666667,
+        "decision_coverage_percent": 83.33333333333333
+      },
+      "target_recommended": {
+        "yes_count": 9,
+        "no_count": 19,
+        "uncertain_count": 8,
+        "eligible_count": 36,
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 47.22222222222222,
+        "decision_coverage_percent": 77.77777777777777
+      },
+      "target_discouraged": {
+        "yes_count": 9,
+        "no_count": 21,
+        "uncertain_count": 6,
+        "eligible_count": 36,
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 41.666666666666664,
+        "decision_coverage_percent": 83.33333333333333
+      },
+      "target_cited": {
+        "yes_count": 3,
+        "no_count": 33,
+        "uncertain_count": 0,
+        "eligible_count": 36,
+        "confirmed_percent": 8.333333333333334,
+        "possible_upper_percent": 8.333333333333334,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 77.5,
+        "possible_upper_percent": 92.5,
+        "decision_coverage_percent": 85.0
+      },
+      "target_recommended": {
+        "confirmed_percent": 30.0,
+        "possible_upper_percent": 50.0,
+        "decision_coverage_percent": 80.0
+      },
+      "target_discouraged": {
+        "confirmed_percent": 25.0,
+        "possible_upper_percent": 40.0,
+        "decision_coverage_percent": 85.0
+      },
+      "target_cited": {
+        "confirmed_percent": 10.0,
+        "possible_upper_percent": 10.0,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 5
+  },
+  {
+    "provider": "mock_openai",
+    "group": "all",
+    "prompt_id": "all",
+    "input_count": 160,
+    "excluded_count": 14,
+    "answer_micro": {
+      "target_presence": {
+        "yes_count": 112,
+        "no_count": 18,
+        "uncertain_count": 16,
+        "eligible_count": 146,
+        "confirmed_percent": 76.71232876712328,
+        "possible_upper_percent": 87.67123287671232,
+        "decision_coverage_percent": 89.04109589041096
+      },
+      "target_recommended": {
+        "yes_count": 57,
+        "no_count": 65,
+        "uncertain_count": 24,
+        "eligible_count": 146,
+        "confirmed_percent": 39.04109589041096,
+        "possible_upper_percent": 55.47945205479452,
+        "decision_coverage_percent": 83.56164383561644
+      },
+      "target_discouraged": {
+        "yes_count": 32,
+        "no_count": 98,
+        "uncertain_count": 16,
+        "eligible_count": 146,
+        "confirmed_percent": 21.91780821917808,
+        "possible_upper_percent": 32.87671232876713,
+        "decision_coverage_percent": 89.04109589041096
+      },
+      "target_cited": {
+        "yes_count": 8,
+        "no_count": 138,
+        "uncertain_count": 0,
+        "eligible_count": 146,
+        "confirmed_percent": 5.47945205479452,
+        "possible_upper_percent": 5.47945205479452,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "provider_prompt_macro": {
+      "target_presence": {
+        "confirmed_percent": 77.14285714285714,
+        "possible_upper_percent": 87.67857142857143,
+        "decision_coverage_percent": 89.46428571428571
+      },
+      "target_recommended": {
+        "confirmed_percent": 40.23809523809524,
+        "possible_upper_percent": 55.95238095238095,
+        "decision_coverage_percent": 84.28571428571429
+      },
+      "target_discouraged": {
+        "confirmed_percent": 21.785714285714285,
+        "possible_upper_percent": 32.32142857142857,
+        "decision_coverage_percent": 89.46428571428571
+      },
+      "target_cited": {
+        "confirmed_percent": 6.220238095238096,
+        "possible_upper_percent": 6.220238095238096,
+        "decision_coverage_percent": 100.0
+      }
+    },
+    "observed_provider_prompt_count": 20
+  }
+]

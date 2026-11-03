@@ -1,0 +1,56 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "line": {
+      "title": "Line",
+      "type": "integer"
+    },
+    "line_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Line Sha256",
+      "type": "string"
+    },
+    "answer_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Answer Id"
+    },
+    "outcome": {
+      "enum": [
+        "accepted",
+        "duplicate",
+        "quarantined"
+      ],
+      "title": "Outcome",
+      "type": "string"
+    },
+    "reason": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reason"
+    }
+  },
+  "required": [
+    "line",
+    "line_sha256",
+    "answer_id",
+    "outcome"
+  ],
+  "title": "IntakeRecord",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step5:IntakeRecord:1.0"
+}

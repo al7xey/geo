@@ -1,0 +1,416 @@
+{
+  "$defs": {
+    "BrandAnnotation": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "is_target": {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "title": "Is Target",
+          "type": "string"
+        },
+        "presence_evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "minItems": 1,
+          "title": "Presence Evidence",
+          "type": "array"
+        },
+        "roles": {
+          "items": {
+            "$ref": "#/$defs/RoleClaim"
+          },
+          "minItems": 1,
+          "title": "Roles",
+          "type": "array"
+        },
+        "recommended": {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "title": "Recommended",
+          "type": "string"
+        },
+        "discouraged": {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "title": "Discouraged",
+          "type": "string"
+        },
+        "rank": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rank"
+        },
+        "rank_evidence": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Evidence"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "rank_context_evidence": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Evidence"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "identity_basis": {
+          "enum": [
+            "target_dictionary",
+            "structured_name_candidate"
+          ],
+          "title": "Identity Basis",
+          "type": "string"
+        },
+        "reason_codes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Reason Codes",
+          "type": "array"
+        },
+        "method": {
+          "const": "rules",
+          "default": "rules",
+          "title": "Method",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "is_target",
+        "presence_evidence",
+        "roles",
+        "recommended",
+        "discouraged",
+        "identity_basis",
+        "reason_codes"
+      ],
+      "title": "BrandAnnotation",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "quote": {
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "exclusiveMinimum": 0,
+          "title": "End",
+          "type": "integer"
+        },
+        "rule": {
+          "minLength": 1,
+          "title": "Rule",
+          "type": "string"
+        }
+      },
+      "required": [
+        "quote",
+        "start",
+        "end",
+        "rule"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "RoleClaim": {
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "enum": [
+            "recommended",
+            "discouraged",
+            "mentioned"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "evidence": {
+          "$ref": "#/$defs/Evidence"
+        },
+        "context_evidence": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Evidence"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "role",
+        "evidence"
+      ],
+      "title": "RoleClaim",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "step6-1.1",
+      "default": "step6-1.1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "answer_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Answer Id",
+      "type": "string"
+    },
+    "prompt_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Prompt Id",
+      "type": "string"
+    },
+    "group": {
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "title": "Group",
+      "type": "string"
+    },
+    "provider": {
+      "title": "Provider",
+      "type": "string"
+    },
+    "model": {
+      "title": "Model",
+      "type": "string"
+    },
+    "origin": {
+      "title": "Origin",
+      "type": "string"
+    },
+    "source_line": {
+      "minimum": 1,
+      "title": "Source Line",
+      "type": "integer"
+    },
+    "text_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Text Sha256",
+      "type": "string"
+    },
+    "delivery_status": {
+      "enum": [
+        "ok",
+        "empty",
+        "error",
+        "truncated"
+      ],
+      "title": "Delivery Status",
+      "type": "string"
+    },
+    "measurement_eligible": {
+      "title": "Measurement Eligible",
+      "type": "boolean"
+    },
+    "answer_kind": {
+      "anyOf": [
+        {
+          "enum": [
+            "list",
+            "prose",
+            "refusal",
+            "mixed",
+            "unknown"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Answer Kind"
+    },
+    "relevance": {
+      "const": "unassessed",
+      "default": "unassessed",
+      "title": "Relevance",
+      "type": "string"
+    },
+    "target_presence": {
+      "anyOf": [
+        {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Target Presence"
+    },
+    "target_recommended": {
+      "anyOf": [
+        {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Target Recommended"
+    },
+    "target_discouraged": {
+      "anyOf": [
+        {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Target Discouraged"
+    },
+    "target_cited": {
+      "anyOf": [
+        {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Target Cited"
+    },
+    "brands": {
+      "items": {
+        "$ref": "#/$defs/BrandAnnotation"
+      },
+      "title": "Brands",
+      "type": "array"
+    },
+    "reason_codes": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Reason Codes",
+      "type": "array"
+    },
+    "needs_model": {
+      "title": "Needs Model",
+      "type": "boolean"
+    },
+    "status": {
+      "enum": [
+        "rules_complete",
+        "pending_model",
+        "not_eligible"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "method": {
+      "const": "rules",
+      "default": "rules",
+      "title": "Method",
+      "type": "string"
+    },
+    "independent_review": {
+      "const": "not_performed",
+      "default": "not_performed",
+      "title": "Independent Review",
+      "type": "string"
+    },
+    "competitor_extraction": {
+      "const": "structured_candidates_only",
+      "default": "structured_candidates_only",
+      "title": "Competitor Extraction",
+      "type": "string"
+    }
+  },
+  "required": [
+    "answer_id",
+    "prompt_id",
+    "group",
+    "provider",
+    "model",
+    "origin",
+    "source_line",
+    "text_sha256",
+    "delivery_status",
+    "measurement_eligible",
+    "answer_kind",
+    "target_presence",
+    "target_recommended",
+    "target_discouraged",
+    "target_cited",
+    "brands",
+    "reason_codes",
+    "needs_model",
+    "status"
+  ],
+  "title": "Annotation",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step6:Annotation:1.1"
+}

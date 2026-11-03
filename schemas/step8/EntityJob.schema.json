@@ -1,0 +1,93 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "step8-job-1.0",
+      "default": "step8-job-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "job_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Job Id",
+      "type": "string"
+    },
+    "task_type": {
+      "enum": [
+        "compare_entity_names",
+        "classify_source_host"
+      ],
+      "title": "Task Type",
+      "type": "string"
+    },
+    "entity_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "title": "Entity Ids",
+      "type": "array"
+    },
+    "names": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Names",
+      "type": "array"
+    },
+    "host": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Host"
+    },
+    "contexts": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Contexts",
+      "type": "array"
+    },
+    "reason": {
+      "enum": [
+        "transliteration",
+        "similar_spelling",
+        "unknown_domain_type"
+      ],
+      "title": "Reason",
+      "type": "string"
+    },
+    "status": {
+      "const": "pending_api_key",
+      "default": "pending_api_key",
+      "title": "Status",
+      "type": "string"
+    },
+    "executed": {
+      "const": false,
+      "default": false,
+      "title": "Executed",
+      "type": "boolean"
+    },
+    "instruction": {
+      "title": "Instruction",
+      "type": "string"
+    }
+  },
+  "required": [
+    "job_id",
+    "task_type",
+    "reason",
+    "instruction"
+  ],
+  "title": "EntityJob",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step8:EntityJob:1.0"
+}

@@ -1,0 +1,14 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "synthetic": {
+      "default": false,
+      "title": "Synthetic",
+      "type": "boolean"
+    }
+  },
+  "title": "AdapterPolicy",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step5:AdapterPolicy:1.0"
+}

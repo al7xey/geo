@@ -1,0 +1,49 @@
+{
+  "$defs": {
+    "NameVariant": {
+      "properties": {
+        "variant": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Variant",
+          "type": "string"
+        },
+        "ambiguous": {
+          "default": true,
+          "title": "Ambiguous",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "variant"
+      ],
+      "title": "NameVariant",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "domain": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Domain",
+      "type": "string"
+    },
+    "name_variants": {
+      "items": {
+        "$ref": "#/$defs/NameVariant"
+      },
+      "maxItems": 100,
+      "minItems": 1,
+      "title": "Name Variants",
+      "type": "array"
+    }
+  },
+  "required": [
+    "domain",
+    "name_variants"
+  ],
+  "title": "ApprovedProfile",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step5:ApprovedProfile:1.0"
+}

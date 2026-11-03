@@ -1,0 +1,63 @@
+{
+  "$defs": {
+    "PublicationFile": {
+      "additionalProperties": false,
+      "properties": {
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "size_bytes": {
+          "maximum": 67108864,
+          "minimum": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "sha256",
+        "size_bytes"
+      ],
+      "title": "PublicationFile",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "step4-to-step5-1.0",
+      "default": "step4-to-step5-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "committed": {
+      "const": true,
+      "default": true,
+      "title": "Committed",
+      "type": "boolean"
+    },
+    "source_fingerprint": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Source Fingerprint",
+      "type": "string"
+    },
+    "files": {
+      "additionalProperties": {
+        "$ref": "#/$defs/PublicationFile"
+      },
+      "maxProperties": 12,
+      "minProperties": 1,
+      "title": "Files",
+      "type": "object"
+    }
+  },
+  "required": [
+    "source_fingerprint",
+    "files"
+  ],
+  "title": "AdapterManifest",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step5:AdapterManifest:1.0"
+}

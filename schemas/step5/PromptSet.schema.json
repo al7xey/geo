@@ -1,0 +1,97 @@
+{
+  "$defs": {
+    "Prompt": {
+      "additionalProperties": false,
+      "properties": {
+        "prompt_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Prompt Id",
+          "type": "string"
+        },
+        "group": {
+          "enum": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "title": "Group",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 10000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "active": {
+          "default": true,
+          "title": "Active",
+          "type": "boolean"
+        },
+        "visibility_eligible": {
+          "title": "Visibility Eligible",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "prompt_id",
+        "group",
+        "text",
+        "visibility_eligible"
+      ],
+      "title": "Prompt",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "prompt_set_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Prompt Set Id",
+      "type": "string"
+    },
+    "country": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Country",
+      "type": "string"
+    },
+    "language": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Language",
+      "type": "string"
+    },
+    "synthetic": {
+      "default": false,
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "prompts": {
+      "items": {
+        "$ref": "#/$defs/Prompt"
+      },
+      "maxItems": 1000,
+      "minItems": 1,
+      "title": "Prompts",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "prompt_set_id",
+    "country",
+    "language",
+    "prompts"
+  ],
+  "title": "PromptSet",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step5:PromptSet:1.0"
+}

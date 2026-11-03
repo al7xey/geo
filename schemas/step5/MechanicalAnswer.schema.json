@@ -1,0 +1,246 @@
+{
+  "$defs": {
+    "MentionCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "alias": {
+          "title": "Alias",
+          "type": "string"
+        },
+        "quote": {
+          "title": "Quote",
+          "type": "string"
+        },
+        "start": {
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "title": "End",
+          "type": "integer"
+        },
+        "ambiguous": {
+          "title": "Ambiguous",
+          "type": "boolean"
+        },
+        "location": {
+          "enum": [
+            "body",
+            "text_url"
+          ],
+          "title": "Location",
+          "type": "string"
+        }
+      },
+      "required": [
+        "alias",
+        "quote",
+        "start",
+        "end",
+        "ambiguous",
+        "location"
+      ],
+      "title": "MentionCandidate",
+      "type": "object"
+    },
+    "SourceObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "host": {
+          "title": "Host",
+          "type": "string"
+        },
+        "registrable_domain": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Registrable Domain"
+        },
+        "psl_known": {
+          "title": "Psl Known",
+          "type": "boolean"
+        },
+        "target_host_match": {
+          "title": "Target Host Match",
+          "type": "boolean"
+        },
+        "origins": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Origins",
+          "type": "array"
+        },
+        "text_spans": {
+          "items": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array"
+          },
+          "title": "Text Spans",
+          "type": "array"
+        },
+        "citation_indices": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Citation Indices",
+          "type": "array"
+        },
+        "resolution_status": {
+          "const": "not_attempted",
+          "default": "not_attempted",
+          "title": "Resolution Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "url",
+        "host",
+        "registrable_domain",
+        "psl_known",
+        "target_host_match",
+        "origins",
+        "text_spans"
+      ],
+      "title": "SourceObservation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "answer_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Answer Id",
+      "type": "string"
+    },
+    "prompt_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Prompt Id",
+      "type": "string"
+    },
+    "group": {
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "title": "Group",
+      "type": "string"
+    },
+    "provider": {
+      "title": "Provider",
+      "type": "string"
+    },
+    "model": {
+      "title": "Model",
+      "type": "string"
+    },
+    "origin": {
+      "title": "Origin",
+      "type": "string"
+    },
+    "repeat_index": {
+      "title": "Repeat Index",
+      "type": "integer"
+    },
+    "status": {
+      "enum": [
+        "ok",
+        "empty",
+        "error",
+        "truncated"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "source_line": {
+      "title": "Source Line",
+      "type": "integer"
+    },
+    "text_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Text Sha256",
+      "type": "string"
+    },
+    "text_chars": {
+      "title": "Text Chars",
+      "type": "integer"
+    },
+    "visibility_eligible": {
+      "title": "Visibility Eligible",
+      "type": "boolean"
+    },
+    "candidates": {
+      "items": {
+        "$ref": "#/$defs/MentionCandidate"
+      },
+      "title": "Candidates",
+      "type": "array"
+    },
+    "sources": {
+      "items": {
+        "$ref": "#/$defs/SourceObservation"
+      },
+      "title": "Sources",
+      "type": "array"
+    },
+    "invalid_source_count": {
+      "title": "Invalid Source Count",
+      "type": "integer"
+    },
+    "target_name_candidate": {
+      "title": "Target Name Candidate",
+      "type": "boolean"
+    },
+    "target_domain_in_body": {
+      "title": "Target Domain In Body",
+      "type": "boolean"
+    },
+    "target_domain_in_citations": {
+      "title": "Target Domain In Citations",
+      "type": "boolean"
+    },
+    "annotation_status": {
+      "const": "unreviewed",
+      "default": "unreviewed",
+      "title": "Annotation Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "answer_id",
+    "prompt_id",
+    "group",
+    "provider",
+    "model",
+    "origin",
+    "repeat_index",
+    "status",
+    "source_line",
+    "text_sha256",
+    "text_chars",
+    "visibility_eligible",
+    "candidates",
+    "sources",
+    "invalid_source_count",
+    "target_name_candidate",
+    "target_domain_in_body",
+    "target_domain_in_citations"
+  ],
+  "title": "MechanicalAnswer",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step5:MechanicalAnswer:1.0"
+}

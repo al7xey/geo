@@ -1,0 +1,17 @@
+{
+  "schema_version": "step7-review-1.0",
+  "job_id": "unassigned-synthetic-example",
+  "text_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "reviewer": {
+    "kind": "synthetic",
+    "provider": "fixture-only",
+    "model": null,
+    "family": null
+  },
+  "status": "ok",
+  "target_presence": "no",
+  "target_recommended": "no",
+  "target_discouraged": "no",
+  "brands": [],
+  "error_code": null
+}

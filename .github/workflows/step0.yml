@@ -1,4 +1,4 @@
-name: Steps 0-1 static acceptance
+name: Steps 0-8 acceptance
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
   acceptance:
     name: ${{ matrix.os }} / Python 3.12
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 15
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
@@ -59,11 +59,21 @@ jobs:
       - name: Lint all supported Python code
         run: uv run --locked ruff check src tests tools
       - name: Static security checks
-        run: uv run --locked bandit -r src tools
+        run: uv run --locked bandit -r src
+      - name: Security checks for fixture tools
+        # Assertions and seeded pseudo-random data are intentional in synthetic fixtures.
+        run: uv run --locked bandit -r tools -s B101,B311
       - name: Generated contracts
         run: uv run --locked python tools/generate_step0_artifacts.py --check
       - name: Generated step 1 contracts
         run: uv run --locked python tools/generate_step1_artifacts.py --check
+      - name: Generated steps 5-8 contracts
+        shell: python
+        run: |
+          import subprocess, sys
+          for step in range(5, 9):
+              subprocess.run([sys.executable, f"tools/generate_step{step}_schemas.py"], check=True)
+          subprocess.run(["git", "diff", "--exit-code", "--", "schemas/step5", "schemas/step6", "schemas/step7", "schemas/step8"], check=True)
       - name: Export hashed audit constraints
         run: uv export --locked --no-emit-project --format requirements-txt --output-file tmp/audit-requirements.txt --quiet
       - name: Audit dependencies with fresh cache
@@ -88,8 +98,9 @@ jobs:
           py=env/('Scripts/python.exe' if os.name=='nt' else 'bin/python');
           subprocess.run([str(py),'-I','-c',
           'import geo_audit,pathlib,sys; p=pathlib.Path(geo_audit.__file__).resolve(); print(p); assert p.is_relative_to(pathlib.Path(sys.prefix))'],check=True);
-          subprocess.run([str(py),'-I','-m','pytest','-q','-ra',
+          subprocess.run([str(py),'-X','utf8','-I','-m','pytest','-q','-ra',
           'tests/test_step1_pipeline_integration.py','tests/test_recommendations.py',
-          'tests/test_connection_integration.py','tests/test_web.py'],check=True)"
+          'tests/test_connection_integration.py','tests/test_web.py',
+          'tests/test_step4_to_step8.py'],check=True)"
       - name: CLI smoke
         run: uv run --locked geo-audit --help
