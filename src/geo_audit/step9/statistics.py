@@ -130,7 +130,9 @@ def rates(
             low = high = None
             if len(values) >= 2:
                 # Reproducible statistical resampling, never security randomness.
-                rng = random.Random(policy.seed ^ int(digest(metric_id.encode())[:8], 16))  # nosec B311
+                rng = random.Random(  # nosec B311
+                    policy.seed ^ int(digest(metric_id.encode())[:8], 16)
+                )
                 samples = [
                     fmean(rng.choices(values, k=len(values)))
                     for _ in range(policy.bootstrap_replicates)
