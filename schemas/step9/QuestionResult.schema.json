@@ -1,0 +1,158 @@
+{
+  "$defs": {
+    "QuestionMetric": {
+      "additionalProperties": false,
+      "properties": {
+        "metric": {
+          "enum": [
+            "name_match",
+            "presence",
+            "recommended",
+            "discouraged",
+            "cited"
+          ],
+          "title": "Metric",
+          "type": "string"
+        },
+        "successes": {
+          "minimum": 0,
+          "title": "Successes",
+          "type": "integer"
+        },
+        "denominator": {
+          "minimum": 0,
+          "title": "Denominator",
+          "type": "integer"
+        },
+        "unknown": {
+          "minimum": 0,
+          "title": "Unknown",
+          "type": "integer"
+        },
+        "percent": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Percent"
+        }
+      },
+      "required": [
+        "metric",
+        "successes",
+        "denominator",
+        "unknown",
+        "percent"
+      ],
+      "title": "QuestionMetric",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "prompt_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Prompt Id",
+      "type": "string"
+    },
+    "text": {
+      "maxLength": 10000,
+      "title": "Text",
+      "type": "string"
+    },
+    "group": {
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "title": "Group",
+      "type": "string"
+    },
+    "organic": {
+      "title": "Organic",
+      "type": "boolean"
+    },
+    "valid_answers": {
+      "minimum": 0,
+      "title": "Valid Answers",
+      "type": "integer"
+    },
+    "target_confirmed": {
+      "minimum": 0,
+      "title": "Target Confirmed",
+      "type": "integer"
+    },
+    "target_uncertain": {
+      "minimum": 0,
+      "title": "Target Uncertain",
+      "type": "integer"
+    },
+    "name_matches": {
+      "minimum": 0,
+      "title": "Name Matches",
+      "type": "integer"
+    },
+    "other_recommended_answers": {
+      "minimum": 0,
+      "title": "Other Recommended Answers",
+      "type": "integer"
+    },
+    "other_recommended_percent": {
+      "anyOf": [
+        {
+          "maximum": 100,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Other Recommended Percent"
+    },
+    "metrics": {
+      "items": {
+        "$ref": "#/$defs/QuestionMetric"
+      },
+      "title": "Metrics",
+      "type": "array"
+    },
+    "stability": {
+      "enum": [
+        "always",
+        "sometimes",
+        "never",
+        "uncertain",
+        "no_data"
+      ],
+      "title": "Stability",
+      "type": "string"
+    }
+  },
+  "required": [
+    "prompt_id",
+    "text",
+    "group",
+    "organic",
+    "valid_answers",
+    "target_confirmed",
+    "target_uncertain",
+    "name_matches",
+    "other_recommended_answers",
+    "other_recommended_percent",
+    "metrics",
+    "stability"
+  ],
+  "title": "QuestionResult",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step9:QuestionResult:1.0"
+}

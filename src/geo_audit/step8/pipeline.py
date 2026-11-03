@@ -6,6 +6,7 @@ from ..evidence import MAX_TOTAL_BYTES, EvidenceStore
 from ..secure_io import pinned_directory
 from ..step5.models import MechanicalAnswer, PublicationFile, Target
 from ..step5.pipeline import MAX_ANSWERS_BYTES, MAX_METADATA_BYTES, digest, encoded, unique_json
+from ..step5.replay import reuse_replay
 from ..step6.models import Annotation
 from ..step7.models import PublicationManifest as Step7Manifest
 from ..step7.models import ResolvedAnnotation
@@ -25,6 +26,7 @@ SOURCE_FILES = (
 INPUT_FILES = (*SOURCE_FILES, "entity-catalog.json", "entity-policy.json")
 
 
+@reuse_replay
 def build_artifacts(snapshots: dict[str, bytes]) -> tuple[dict[str, bytes], Step8Summary]:
     if set(snapshots) != set(INPUT_FILES):
         raise ValueError("unexpected step 8 input set")

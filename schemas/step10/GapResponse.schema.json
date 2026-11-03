@@ -1,0 +1,155 @@
+{
+  "$defs": {
+    "GapSuggestion": {
+      "additionalProperties": false,
+      "properties": {
+        "topic_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Topic Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "existing_page",
+            "new_page"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "page_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page Id"
+        },
+        "quote": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quote"
+        },
+        "title": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "outline": {
+          "items": {
+            "$ref": "#/$defs/OutlineItem"
+          },
+          "maxItems": 5,
+          "title": "Outline",
+          "type": "array"
+        }
+      },
+      "required": [
+        "topic_id",
+        "kind",
+        "title"
+      ],
+      "title": "GapSuggestion",
+      "type": "object"
+    },
+    "OutlineItem": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "fact_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+            "type": "string"
+          },
+          "maxItems": 10,
+          "minItems": 1,
+          "title": "Fact Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "text",
+        "fact_ids"
+      ],
+      "title": "OutlineItem",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "gap-response-1.0",
+      "default": "gap-response-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "job_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Job Id",
+      "type": "string"
+    },
+    "context_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Context Sha256",
+      "type": "string"
+    },
+    "reviewer_kind": {
+      "enum": [
+        "manual",
+        "model",
+        "synthetic"
+      ],
+      "title": "Reviewer Kind",
+      "type": "string"
+    },
+    "reviewer_model": {
+      "anyOf": [
+        {
+          "maxLength": 200,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reviewer Model"
+    },
+    "suggestions": {
+      "items": {
+        "$ref": "#/$defs/GapSuggestion"
+      },
+      "maxItems": 6,
+      "title": "Suggestions",
+      "type": "array"
+    }
+  },
+  "required": [
+    "job_id",
+    "context_sha256",
+    "reviewer_kind",
+    "suggestions"
+  ],
+  "title": "GapResponse",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step10:GapResponse:1.0"
+}

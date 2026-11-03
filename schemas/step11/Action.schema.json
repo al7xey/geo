@@ -1,0 +1,209 @@
+{
+  "$defs": {
+    "Basis": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "enum": [
+            "aggregate",
+            "question",
+            "check",
+            "gap",
+            "source",
+            "context"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "key": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Key",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "key"
+      ],
+      "title": "Basis",
+      "type": "object"
+    },
+    "GapSuggestion": {
+      "additionalProperties": false,
+      "properties": {
+        "topic_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Topic Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "existing_page",
+            "new_page"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "page_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page Id"
+        },
+        "quote": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quote"
+        },
+        "title": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "outline": {
+          "items": {
+            "$ref": "#/$defs/OutlineItem"
+          },
+          "maxItems": 5,
+          "title": "Outline",
+          "type": "array"
+        }
+      },
+      "required": [
+        "topic_id",
+        "kind",
+        "title"
+      ],
+      "title": "GapSuggestion",
+      "type": "object"
+    },
+    "OutlineItem": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "fact_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+            "type": "string"
+          },
+          "maxItems": 10,
+          "minItems": 1,
+          "title": "Fact Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "text",
+        "fact_ids"
+      ],
+      "title": "OutlineItem",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "action_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Action Id",
+      "type": "string"
+    },
+    "period": {
+      "enum": [
+        "week1",
+        "weeks2_4",
+        "later"
+      ],
+      "title": "Period",
+      "type": "string"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "instruction": {
+      "title": "Instruction",
+      "type": "string"
+    },
+    "basis": {
+      "items": {
+        "$ref": "#/$defs/Basis"
+      },
+      "maxItems": 20,
+      "minItems": 1,
+      "title": "Basis",
+      "type": "array"
+    },
+    "question_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "title": "Question Ids",
+      "type": "array"
+    },
+    "material": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/GapSuggestion"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "verify": {
+      "title": "Verify",
+      "type": "string"
+    },
+    "confidence": {
+      "enum": [
+        "observed",
+        "needs_review"
+      ],
+      "title": "Confidence",
+      "type": "string"
+    },
+    "limitation": {
+      "title": "Limitation",
+      "type": "string"
+    }
+  },
+  "required": [
+    "action_id",
+    "period",
+    "title",
+    "instruction",
+    "basis",
+    "question_ids",
+    "verify",
+    "confidence",
+    "limitation"
+  ],
+  "title": "Action",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step11:Action:1.0"
+}

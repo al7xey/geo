@@ -1,0 +1,163 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "answer_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Answer Id",
+      "type": "string"
+    },
+    "prompt_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Prompt Id",
+      "type": "string"
+    },
+    "group": {
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "title": "Group",
+      "type": "string"
+    },
+    "cohort_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Cohort Id",
+      "type": "string"
+    },
+    "provider": {
+      "title": "Provider",
+      "type": "string"
+    },
+    "model": {
+      "title": "Model",
+      "type": "string"
+    },
+    "synthetic": {
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "status": {
+      "title": "Status",
+      "type": "string"
+    },
+    "eligible": {
+      "title": "Eligible",
+      "type": "boolean"
+    },
+    "excluded_reasons": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Excluded Reasons",
+      "type": "array"
+    },
+    "name_match": {
+      "anyOf": [
+        {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Name Match"
+    },
+    "presence": {
+      "anyOf": [
+        {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Presence"
+    },
+    "recommended": {
+      "anyOf": [
+        {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Recommended"
+    },
+    "discouraged": {
+      "anyOf": [
+        {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Discouraged"
+    },
+    "cited": {
+      "anyOf": [
+        {
+          "enum": [
+            "yes",
+            "no",
+            "uncertain"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Cited"
+    },
+    "other_recommended": {
+      "title": "Other Recommended",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "answer_id",
+    "prompt_id",
+    "group",
+    "cohort_id",
+    "provider",
+    "model",
+    "synthetic",
+    "status",
+    "eligible",
+    "excluded_reasons",
+    "name_match",
+    "presence",
+    "recommended",
+    "discouraged",
+    "cited",
+    "other_recommended"
+  ],
+  "title": "AnswerMeasure",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step9:AnswerMeasure:1.0"
+}

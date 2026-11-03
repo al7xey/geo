@@ -7,7 +7,18 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-COMMANDS = ("demo", "analyze", "verify", "prepare", "review", "collect", "serve", "audit")
+COMMANDS = (
+    "demo",
+    "analyze",
+    "verify",
+    "finish",
+    "sources",
+    "prepare",
+    "review",
+    "collect",
+    "serve",
+    "audit",
+)
 
 
 def environment_python(directory: Path) -> Path:
@@ -46,6 +57,7 @@ def main(argv: list[str] | None = None) -> int:
         help=(
             "setup — установка; demo — учебные ответы без API; analyze — шаги 5–8; "
             "verify — проверка результата; prepare/review/collect — шаги 0–4; "
+            "finish — шаги 9–12; sources — явная проверка внешних страниц; "
             "serve/audit — техническая проверка сайта"
         ),
     )
@@ -60,6 +72,11 @@ def main(argv: list[str] | None = None) -> int:
         print("Сначала выполните: python run.py setup")
         return 2
     prefix = [str(python), "-X", "utf8"]
+    if args.command in {"finish", "sources"}:
+        module = (
+            "geo_audit.step12.workflow" if args.command == "finish" else "geo_audit.step9.sources"
+        )
+        return call([*prefix, "-m", module, *args.arguments])
     if args.command == "demo":
         return call([*prefix, str(ROOT / "tools" / "offline_demo.py"), *args.arguments])
     if args.command in {"serve", "audit"}:

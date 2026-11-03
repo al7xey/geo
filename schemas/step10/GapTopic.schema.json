@@ -1,0 +1,183 @@
+{
+  "$defs": {
+    "GapSuggestion": {
+      "additionalProperties": false,
+      "properties": {
+        "topic_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Topic Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "existing_page",
+            "new_page"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "page_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page Id"
+        },
+        "quote": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quote"
+        },
+        "title": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "outline": {
+          "items": {
+            "$ref": "#/$defs/OutlineItem"
+          },
+          "maxItems": 5,
+          "title": "Outline",
+          "type": "array"
+        }
+      },
+      "required": [
+        "topic_id",
+        "kind",
+        "title"
+      ],
+      "title": "GapSuggestion",
+      "type": "object"
+    },
+    "OutlineItem": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "fact_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+            "type": "string"
+          },
+          "maxItems": 10,
+          "minItems": 1,
+          "title": "Fact Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "text",
+        "fact_ids"
+      ],
+      "title": "OutlineItem",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "topic_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Topic Id",
+      "type": "string"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "question_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Question Ids",
+      "type": "array"
+    },
+    "candidate_page_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "title": "Candidate Page Ids",
+      "type": "array"
+    },
+    "grouping_method": {
+      "const": "bounded_lexical_candidates",
+      "default": "bounded_lexical_candidates",
+      "title": "Grouping Method",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "pending_review",
+        "draft_material"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "material": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/GapSuggestion"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "material_provenance": {
+      "anyOf": [
+        {
+          "enum": [
+            "manual",
+            "model",
+            "synthetic"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Material Provenance"
+    },
+    "limitation": {
+      "title": "Limitation",
+      "type": "string"
+    }
+  },
+  "required": [
+    "topic_id",
+    "title",
+    "question_ids",
+    "candidate_page_ids",
+    "status",
+    "limitation"
+  ],
+  "title": "GapTopic",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step10:GapTopic:1.0"
+}

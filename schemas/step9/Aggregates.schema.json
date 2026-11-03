@@ -1,0 +1,1093 @@
+{
+  "$defs": {
+    "AgreementMetric": {
+      "additionalProperties": false,
+      "properties": {
+        "assigned_comparisons": {
+          "minimum": 0,
+          "title": "Assigned Comparisons",
+          "type": "integer"
+        },
+        "comparable": {
+          "minimum": 0,
+          "title": "Comparable",
+          "type": "integer"
+        },
+        "comparable_answers": {
+          "minimum": 0,
+          "title": "Comparable Answers",
+          "type": "integer"
+        },
+        "matches": {
+          "minimum": 0,
+          "title": "Matches",
+          "type": "integer"
+        },
+        "disagreements": {
+          "minimum": 0,
+          "title": "Disagreements",
+          "type": "integer"
+        },
+        "comparison_coverage": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Comparison Coverage"
+        },
+        "agreement_percent": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Agreement Percent"
+        },
+        "reliability": {
+          "enum": [
+            "not_assessed",
+            "insufficient_sample",
+            "medium",
+            "low"
+          ],
+          "title": "Reliability",
+          "type": "string"
+        },
+        "basis": {
+          "const": "declared_model_imports_only",
+          "default": "declared_model_imports_only",
+          "title": "Basis",
+          "type": "string"
+        }
+      },
+      "required": [
+        "assigned_comparisons",
+        "comparable",
+        "comparable_answers",
+        "matches",
+        "disagreements",
+        "comparison_coverage",
+        "agreement_percent",
+        "reliability"
+      ],
+      "title": "AgreementMetric",
+      "type": "object"
+    },
+    "Cohort": {
+      "additionalProperties": false,
+      "properties": {
+        "provider": {
+          "title": "Provider",
+          "type": "string"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "settings": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Settings",
+          "type": "object"
+        }
+      },
+      "required": [
+        "provider",
+        "model",
+        "settings"
+      ],
+      "title": "Cohort",
+      "type": "object"
+    },
+    "Competitor": {
+      "additionalProperties": false,
+      "properties": {
+        "entity_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Entity Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "identity_scope": {
+          "title": "Identity Scope",
+          "type": "string"
+        },
+        "answer_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+            "type": "string"
+          },
+          "title": "Answer Ids",
+          "type": "array"
+        },
+        "recommended_answer_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+            "type": "string"
+          },
+          "title": "Recommended Answer Ids",
+          "type": "array"
+        },
+        "share_percent": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Share Percent"
+        },
+        "candidate_only": {
+          "title": "Candidate Only",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "entity_id",
+        "name",
+        "identity_scope",
+        "answer_ids",
+        "recommended_answer_ids",
+        "share_percent",
+        "candidate_only"
+      ],
+      "title": "Competitor",
+      "type": "object"
+    },
+    "LiteralName": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "quote": {
+          "title": "Quote",
+          "type": "string"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "exclusiveMinimum": 0,
+          "title": "End",
+          "type": "integer"
+        },
+        "ambiguous": {
+          "title": "Ambiguous",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "quote",
+        "start",
+        "end",
+        "ambiguous"
+      ],
+      "title": "LiteralName",
+      "type": "object"
+    },
+    "MetricPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "step9-policy-1.0",
+          "default": "step9-policy-1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "bootstrap_replicates": {
+          "default": 400,
+          "maximum": 2000,
+          "minimum": 100,
+          "title": "Bootstrap Replicates",
+          "type": "integer"
+        },
+        "seed": {
+          "default": 20261103,
+          "maximum": 4294967295,
+          "minimum": 0,
+          "title": "Seed",
+          "type": "integer"
+        },
+        "max_cohorts": {
+          "default": 100,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Max Cohorts",
+          "type": "integer"
+        },
+        "max_source_pages": {
+          "const": 5,
+          "default": 5,
+          "title": "Max Source Pages",
+          "type": "integer"
+        }
+      },
+      "title": "MetricPolicy",
+      "type": "object"
+    },
+    "NumberCell": {
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Value"
+        },
+        "unit": {
+          "enum": [
+            "percent",
+            "count"
+          ],
+          "title": "Unit",
+          "type": "string"
+        },
+        "basis": {
+          "title": "Basis",
+          "type": "string"
+        }
+      },
+      "required": [
+        "value",
+        "unit",
+        "basis"
+      ],
+      "title": "NumberCell",
+      "type": "object"
+    },
+    "QuestionMetric": {
+      "additionalProperties": false,
+      "properties": {
+        "metric": {
+          "enum": [
+            "name_match",
+            "presence",
+            "recommended",
+            "discouraged",
+            "cited"
+          ],
+          "title": "Metric",
+          "type": "string"
+        },
+        "successes": {
+          "minimum": 0,
+          "title": "Successes",
+          "type": "integer"
+        },
+        "denominator": {
+          "minimum": 0,
+          "title": "Denominator",
+          "type": "integer"
+        },
+        "unknown": {
+          "minimum": 0,
+          "title": "Unknown",
+          "type": "integer"
+        },
+        "percent": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Percent"
+        }
+      },
+      "required": [
+        "metric",
+        "successes",
+        "denominator",
+        "unknown",
+        "percent"
+      ],
+      "title": "QuestionMetric",
+      "type": "object"
+    },
+    "QuestionResult": {
+      "additionalProperties": false,
+      "properties": {
+        "prompt_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Prompt Id",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 10000,
+          "title": "Text",
+          "type": "string"
+        },
+        "group": {
+          "enum": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "title": "Group",
+          "type": "string"
+        },
+        "organic": {
+          "title": "Organic",
+          "type": "boolean"
+        },
+        "valid_answers": {
+          "minimum": 0,
+          "title": "Valid Answers",
+          "type": "integer"
+        },
+        "target_confirmed": {
+          "minimum": 0,
+          "title": "Target Confirmed",
+          "type": "integer"
+        },
+        "target_uncertain": {
+          "minimum": 0,
+          "title": "Target Uncertain",
+          "type": "integer"
+        },
+        "name_matches": {
+          "minimum": 0,
+          "title": "Name Matches",
+          "type": "integer"
+        },
+        "other_recommended_answers": {
+          "minimum": 0,
+          "title": "Other Recommended Answers",
+          "type": "integer"
+        },
+        "other_recommended_percent": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Other Recommended Percent"
+        },
+        "metrics": {
+          "items": {
+            "$ref": "#/$defs/QuestionMetric"
+          },
+          "title": "Metrics",
+          "type": "array"
+        },
+        "stability": {
+          "enum": [
+            "always",
+            "sometimes",
+            "never",
+            "uncertain",
+            "no_data"
+          ],
+          "title": "Stability",
+          "type": "string"
+        }
+      },
+      "required": [
+        "prompt_id",
+        "text",
+        "group",
+        "organic",
+        "valid_answers",
+        "target_confirmed",
+        "target_uncertain",
+        "name_matches",
+        "other_recommended_answers",
+        "other_recommended_percent",
+        "metrics",
+        "stability"
+      ],
+      "title": "QuestionResult",
+      "type": "object"
+    },
+    "Rate": {
+      "additionalProperties": false,
+      "properties": {
+        "metric_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Metric Id",
+          "type": "string"
+        },
+        "metric": {
+          "enum": [
+            "name_match",
+            "presence",
+            "recommended",
+            "discouraged",
+            "cited"
+          ],
+          "title": "Metric",
+          "type": "string"
+        },
+        "scope": {
+          "title": "Scope",
+          "type": "string"
+        },
+        "cohort_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cohort Id"
+        },
+        "group": {
+          "anyOf": [
+            {
+              "enum": [
+                "A",
+                "B",
+                "C",
+                "D"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Group"
+        },
+        "percent": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Percent"
+        },
+        "interval_low": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Interval Low"
+        },
+        "interval_high": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Interval High"
+        },
+        "questions": {
+          "minimum": 0,
+          "title": "Questions",
+          "type": "integer"
+        },
+        "answered_questions": {
+          "minimum": 0,
+          "title": "Answered Questions",
+          "type": "integer"
+        },
+        "known_answers": {
+          "minimum": 0,
+          "title": "Known Answers",
+          "type": "integer"
+        },
+        "unknown_answers": {
+          "minimum": 0,
+          "title": "Unknown Answers",
+          "type": "integer"
+        },
+        "reliability": {
+          "enum": [
+            "not_assessed",
+            "insufficient_sample",
+            "medium",
+            "low"
+          ],
+          "title": "Reliability",
+          "type": "string"
+        },
+        "method": {
+          "const": "equal_question_mean_cluster_bootstrap",
+          "default": "equal_question_mean_cluster_bootstrap",
+          "title": "Method",
+          "type": "string"
+        },
+        "reliability_basis": {
+          "const": "overall_step7_sample_and_local_missingness",
+          "default": "overall_step7_sample_and_local_missingness",
+          "title": "Reliability Basis",
+          "type": "string"
+        }
+      },
+      "required": [
+        "metric_id",
+        "metric",
+        "scope",
+        "percent",
+        "interval_low",
+        "interval_high",
+        "questions",
+        "answered_questions",
+        "known_answers",
+        "unknown_answers",
+        "reliability"
+      ],
+      "title": "Rate",
+      "type": "object"
+    },
+    "SourceInspection": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "source-inspection-1.0",
+          "default": "source-inspection-1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_aggregates_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Aggregates Sha256",
+          "type": "string"
+        },
+        "selection_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Selection Sha256",
+          "type": "string"
+        },
+        "synthetic": {
+          "title": "Synthetic",
+          "type": "boolean"
+        },
+        "observations": {
+          "items": {
+            "$ref": "#/$defs/SourceObservation"
+          },
+          "maxItems": 5,
+          "title": "Observations",
+          "type": "array"
+        },
+        "network_attempts": {
+          "maximum": 30,
+          "minimum": 0,
+          "title": "Network Attempts",
+          "type": "integer"
+        },
+        "attempt_count_complete": {
+          "default": true,
+          "title": "Attempt Count Complete",
+          "type": "boolean"
+        },
+        "model_calls": {
+          "const": 0,
+          "default": 0,
+          "title": "Model Calls",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "source_aggregates_sha256",
+        "selection_sha256",
+        "synthetic",
+        "observations",
+        "network_attempts"
+      ],
+      "title": "SourceInspection",
+      "type": "object"
+    },
+    "SourceObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "task_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Task Id",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "observed",
+            "not_observed"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "publication_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Publication Id"
+        },
+        "publication_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Publication Sha256"
+        },
+        "text": {
+          "default": "",
+          "maxLength": 20000,
+          "title": "Text",
+          "type": "string"
+        },
+        "text_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Text Sha256",
+          "type": "string"
+        },
+        "matches": {
+          "items": {
+            "$ref": "#/$defs/LiteralName"
+          },
+          "maxItems": 100,
+          "title": "Matches",
+          "type": "array"
+        },
+        "other_matches": {
+          "items": {
+            "$ref": "#/$defs/LiteralName"
+          },
+          "maxItems": 100,
+          "title": "Other Matches",
+          "type": "array"
+        },
+        "limitation": {
+          "title": "Limitation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "task_id",
+        "url",
+        "status",
+        "text_sha256",
+        "matches",
+        "limitation"
+      ],
+      "title": "SourceObservation",
+      "type": "object"
+    },
+    "SourcePageTask": {
+      "additionalProperties": false,
+      "properties": {
+        "task_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Task Id",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "answer_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+            "type": "string"
+          },
+          "title": "Answer Ids",
+          "type": "array"
+        },
+        "status": {
+          "const": "not_requested",
+          "default": "not_requested",
+          "title": "Status",
+          "type": "string"
+        },
+        "purpose": {
+          "const": "literal_names_on_external_choice_page",
+          "default": "literal_names_on_external_choice_page",
+          "title": "Purpose",
+          "type": "string"
+        }
+      },
+      "required": [
+        "task_id",
+        "url",
+        "answer_ids"
+      ],
+      "title": "SourcePageTask",
+      "type": "object"
+    },
+    "SourceStat": {
+      "additionalProperties": false,
+      "properties": {
+        "host": {
+          "title": "Host",
+          "type": "string"
+        },
+        "kind": {
+          "title": "Kind",
+          "type": "string"
+        },
+        "owner": {
+          "title": "Owner",
+          "type": "string"
+        },
+        "answer_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+            "type": "string"
+          },
+          "title": "Answer Ids",
+          "type": "array"
+        },
+        "urls": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Urls",
+          "type": "array"
+        }
+      },
+      "required": [
+        "host",
+        "kind",
+        "owner",
+        "answer_ids",
+        "urls"
+      ],
+      "title": "SourceStat",
+      "type": "object"
+    },
+    "Target": {
+      "additionalProperties": false,
+      "properties": {
+        "target_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Target Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "aliases": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 100,
+          "minItems": 1,
+          "title": "Aliases",
+          "type": "array"
+        },
+        "ambiguous_aliases": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Ambiguous Aliases",
+          "type": "array"
+        },
+        "domains": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 100,
+          "minItems": 1,
+          "title": "Domains",
+          "type": "array"
+        },
+        "synthetic": {
+          "default": false,
+          "title": "Synthetic",
+          "type": "boolean"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "maxLength": 10000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "required": [
+        "target_id",
+        "name",
+        "aliases",
+        "domains"
+      ],
+      "title": "Target",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "step9-1.0",
+      "default": "step9-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "target": {
+      "$ref": "#/$defs/Target"
+    },
+    "synthetic": {
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "policy": {
+      "$ref": "#/$defs/MetricPolicy"
+    },
+    "total_answers": {
+      "minimum": 0,
+      "title": "Total Answers",
+      "type": "integer"
+    },
+    "eligible_answers": {
+      "minimum": 0,
+      "title": "Eligible Answers",
+      "type": "integer"
+    },
+    "excluded_answers": {
+      "minimum": 0,
+      "title": "Excluded Answers",
+      "type": "integer"
+    },
+    "providers": {
+      "additionalProperties": {
+        "minimum": 0,
+        "type": "integer"
+      },
+      "title": "Providers",
+      "type": "object"
+    },
+    "cohorts": {
+      "additionalProperties": {
+        "$ref": "#/$defs/Cohort"
+      },
+      "title": "Cohorts",
+      "type": "object"
+    },
+    "delivery_statuses": {
+      "additionalProperties": {
+        "minimum": 0,
+        "type": "integer"
+      },
+      "title": "Delivery Statuses",
+      "type": "object"
+    },
+    "exclusion_reasons": {
+      "additionalProperties": {
+        "minimum": 0,
+        "type": "integer"
+      },
+      "title": "Exclusion Reasons",
+      "type": "object"
+    },
+    "questions": {
+      "items": {
+        "$ref": "#/$defs/QuestionResult"
+      },
+      "title": "Questions",
+      "type": "array"
+    },
+    "rates": {
+      "items": {
+        "$ref": "#/$defs/Rate"
+      },
+      "title": "Rates",
+      "type": "array"
+    },
+    "numbers": {
+      "additionalProperties": {
+        "$ref": "#/$defs/NumberCell"
+      },
+      "title": "Numbers",
+      "type": "object"
+    },
+    "competitors": {
+      "items": {
+        "$ref": "#/$defs/Competitor"
+      },
+      "title": "Competitors",
+      "type": "array"
+    },
+    "sources": {
+      "items": {
+        "$ref": "#/$defs/SourceStat"
+      },
+      "title": "Sources",
+      "type": "array"
+    },
+    "source_page_tasks": {
+      "items": {
+        "$ref": "#/$defs/SourcePageTask"
+      },
+      "title": "Source Page Tasks",
+      "type": "array"
+    },
+    "review_metrics": {
+      "additionalProperties": {
+        "$ref": "#/$defs/AgreementMetric"
+      },
+      "title": "Review Metrics",
+      "type": "object"
+    },
+    "stability": {
+      "additionalProperties": {
+        "minimum": 0,
+        "type": "integer"
+      },
+      "title": "Stability",
+      "type": "object"
+    },
+    "technical_counts": {
+      "additionalProperties": {
+        "minimum": 0,
+        "type": "integer"
+      },
+      "title": "Technical Counts",
+      "type": "object"
+    },
+    "source_inspection": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SourceInspection"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    },
+    "network_requests": {
+      "const": 0,
+      "default": 0,
+      "title": "Network Requests",
+      "type": "integer"
+    },
+    "model_calls": {
+      "const": 0,
+      "default": 0,
+      "title": "Model Calls",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "target",
+    "synthetic",
+    "policy",
+    "total_answers",
+    "eligible_answers",
+    "excluded_answers",
+    "providers",
+    "cohorts",
+    "delivery_statuses",
+    "exclusion_reasons",
+    "questions",
+    "rates",
+    "numbers",
+    "competitors",
+    "sources",
+    "source_page_tasks",
+    "review_metrics",
+    "stability",
+    "technical_counts",
+    "warnings"
+  ],
+  "title": "Aggregates",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step9:Aggregates:1.0"
+}

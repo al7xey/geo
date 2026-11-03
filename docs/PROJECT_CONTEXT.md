@@ -45,3 +45,15 @@ destinations must be new and disjoint from all source folders; existing path
 ancestors are checked with pinned_directory before any paid collector process.
 Unavailable filesystem roots fail without looping. The portable launcher reports
 interpreter/process startup OSError as a short message and exit2.
+
+Steps9-12 are implemented on feature/steps-9-12. step9 replays step8 and computes
+equal-question rates with question-cluster bootstrap, missingness and explicit
+provenance; stdlib only, no new dependencies. step10 selects lexical gap candidates
+and emits one disabled bounded request; imported text is a draft with page/quote/
+fact/number validation. step11 makes evidence-linked findings and a fixed-period
+plan. step12 renders escaped offline HTML and report_data.json with numeric registry
+validation. step12.workflow binds all adjacent publications and final downloads.
+run.py finish and demo --through12 expose the offline chain. run.py sources requires
+explicit --allow-network, reuses the unchanged pinned/robots-aware crawler and limits
+inspection to five selected pages; it is never invoked by demo/finish. All model
+executors remain disabled. See STEPS_9_12.md. No live audits or paid APIs were run.

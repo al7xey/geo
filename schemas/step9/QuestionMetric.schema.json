@@ -1,0 +1,55 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "metric": {
+      "enum": [
+        "name_match",
+        "presence",
+        "recommended",
+        "discouraged",
+        "cited"
+      ],
+      "title": "Metric",
+      "type": "string"
+    },
+    "successes": {
+      "minimum": 0,
+      "title": "Successes",
+      "type": "integer"
+    },
+    "denominator": {
+      "minimum": 0,
+      "title": "Denominator",
+      "type": "integer"
+    },
+    "unknown": {
+      "minimum": 0,
+      "title": "Unknown",
+      "type": "integer"
+    },
+    "percent": {
+      "anyOf": [
+        {
+          "maximum": 100,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Percent"
+    }
+  },
+  "required": [
+    "metric",
+    "successes",
+    "denominator",
+    "unknown",
+    "percent"
+  ],
+  "title": "QuestionMetric",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step9:QuestionMetric:1.0"
+}

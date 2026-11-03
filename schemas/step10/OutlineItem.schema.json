@@ -1,0 +1,29 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "text": {
+      "maxLength": 500,
+      "minLength": 1,
+      "title": "Text",
+      "type": "string"
+    },
+    "fact_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "maxItems": 10,
+      "minItems": 1,
+      "title": "Fact Ids",
+      "type": "array"
+    }
+  },
+  "required": [
+    "text",
+    "fact_ids"
+  ],
+  "title": "OutlineItem",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step10:OutlineItem:1.0"
+}

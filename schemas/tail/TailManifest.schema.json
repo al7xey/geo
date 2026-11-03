@@ -1,0 +1,56 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "steps9-12-chain-1.0",
+      "default": "steps9-12-chain-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "committed": {
+      "const": true,
+      "default": true,
+      "title": "Committed",
+      "type": "boolean"
+    },
+    "stages": {
+      "additionalProperties": {
+        "pattern": "^[a-f0-9]{64}$",
+        "type": "string"
+      },
+      "title": "Stages",
+      "type": "object"
+    },
+    "upstream_chain_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Upstream Chain Sha256"
+    },
+    "model_calls": {
+      "const": 0,
+      "default": 0,
+      "title": "Model Calls",
+      "type": "integer"
+    },
+    "network_requests": {
+      "const": 0,
+      "default": 0,
+      "title": "Network Requests",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "stages",
+    "upstream_chain_sha256"
+  ],
+  "title": "TailManifest",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

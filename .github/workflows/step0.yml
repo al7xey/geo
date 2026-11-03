@@ -1,4 +1,4 @@
-name: Steps 0-8 acceptance
+name: Steps 0-12 acceptance
 
 on:
   push:
@@ -74,6 +74,8 @@ jobs:
           for step in range(5, 9):
               subprocess.run(["uv", "run", "--locked", "python", f"tools/generate_step{step}_schemas.py"], check=True)
           subprocess.run(["git", "diff", "--exit-code", "--", "schemas/step5", "schemas/step6", "schemas/step7", "schemas/step8"], check=True)
+      - name: Generated steps 9-12 contracts
+        run: uv run --locked python tools/generate_tail_schemas.py --check
       - name: Export hashed audit constraints
         run: uv export --locked --no-emit-project --format requirements-txt --output-file tmp/audit-requirements.txt --quiet
       - name: Audit dependencies with fresh cache
@@ -101,7 +103,7 @@ jobs:
           subprocess.run([str(py),'-X','utf8','-I','-m','pytest','-q','-ra',
           'tests/test_step1_pipeline_integration.py','tests/test_recommendations.py',
           'tests/test_connection_integration.py','tests/test_web.py',
-          'tests/test_step4_to_step8.py'],check=True)"
+          'tests/test_step4_to_step8.py','tests/test_steps9_12.py'],check=True)"
       - name: CLI smoke
         run: uv run --locked geo-audit --help
       - name: Portable runtime installation and offline demo
@@ -110,3 +112,5 @@ jobs:
           python -X utf8 run.py --help
           python -X utf8 run.py demo --output-dir private/ci-demo
           python -X utf8 run.py verify private/ci-demo/result
+          python -X utf8 run.py finish --chain-dir private/ci-demo/result --output-dir private/ci-final
+          python -X utf8 run.py finish --verify private/ci-final

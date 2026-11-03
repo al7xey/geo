@@ -1,0 +1,79 @@
+{
+  "$defs": {
+    "JsonValue": {}
+  },
+  "additionalProperties": false,
+  "properties": {
+    "job_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Job Id",
+      "type": "string"
+    },
+    "context_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Context Sha256",
+      "type": "string"
+    },
+    "instruction_version": {
+      "const": "gap-draft-1",
+      "default": "gap-draft-1",
+      "title": "Instruction Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "pending_api_key",
+        "needs_site_context"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "executed": {
+      "const": false,
+      "default": false,
+      "title": "Executed",
+      "type": "boolean"
+    },
+    "payload": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Payload",
+      "type": "object"
+    },
+    "payload_chars": {
+      "maximum": 24000,
+      "minimum": 0,
+      "title": "Payload Chars",
+      "type": "integer"
+    },
+    "max_output_tokens": {
+      "const": 1600,
+      "default": 1600,
+      "title": "Max Output Tokens",
+      "type": "integer"
+    },
+    "retry_limit": {
+      "const": 1,
+      "default": 1,
+      "title": "Retry Limit",
+      "type": "integer"
+    },
+    "synthetic": {
+      "title": "Synthetic",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "job_id",
+    "context_sha256",
+    "status",
+    "payload",
+    "payload_chars",
+    "synthetic"
+  ],
+  "title": "GapJob",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step10:GapJob:1.0"
+}
