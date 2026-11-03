@@ -1,0 +1,188 @@
+{
+  "$defs": {
+    "LiteralName": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "quote": {
+          "title": "Quote",
+          "type": "string"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "exclusiveMinimum": 0,
+          "title": "End",
+          "type": "integer"
+        },
+        "ambiguous": {
+          "title": "Ambiguous",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "quote",
+        "start",
+        "end",
+        "ambiguous"
+      ],
+      "title": "LiteralName",
+      "type": "object"
+    },
+    "SourceObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "task_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Task Id",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "observed",
+            "not_observed"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "publication_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Publication Id"
+        },
+        "publication_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Publication Sha256"
+        },
+        "text": {
+          "default": "",
+          "maxLength": 20000,
+          "title": "Text",
+          "type": "string"
+        },
+        "text_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Text Sha256",
+          "type": "string"
+        },
+        "matches": {
+          "items": {
+            "$ref": "#/$defs/LiteralName"
+          },
+          "maxItems": 100,
+          "title": "Matches",
+          "type": "array"
+        },
+        "other_matches": {
+          "items": {
+            "$ref": "#/$defs/LiteralName"
+          },
+          "maxItems": 100,
+          "title": "Other Matches",
+          "type": "array"
+        },
+        "limitation": {
+          "title": "Limitation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "task_id",
+        "url",
+        "status",
+        "text_sha256",
+        "matches",
+        "limitation"
+      ],
+      "title": "SourceObservation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "source-inspection-1.0",
+      "default": "source-inspection-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_aggregates_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Source Aggregates Sha256",
+      "type": "string"
+    },
+    "selection_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Selection Sha256",
+      "type": "string"
+    },
+    "synthetic": {
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "observations": {
+      "items": {
+        "$ref": "#/$defs/SourceObservation"
+      },
+      "maxItems": 5,
+      "title": "Observations",
+      "type": "array"
+    },
+    "network_attempts": {
+      "maximum": 30,
+      "minimum": 0,
+      "title": "Network Attempts",
+      "type": "integer"
+    },
+    "attempt_count_complete": {
+      "default": true,
+      "title": "Attempt Count Complete",
+      "type": "boolean"
+    },
+    "model_calls": {
+      "const": 0,
+      "default": 0,
+      "title": "Model Calls",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "source_aggregates_sha256",
+    "selection_sha256",
+    "synthetic",
+    "observations",
+    "network_attempts"
+  ],
+  "title": "SourceInspection",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step9:SourceInspection:1.0"
+}

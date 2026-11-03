@@ -1,0 +1,43 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "task_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Task Id",
+      "type": "string"
+    },
+    "url": {
+      "title": "Url",
+      "type": "string"
+    },
+    "answer_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "title": "Answer Ids",
+      "type": "array"
+    },
+    "status": {
+      "const": "not_requested",
+      "default": "not_requested",
+      "title": "Status",
+      "type": "string"
+    },
+    "purpose": {
+      "const": "literal_names_on_external_choice_page",
+      "default": "literal_names_on_external_choice_page",
+      "title": "Purpose",
+      "type": "string"
+    }
+  },
+  "required": [
+    "task_id",
+    "url",
+    "answer_ids"
+  ],
+  "title": "SourcePageTask",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step9:SourcePageTask:1.0"
+}

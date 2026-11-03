@@ -1,0 +1,42 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "step9-policy-1.0",
+      "default": "step9-policy-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "bootstrap_replicates": {
+      "default": 400,
+      "maximum": 2000,
+      "minimum": 100,
+      "title": "Bootstrap Replicates",
+      "type": "integer"
+    },
+    "seed": {
+      "default": 20261103,
+      "maximum": 4294967295,
+      "minimum": 0,
+      "title": "Seed",
+      "type": "integer"
+    },
+    "max_cohorts": {
+      "default": 100,
+      "maximum": 100,
+      "minimum": 1,
+      "title": "Max Cohorts",
+      "type": "integer"
+    },
+    "max_source_pages": {
+      "const": 5,
+      "default": 5,
+      "title": "Max Source Pages",
+      "type": "integer"
+    }
+  },
+  "title": "MetricPolicy",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step9:MetricPolicy:1.0"
+}

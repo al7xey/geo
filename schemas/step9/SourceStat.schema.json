@@ -1,0 +1,43 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "host": {
+      "title": "Host",
+      "type": "string"
+    },
+    "kind": {
+      "title": "Kind",
+      "type": "string"
+    },
+    "owner": {
+      "title": "Owner",
+      "type": "string"
+    },
+    "answer_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "title": "Answer Ids",
+      "type": "array"
+    },
+    "urls": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Urls",
+      "type": "array"
+    }
+  },
+  "required": [
+    "host",
+    "kind",
+    "owner",
+    "answer_ids",
+    "urls"
+  ],
+  "title": "SourceStat",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step9:SourceStat:1.0"
+}

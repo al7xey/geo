@@ -1,0 +1,154 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "metric_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Metric Id",
+      "type": "string"
+    },
+    "metric": {
+      "enum": [
+        "name_match",
+        "presence",
+        "recommended",
+        "discouraged",
+        "cited"
+      ],
+      "title": "Metric",
+      "type": "string"
+    },
+    "scope": {
+      "title": "Scope",
+      "type": "string"
+    },
+    "cohort_id": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Cohort Id"
+    },
+    "group": {
+      "anyOf": [
+        {
+          "enum": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Group"
+    },
+    "percent": {
+      "anyOf": [
+        {
+          "maximum": 100,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Percent"
+    },
+    "interval_low": {
+      "anyOf": [
+        {
+          "maximum": 100,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Interval Low"
+    },
+    "interval_high": {
+      "anyOf": [
+        {
+          "maximum": 100,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Interval High"
+    },
+    "questions": {
+      "minimum": 0,
+      "title": "Questions",
+      "type": "integer"
+    },
+    "answered_questions": {
+      "minimum": 0,
+      "title": "Answered Questions",
+      "type": "integer"
+    },
+    "known_answers": {
+      "minimum": 0,
+      "title": "Known Answers",
+      "type": "integer"
+    },
+    "unknown_answers": {
+      "minimum": 0,
+      "title": "Unknown Answers",
+      "type": "integer"
+    },
+    "reliability": {
+      "enum": [
+        "not_assessed",
+        "insufficient_sample",
+        "medium",
+        "low"
+      ],
+      "title": "Reliability",
+      "type": "string"
+    },
+    "method": {
+      "const": "equal_question_mean_cluster_bootstrap",
+      "default": "equal_question_mean_cluster_bootstrap",
+      "title": "Method",
+      "type": "string"
+    },
+    "reliability_basis": {
+      "const": "overall_step7_sample_and_local_missingness",
+      "default": "overall_step7_sample_and_local_missingness",
+      "title": "Reliability Basis",
+      "type": "string"
+    }
+  },
+  "required": [
+    "metric_id",
+    "metric",
+    "scope",
+    "percent",
+    "interval_low",
+    "interval_high",
+    "questions",
+    "answered_questions",
+    "known_answers",
+    "unknown_answers",
+    "reliability"
+  ],
+  "title": "Rate",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step9:Rate:1.0"
+}

@@ -1,0 +1,109 @@
+{
+  "$defs": {
+    "Basis": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "enum": [
+            "aggregate",
+            "question",
+            "check",
+            "gap",
+            "source",
+            "context"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "key": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Key",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "key"
+      ],
+      "title": "Basis",
+      "type": "object"
+    },
+    "Finding": {
+      "additionalProperties": false,
+      "properties": {
+        "finding_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Finding Id",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "observed_fact",
+            "calculated_estimate"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "basis": {
+          "items": {
+            "$ref": "#/$defs/Basis"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Basis",
+          "type": "array"
+        },
+        "number_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+            "type": "string"
+          },
+          "title": "Number Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "finding_id",
+        "category",
+        "title",
+        "description",
+        "basis"
+      ],
+      "title": "Finding",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "step11-findings-1.0",
+      "default": "step11-findings-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "items": {
+      "items": {
+        "$ref": "#/$defs/Finding"
+      },
+      "maxItems": 4,
+      "title": "Items",
+      "type": "array"
+    }
+  },
+  "required": [
+    "items"
+  ],
+  "title": "Findings",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step11:Findings:1.0"
+}

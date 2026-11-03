@@ -1,0 +1,64 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "entity_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+      "title": "Entity Id",
+      "type": "string"
+    },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "identity_scope": {
+      "title": "Identity Scope",
+      "type": "string"
+    },
+    "answer_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "title": "Answer Ids",
+      "type": "array"
+    },
+    "recommended_answer_ids": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+        "type": "string"
+      },
+      "title": "Recommended Answer Ids",
+      "type": "array"
+    },
+    "share_percent": {
+      "anyOf": [
+        {
+          "maximum": 100,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Share Percent"
+    },
+    "candidate_only": {
+      "title": "Candidate Only",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "entity_id",
+    "name",
+    "identity_scope",
+    "answer_ids",
+    "recommended_answer_ids",
+    "share_percent",
+    "candidate_only"
+  ],
+  "title": "Competitor",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step9:Competitor:1.0"
+}

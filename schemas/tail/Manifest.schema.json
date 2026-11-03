@@ -1,0 +1,73 @@
+{
+  "$defs": {
+    "PublicationFile": {
+      "additionalProperties": false,
+      "properties": {
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "size_bytes": {
+          "maximum": 67108864,
+          "minimum": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "sha256",
+        "size_bytes"
+      ],
+      "title": "PublicationFile",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "tail-publication-1.0",
+      "default": "tail-publication-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "stage": {
+      "enum": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "title": "Stage",
+      "type": "integer"
+    },
+    "committed": {
+      "const": true,
+      "default": true,
+      "title": "Committed",
+      "type": "boolean"
+    },
+    "source_fingerprint": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Source Fingerprint",
+      "type": "string"
+    },
+    "files": {
+      "additionalProperties": {
+        "$ref": "#/$defs/PublicationFile"
+      },
+      "maxProperties": 100,
+      "minProperties": 1,
+      "title": "Files",
+      "type": "object"
+    }
+  },
+  "required": [
+    "stage",
+    "source_fingerprint",
+    "files"
+  ],
+  "title": "Manifest",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

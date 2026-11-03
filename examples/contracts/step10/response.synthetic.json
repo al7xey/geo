@@ -1,0 +1,8 @@
+{
+  "schema_version": "gap-response-1.0",
+  "job_id": "synthetic-unassigned-job",
+  "context_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "reviewer_kind": "synthetic",
+  "reviewer_model": null,
+  "suggestions": []
+}

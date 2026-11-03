@@ -13,7 +13,7 @@ from geo_audit.step5.workflow import run, verify
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def demo(destination: Path) -> Path:
+def demo(destination: Path, *, through12: bool = False) -> Path:
     fixture = EvidenceStore(ROOT / "examples" / "mock_answers_v1" / "input")
     target = json.loads(fixture.read_bytes("target.json", limit=MAX_METADATA_BYTES))
     questions = json.loads(fixture.read_bytes("prompts.json", limit=MAX_METADATA_BYTES))
@@ -72,11 +72,22 @@ def demo(destination: Path) -> Path:
     result = output.root / "result"
     run(inputs.root / "step4_input.json", inputs.root, result, synthetic=True)
     verify(result)
+    if through12:
+        from geo_audit.step12.workflow import run as finish
+        from geo_audit.step12.workflow import verify as verify_final
+
+        final = output.root / "final"
+        finish(result / "step8", final, upstream_chain=result)
+        verify_final(final)
+        return final / "report.html"
     return result / "report.html"
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--through12", action="store_true", help="завершить расчёты, план и итоговый отчёт"
+    )
     parser.add_argument(
         "--output-dir",
         type=Path,
@@ -84,7 +95,7 @@ def main() -> int:
     )
     args = parser.parse_args()
     try:
-        report = demo(args.output_dir)
+        report = demo(args.output_dir, through12=args.through12)
     except (ValueError, OSError, GeoAuditError):
         print("Учебный прогон не завершён. Проверьте данные и выберите новую папку результата.")
         return 2

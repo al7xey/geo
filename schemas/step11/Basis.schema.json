@@ -1,0 +1,31 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "source": {
+      "enum": [
+        "aggregate",
+        "question",
+        "check",
+        "gap",
+        "source",
+        "context"
+      ],
+      "title": "Source",
+      "type": "string"
+    },
+    "key": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Key",
+      "type": "string"
+    }
+  },
+  "required": [
+    "source",
+    "key"
+  ],
+  "title": "Basis",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step11:Basis:1.0"
+}

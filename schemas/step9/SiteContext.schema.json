@@ -1,0 +1,279 @@
+{
+  "$defs": {
+    "CompanyFact": {
+      "additionalProperties": false,
+      "properties": {
+        "fact_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Fact Id",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "page_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Page Id",
+          "type": "string"
+        },
+        "quote": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        }
+      },
+      "required": [
+        "fact_id",
+        "text",
+        "page_id",
+        "quote"
+      ],
+      "title": "CompanyFact",
+      "type": "object"
+    },
+    "PageContext": {
+      "additionalProperties": false,
+      "properties": {
+        "page_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Page Id",
+          "type": "string"
+        },
+        "url": {
+          "maxLength": 4096,
+          "title": "Url",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 1000,
+          "title": "Title",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 20000,
+          "title": "Text",
+          "type": "string"
+        },
+        "source_text_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Text Sha256",
+          "type": "string"
+        },
+        "truncated": {
+          "title": "Truncated",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "page_id",
+        "url",
+        "title",
+        "text",
+        "source_text_sha256",
+        "truncated"
+      ],
+      "title": "PageContext",
+      "type": "object"
+    },
+    "TechnicalCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "check_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+          "title": "Check Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "robots_policy",
+            "indexing_directives",
+            "snippet_directives",
+            "canonical_signal",
+            "observed_access",
+            "https_transport",
+            "sitemap",
+            "javascript",
+            "ua_comparison"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "pattern": "^https?://",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Url"
+        },
+        "page_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Page Id"
+        },
+        "robot_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Robot Id"
+        },
+        "status": {
+          "enum": [
+            "pass",
+            "fail",
+            "warning",
+            "unknown",
+            "not_applicable"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "observation": {
+          "title": "Observation",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$",
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "decisive_rule_lines": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Decisive Rule Lines",
+          "type": "array"
+        },
+        "reason_code": {
+          "title": "Reason Code",
+          "type": "string"
+        },
+        "limitation": {
+          "title": "Limitation",
+          "type": "string"
+        },
+        "observed_at": {
+          "format": "date-time",
+          "title": "Observed At",
+          "type": "string"
+        },
+        "rule_version": {
+          "title": "Rule Version",
+          "type": "string"
+        },
+        "scope": {
+          "title": "Scope",
+          "type": "string"
+        }
+      },
+      "required": [
+        "check_id",
+        "kind",
+        "url",
+        "page_id",
+        "robot_id",
+        "status",
+        "observation",
+        "evidence_ids",
+        "decisive_rule_lines",
+        "reason_code",
+        "limitation",
+        "observed_at",
+        "rule_version",
+        "scope"
+      ],
+      "title": "TechnicalCheck",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "site-context-1.0",
+      "default": "site-context-1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "default": "not_supplied",
+      "enum": [
+        "not_supplied",
+        "verified_step1"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "source_commit_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Commit Sha256"
+    },
+    "pages": {
+      "items": {
+        "$ref": "#/$defs/PageContext"
+      },
+      "maxItems": 30,
+      "title": "Pages",
+      "type": "array"
+    },
+    "checks": {
+      "items": {
+        "$ref": "#/$defs/TechnicalCheck"
+      },
+      "maxItems": 5000,
+      "title": "Checks",
+      "type": "array"
+    },
+    "facts": {
+      "items": {
+        "$ref": "#/$defs/CompanyFact"
+      },
+      "maxItems": 100,
+      "title": "Facts",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    }
+  },
+  "title": "SiteContext",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:geo-audit:step9:SiteContext:1.0"
+}
