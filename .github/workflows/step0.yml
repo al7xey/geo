@@ -114,3 +114,21 @@ jobs:
           python -X utf8 run.py verify private/ci-demo/result
           python -X utf8 run.py finish --chain-dir private/ci-demo/result --output-dir private/ci-final
           python -X utf8 run.py finish --verify private/ci-final
+
+  frontend-build:
+    name: React production build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install frontend dependencies
+        run: npm ci --prefix frontend
+      - name: Build TypeScript and validate FSD imports
+        run: npm run build --prefix frontend

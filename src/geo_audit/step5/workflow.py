@@ -2,6 +2,7 @@
 
 import argparse
 import json
+from collections.abc import Callable
 from pathlib import Path
 from typing import Literal
 
@@ -58,9 +59,7 @@ def read_input(path: Path, limit: int) -> bytes:
     return EvidenceStore(path.parent).read_bytes(path.name, limit=limit)
 
 
-def validate_layout(
-    step4_input: Path, answers_dir: Path, output_dir: Path, profile: Path
-) -> None:
+def validate_layout(step4_input: Path, answers_dir: Path, output_dir: Path, profile: Path) -> None:
     """Reject invalid destinations before collection or publication, without writing."""
     output = EvidenceStore(output_dir)
     if output.root.exists() or output.root.is_symlink():
@@ -95,6 +94,7 @@ def run(
     synthetic: bool = False,
     reviews: Path | None = None,
     catalog: EntityCatalog | None = None,
+    review_executor: Callable[[Path], Path | None] | None = None,
 ) -> ChainManifest:
     profile = profile or step4_input.parent / "profile.json"
     validate_layout(step4_input, answers_dir, output_dir, profile)
@@ -114,6 +114,8 @@ def run(
         collector.publish(snapshots, output.root / "bundle")
         run_step5(output.root / "bundle", output.root / "step5")
         run_step6(output.root / "step5", output.root / "step6")
+        if review_executor is not None:
+            reviews = review_executor(output.root / "step6")
         run_step7(output.root / "step6", output.root / "step7", results_file=reviews)
         run_step8(output.root / "step7", output.root / "step8", catalog=catalog)
         manifests = {

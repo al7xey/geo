@@ -2,12 +2,15 @@
 
 import argparse
 import os
+import shutil
 import subprocess  # nosec B404
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 COMMANDS = (
+    "ui",
+    "ui-setup",
     "demo",
     "analyze",
     "verify",
@@ -67,11 +70,24 @@ def main(argv: list[str] | None = None) -> int:
         if args.arguments:
             parser.error("setup не принимает дополнительные параметры")
         return setup()
+    if args.command == "ui-setup":
+        npm = shutil.which("npm.cmd" if os.name == "nt" else "npm")
+        if not npm:
+            print("Установите Node.js 24 для сборки интерфейса.")
+            return 2
+        for command in ("ci", "run"):
+            tail = ["build"] if command == "run" else []
+            code = call([npm, "--prefix", str(ROOT / "frontend"), command, *tail])
+            if code:
+                return code
+        return 0
     python = environment_python(ROOT / ".venv")
     if not python.is_file():
         print("Сначала выполните: python run.py setup")
         return 2
     prefix = [str(python), "-X", "utf8"]
+    if args.command == "ui":
+        return call([*prefix, "-m", "geo_audit.app_web", *args.arguments])
     if args.command in {"finish", "sources"}:
         module = (
             "geo_audit.step12.workflow" if args.command == "finish" else "geo_audit.step9.sources"

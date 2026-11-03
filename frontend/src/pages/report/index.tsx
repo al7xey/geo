@@ -1,0 +1,13 @@
+import { useEffect, useState } from 'react';
+import { ReportNavigation, sections } from '../../widgets/report-navigation/index';
+import { ReportContent, ReportHero } from '../../widgets/report-content/index';
+import { audits } from '../../entities/audit/index';
+import { ErrorNote, Loading, Icon, useResource } from '../../shared/index';
+export function ReportPage({ id, token, section, print }: { id?: string; token?: string; section?: string; print?: boolean }) {
+  const key = token ?? id ?? ''; const resource = useResource(signal => token ? audits.shared(token, signal) : audits.report(id!, signal), key); const report = resource.data;
+  const [active,setActive] = useState('0'); const base = token ? `/shared/${token}` : `/projects/${id}/report`;
+  useEffect(() => { if (!report) return; if (section) document.getElementById(section)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); else window.scrollTo(0,0); }, [report?.project.project_id, section]);
+  useEffect(() => { if (!report || !('IntersectionObserver' in window)) return; const observer = new IntersectionObserver(entries => { const visible = entries.find(entry => entry.isIntersecting); if (visible) setActive(visible.target.id.replace('s-','')); }, { rootMargin: '-10% 0px -75% 0px' }); sections.forEach(([id]) => { const node = document.getElementById('s-'+id); if (node) observer.observe(node); }); return () => observer.disconnect(); }, [report]);
+  useEffect(() => { if (!report || !print) return; const timer = setTimeout(() => window.print(), 150); return () => clearTimeout(timer); }, [Boolean(report),print]);
+  return <section className="page on" id="p-rep">{!report ? <main className="app-report-loading"><a className="rp-link" href="#/reports">← Мои отчёты</a><ErrorNote error={resource.error} retry={resource.reload} />{!resource.error && <Loading />}</main> : <div className="rp-app"><ReportNavigation project={report.project} base={base} active={active} readonly={Boolean(token)} /><main className="rp-main"><div className="rp-topbar"><div className="rp-top-meta">{report.project.domain} · {report.aggregates.total_answers} записей · {report.aggregates.eligible_answers} пригодных ответов</div><div className="rp-btns">{token ? <button className="rp-btn rp-btn-g" onClick={() => window.print()}><Icon name="download" size={17} />Печать</button> : <><a className="rp-btn rp-btn-g" href={`#/projects/${id}/share`}><Icon name="download" size={17} />Скачать</a><a className="rp-btn rp-btn-p" href={`#/projects/${id}/share`}><Icon name="share" size={17} />Поделиться</a></>}</div></div><div className="rp-wrap"><ReportHero report={report} /><ReportContent report={report} base={base} onProject={project => resource.setData({ ...report, project })} /></div></main></div>}</section>;
+}

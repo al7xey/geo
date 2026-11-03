@@ -7,12 +7,14 @@ analyze: только обработка уже сохранённых отве�
 """
 
 import argparse
+import os
 
 # Fixed local CLI entry points, never shell commands from answers.
 import subprocess  # nosec B404
 import sys
 from pathlib import Path
 
+from geo_audit.app_web.model_gateway import load_environment
 from geo_audit.errors import GeoAuditError
 from geo_audit.step5.collector import validate_approval
 from geo_audit.step5.pipeline import MAX_METADATA_BYTES
@@ -29,6 +31,12 @@ def main(argv: list[str] | None = None) -> int:
         print("Подробнее: docs/INTEGRATION_0_8.md")
         return 0
     command, rest = args[0], args[1:]
+    root = TOOLS.parent
+    load_environment(root / ".env")
+    load_environment(root / "private/.env")
+    gemini_key = os.environ.get("GEMINI_API_KEY", "")
+    if gemini_key.startswith("AQ."):
+        os.environ.setdefault("VERTEX_API_KEY", gemini_key)
     if command == "analyze":
         return analyze(rest)
     if command in {"prepare", "review"}:
