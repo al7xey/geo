@@ -37,4 +37,5 @@ and locked runtime dependencies into .venv. Other commands do not install packag
 run.py demo converts the tracked synthetic fixture into collector-shaped input,
 runs/verifies steps5-8, and prints the local report without network or browser use.
 See PORTABLE_RUN.md. CI covers Windows, macOS and Linux; controlled Windows tests
-use SelectorEventLoop to avoid Proactor cancellation stalls during TLS handshakes.
+use SelectorEventLoop only for the TLS-handshake deadline regression; subprocess
+tests retain the default Proactor loop. No upstream runtime files are changed.

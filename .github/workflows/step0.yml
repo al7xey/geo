@@ -72,7 +72,7 @@ jobs:
         run: |
           import subprocess, sys
           for step in range(5, 9):
-              subprocess.run([sys.executable, f"tools/generate_step{step}_schemas.py"], check=True)
+              subprocess.run(["uv", "run", "--locked", "python", f"tools/generate_step{step}_schemas.py"], check=True)
           subprocess.run(["git", "diff", "--exit-code", "--", "schemas/step5", "schemas/step6", "schemas/step7", "schemas/step8"], check=True)
       - name: Export hashed audit constraints
         run: uv export --locked --no-emit-project --format requirements-txt --output-file tmp/audit-requirements.txt --quiet
