@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 import unicodedata
 from copy import deepcopy
@@ -22,8 +23,11 @@ TRANSFORM = "static-extraction-1"
 BUSINESS = re.compile(
     r"\b(?:we\s+(?:provide|offer|manufacture|produce|supply|develop|deliver|sell|speciali[sz]e\s+in)"
     r"|our company\s+(?:provides|offers|manufactures|produces|supplies|develops|sells)"
-    r"|мы\s+(?:производим|предлагаем|поставляем|разрабатываем|продаём|продаем|оказываем)"
-    r"|компания\s+(?:производит|предлагает|поставляет|разрабатывает|продаёт|продает|оказывает))"
+    r"|we\s+help|(?:service|platform|marketplace)\s+(?:for|that)"
+    r"|мы\s+(?:производим|предлагаем|поставляем|разрабатываем|продаём|продаем|оказываем"
+    r"|помогаем|делаем|создаём|создаем|обучаем|находим|подбираем|сравниваем|ищем|доставляем)"
+    r"|компания\s+(?:производит|предлагает|поставляет|разрабатывает|продаёт|продает|оказывает)"
+    r"|(?:сервис|платформа|маркетплейс|биржа|школа|магазин)\s+(?:для|поиска|по|услуг|товаров))"
     r"\s+[^.!?\n]{8,240}",
     re.I,
 )
@@ -70,6 +74,34 @@ def normalize_text(text: str) -> str:
 def business_span(text: str) -> tuple[int, int] | None:
     match = BUSINESS.search(text)
     return match.span() if match else None
+
+
+def page_description(soup: BeautifulSoup) -> list[str]:
+    """Owner-written summary from title, meta and JSON-LD; read before scripts are removed."""
+    found: list[str] = []
+    if soup.title:
+        found.append(soup.title.get_text(" "))
+    for meta in soup.find_all("meta", limit=2000):
+        key = str(meta.get("name") or meta.get("property") or "").lower()
+        if key in {"description", "og:title", "og:description", "twitter:description"}:
+            found.append(str(meta.get("content", "")))
+    for script in soup.find_all("script", attrs={"type": "application/ld+json"}, limit=20):
+        try:
+            data = json.loads(script.get_text()[:200_000])
+        except ValueError:
+            continue
+        stack, seen = [data], 0
+        while stack and seen < 500:
+            item, seen = stack.pop(), seen + 1
+            if isinstance(item, list):
+                stack.extend(item)
+            elif isinstance(item, dict):
+                stack.extend(v for v in item.values() if isinstance(v, (dict, list)))
+                for key in ("name", "slogan", "description"):
+                    if isinstance(item.get(key), str):
+                        found.append(item[key])
+    lines = (normalize_text(text)[:2048] for text in found)
+    return list(dict.fromkeys(line for line in lines if len(line) >= 15))
 
 
 def quote(text: str, ref: TextRef, start: int, end: int) -> QuoteRef:
@@ -159,6 +191,7 @@ def extract_page(
     original_links = sum(len(a.get_text(" ", strip=True)) for a in soup.find_all("a"))
     original_visible = len(soup.get_text(" ", strip=True))
     facts = capture(soup, headers)
+    described = page_description(soup)
     # Both methods operate on data only: no fetch_url/sitemap/crawler APIs of trafilatura.
     extractor_config = deepcopy(DEFAULT_CONFIG)
     extractor_config.set("DEFAULT", "MAX_TREE_SIZE", str(MAX_NODES))
@@ -210,6 +243,13 @@ def extract_page(
     chosen = fallback if primary_weak or not primary else primary
     chosen_raw = fallback_raw if primary_weak or not primary else primary_raw
     method = "beautifulsoup" if primary_weak or not primary else "trafilatura"
+    from_metadata = False
+    if described and len(chosen) < runtime.config.useful_chars:
+        # Script-rendered pages: static HTML keeps the owner's own summary in metadata.
+        extra = [line for line in described if line not in chosen]
+        if extra:
+            chosen = normalize_text("\n".join([chosen, *extra]) if chosen else "\n".join(extra))
+            chosen_raw, method, from_metadata = chosen, "beautifulsoup+metadata", True
     raw_ref = save_text(runtime, chosen_raw, decoded.evidence_id, main=False)
     ref = save_text(runtime, chosen, raw_ref.evidence_id, main=True)
     alternates: tuple[TextRef, ...] = ()
@@ -267,9 +307,11 @@ def extract_page(
             alternate_texts=alternates,
             extraction_method=method,
             extractor_version=version(
-                "beautifulsoup4" if method == "beautifulsoup" else "trafilatura"
+                "trafilatura" if method == "trafilatura" else "beautifulsoup4"
             ),
-            extraction_reason="PRIMARY_WEAK_FALLBACK"
+            extraction_reason="METADATA_TEXT_FALLBACK"
+            if from_metadata
+            else "PRIMARY_WEAK_FALLBACK"
             if method == "beautifulsoup"
             else "PRIMARY_ACCEPTED",
             content_state=state,
@@ -282,6 +324,7 @@ def extract_page(
             else "unknown",
             business_quotes=(quote(chosen, ref, *span),) if span else (),
             limitations=(("EXTRACTORS_DISAGREE",) if disagreement else ())
+            + (("METADATA_TEXT_FALLBACK",) if from_metadata else ())
             + ("Business relevance: literal activity-phrase heuristic; no semantic certainty.",),
         )
     )

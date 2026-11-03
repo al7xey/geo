@@ -53,7 +53,10 @@ def save_description(runtime: Step1Runtime, text: str) -> UserMaterial:
         source_evidence_id=raw.evidence_id,
         transform_version="user-description-text-ws-1",
     )
-    suitable = len(normalized) >= 30 and business_span(normalized) is not None
+    # The user chose to describe the company; any wording works, the phrase list is for sites.
+    suitable = len(normalized) >= 30 and (
+        business_span(normalized) is not None or len(normalized.split()) >= 5
+    )
     return UserMaterial(
         material_id="user-" + uuid.uuid4().hex,
         provided_at=runtime.time.utcnow(),
@@ -61,7 +64,7 @@ def save_description(runtime: Step1Runtime, text: str) -> UserMaterial:
             evidence_id=record.evidence_id, text_hash=record.file.sha256, text_chars=len(normalized)
         ),
         suitability="usable" if suitable else "needs_clarification",
-        reason="user-material-1: explicit activity phrase, length>=30; unverified user statement"
+        reason="user-material-2: length>=30, activity phrase or 5+ words; unverified user statement"
         if suitable
         else "user-material-1: clarify activity and products/services; no semantic assertion",
     )
@@ -71,13 +74,14 @@ def summarize(pages: list[Page], users: tuple[UserMaterial, ...]) -> Material:
     useful = tuple(p.page_id for p in pages if p.useful_candidate)
     supporting = tuple(p.page_id for p in pages if p.supporting_page)
     business = sum(p.useful_candidate and p.business_relevance == "observed" for p in pages)
+    # The literal phrase is only one signal; enough owner text is material for step 2 on its own.
     state = (
         "user_supported"
         if any(u.suitability == "usable" for u in users)
         else "usable"
-        if business >= 3
+        if business >= 3 or len(useful) >= 5
         else "limited"
-        if business
+        if business or useful
         else "insufficient"
         if any(
             p.main_text
@@ -92,7 +96,7 @@ def summarize(pages: list[Page], users: tuple[UserMaterial, ...]) -> Material:
             state=state,
             can_start_step2=state in {"usable", "limited", "user_supported"},
             reason=(
-                "material-1: literal activity-phrase heuristic; 300 chars is not completeness proof"
+                "material-2: activity phrase or useful pages; 300 chars is not completeness proof"
             ),
             useful_page_ids=useful,
             supporting_page_ids=supporting,

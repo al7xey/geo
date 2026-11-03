@@ -511,10 +511,12 @@ class CrawlResult(Envelope):
         business_pages = [
             p for p in self.pages if p.useful_candidate and p.business_relevance == "observed"
         ]
-        if self.material.state in {"usable", "limited"} and not business_pages:
-            raise ValueError("site material gate needs business evidence")
-        if self.material.state == "usable" and len(business_pages) < 3:
-            raise ValueError("usable requires three useful business pages")
+        useful_pages = self.material.useful_page_ids
+        # material-2 also accepts useful-page counts; material-1 publications still validate.
+        if self.material.state in {"usable", "limited"} and not (business_pages or useful_pages):
+            raise ValueError("site material gate needs business evidence or useful pages")
+        if self.material.state == "usable" and len(business_pages) < 3 and len(useful_pages) < 5:
+            raise ValueError("usable requires three business or five useful pages")
         if self.material.state == "limited" and len(business_pages) > 2:
             raise ValueError("three useful business pages are usable, not limited")
         counts = {

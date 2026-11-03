@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-from urllib.parse import parse_qsl, unquote, urlsplit
+from urllib.parse import parse_qsl, unquote, urlencode, urlsplit, urlunsplit
 
 from ..content import assess_response
 from ..errors import GeoAuditError
@@ -25,6 +25,31 @@ ROLE_SEGMENTS: tuple[tuple[Role, frozenset[str]], ...] = (
     ("faq", frozenset({"faq", "questions", "help"})),
 )
 TRAP_PARAMETERS = frozenset({"q", "query", "search", "logout", "add-to-cart", "calendar", "sid"})
+# Account flows carry no business text; fixed here so the config fingerprint stays stable.
+ACCOUNT_SEGMENTS = frozenset(
+    {"signin", "signup", "register", "registration", "recovery", "password", "auth"}
+)
+# Navigation/analytics markers: the same page under another query, never new content.
+TRACKING_PARAMETERS = frozenset(
+    {"opened_from", "from", "source", "ref", "referrer", "gclid", "yclid", "fbclid", "_openstat"}
+)
+NON_HTML_SUFFIXES = (
+    ".pdf", ".svg", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".bmp", ".avif",
+    ".zip", ".rar", ".7z", ".gz", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx",
+    ".mp3", ".mp4", ".avi", ".mov", ".webm", ".css", ".js", ".json", ".xml", ".txt",
+)  # fmt: skip
+
+
+def strip_tracking(url: str) -> str:
+    parts = urlsplit(url)
+    if not parts.query:
+        return url
+    kept = [
+        (k, v)
+        for k, v in parse_qsl(parts.query, keep_blank_values=True)
+        if k.lower() not in TRACKING_PARAMETERS and not k.lower().startswith("utm_")
+    ]
+    return urlunsplit(parts._replace(query=urlencode(kept)))
 
 
 def role_for(url: str, *, entry: bool = False) -> tuple[Role, int, str]:
@@ -58,7 +83,9 @@ class Crawler:
     def exclusion(self, url: str) -> str | None:
         parts = urlsplit(url)
         segments = {s.lower() for s in unquote(parts.path).split("/")}
-        if segments & set(self.runtime.config.excluded_path_segments):
+        if segments & (set(self.runtime.config.excluded_path_segments) | ACCOUNT_SEGMENTS):
+            return "PATH_EXCLUDED"
+        if unquote(parts.path).lower().endswith(NON_HTML_SUFFIXES):
             return "PATH_EXCLUDED"
         parameters = parse_qsl(parts.query)
         if any(key.lower() in TRAP_PARAMETERS for key, _ in parameters) or any(
@@ -84,7 +111,7 @@ class Crawler:
 
     def admit(self, raw: str, source: DiscoverySource, *, entry: bool = False) -> None:
         try:
-            url = normalize_input(raw)
+            url = normalize_input(raw if entry else strip_tracking(raw))
         except GeoAuditError:
             self.discard(raw, "URL_INVALID")
             return
