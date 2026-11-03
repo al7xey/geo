@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2025, ubuntu-24.04]
+        os: [windows-2025, macos-14, ubuntu-24.04]
     env:
       UV_NO_CACHE: "1"
       PYTHONUTF8: "1"
@@ -41,7 +41,7 @@ jobs:
       - name: Check dependency compatibility
         run: uv pip check
       - name: Full controlled test suite
-        run: uv run --locked pytest -q -ra --junitxml=tmp/pytest.xml
+        run: uv run --locked python -X utf8 -m pytest -v -ra -o faulthandler_timeout=60 --junitxml=tmp/pytest.xml
       - name: Real file symlink test
         run: uv run --locked pytest -q -ra tests/test_acceptance.py -k "linked_evidence and symlink" --junitxml=tmp/symlink.xml
       - name: Require real symlink execution without skip
@@ -57,12 +57,12 @@ jobs:
       - name: Strict runtime types for Windows
         run: uv run --locked mypy --platform win32
       - name: Lint all supported Python code
-        run: uv run --locked ruff check src tests tools
+        run: uv run --locked ruff check src tests tools run.py
       - name: Static security checks
         run: uv run --locked bandit -r src
       - name: Security checks for fixture tools
         # Assertions and seeded pseudo-random data are intentional in synthetic fixtures.
-        run: uv run --locked bandit -r tools -s B101,B311
+        run: uv run --locked bandit -r tools run.py -s B101,B311
       - name: Generated contracts
         run: uv run --locked python tools/generate_step0_artifacts.py --check
       - name: Generated step 1 contracts
@@ -104,3 +104,9 @@ jobs:
           'tests/test_step4_to_step8.py'],check=True)"
       - name: CLI smoke
         run: uv run --locked geo-audit --help
+      - name: Portable runtime installation and offline demo
+        run: |
+          python -X utf8 run.py setup
+          python -X utf8 run.py --help
+          python -X utf8 run.py demo --output-dir private/ci-demo
+          python -X utf8 run.py verify private/ci-demo/result

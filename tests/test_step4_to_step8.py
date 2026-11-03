@@ -6,7 +6,7 @@ import json
 import random
 import socket
 import sys
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 import pytest
@@ -193,7 +193,9 @@ def test_full_unchanged_zero_to_four_and_adapted_five_to_eight(monkeypatch, tmp_
 
     def dated_clock(self):
         original_init(self)
-        self.epoch = datetime.now(UTC)
+        # Virtual sleeps advance instantly. Keep the resulting publication in the
+        # real past even on fast runners, while remaining within the 7-day TTL.
+        self.epoch = datetime.now(UTC) - timedelta(hours=1)
 
     monkeypatch.setattr(VirtualTime, "__init__", dated_clock)
     runtime, result, _, _, _ = execute_pipeline(

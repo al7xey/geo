@@ -31,3 +31,10 @@ tools/steps0_8.py delegates prepare/review/collect to the unchanged upstream scr
 then analyzes saved answers. No paid calls occur in analyze; live tools require
 normal upstream credentials and operator invocation. Personal prompts stay private.
 See INTEGRATION_0_8.md. Model review executors and percentages remain future work.
+
+Portable source-checkout launcher: run.py setup installs pinned uv into .bootstrap
+and locked runtime dependencies into .venv. Other commands do not install packages.
+run.py demo converts the tracked synthetic fixture into collector-shaped input,
+runs/verifies steps5-8, and prints the local report without network or browser use.
+See PORTABLE_RUN.md. CI covers Windows, macOS and Linux; controlled Windows tests
+use SelectorEventLoop to avoid Proactor cancellation stalls during TLS handshakes.
