@@ -15,7 +15,7 @@ from geo_audit.step5.collector import build_artifacts, publish, verify_publicati
 from geo_audit.step5.models import Answer, PromptSet
 from geo_audit.step5.pipeline import encoded
 from geo_audit.step5.replay import CURRENT, replay_session, reuse_replay
-from geo_audit.step5.workflow import main, run, verify
+from geo_audit.step5.workflow import main, run, validate_layout, verify
 from geo_audit.step6.models import Annotation
 from geo_audit.step8.models import Step8Summary
 
@@ -395,6 +395,48 @@ def test_collect_rejects_missing_profile_before_any_paid_process(monkeypatch, tm
     )
 
 
+@pytest.mark.parametrize("kind", ["same", "child", "parent", "profile_child", "existing"])
+def test_collect_rejects_invalid_layout_before_any_paid_process(monkeypatch, tmp_path, kind):
+    source = tmp_path / "approved"
+    source.mkdir()
+    data = snapshots()
+    (source / "step4_input.json").write_bytes(data["step4-input.json"])
+    (source / "profile.json").write_bytes(data["profile.json"])
+    answers = tmp_path / "collected"
+    destinations = {
+        "same": answers,
+        "child": answers / "result",
+        "parent": tmp_path / "parent",
+        "profile_child": source / "result",
+        "existing": tmp_path / "existing",
+    }
+    output = destinations[kind]
+    if kind == "parent":
+        answers = output / "collected"
+    if kind == "existing":
+        output.mkdir()
+    monkeypatch.setattr(
+        wrapper.subprocess, "run", lambda *a, **k: pytest.fail("must fail before paid collector")
+    )
+    assert (
+        wrapper.main(
+            [
+                "collect",
+                "--step4-input",
+                str(source / "step4_input.json"),
+                "--answers-dir",
+                str(answers),
+                "--output-dir",
+                str(output),
+                "--max-cost",
+                "1",
+            ]
+        )
+        == 2
+    )
+    assert not answers.exists()
+
+
 def test_cache_budget_falls_back_to_real_replay(monkeypatch):
     import geo_audit.step5.replay as replay
     from geo_audit.step5.collector import AdapterPolicy
@@ -411,3 +453,49 @@ def test_cache_budget_falls_back_to_real_replay(monkeypatch):
         builder({"in": b"value"})
         builder({"in": b"value"})
         assert len(calls) == 2 and CURRENT.get().size == 0
+
+
+def test_unavailable_filesystem_root_fails_without_searching_forever(monkeypatch, tmp_path):
+    monkeypatch.setattr(Path, "exists", lambda self: False)
+    monkeypatch.setattr(Path, "is_symlink", lambda self: False)
+    with pytest.raises(ValueError, match="filesystem root"):
+        validate_layout(
+            tmp_path / "approved" / "input.json",
+            tmp_path / "answers",
+            tmp_path / "result",
+            tmp_path / "approved" / "profile.json",
+        )
+
+
+def test_valid_collect_preflight_still_dispatches_collection_then_analysis(monkeypatch, tmp_path):
+    approved = tmp_path / "approved"
+    approved.mkdir()
+    data = snapshots()
+    (approved / "step4_input.json").write_bytes(data["step4-input.json"])
+    (approved / "profile.json").write_bytes(data["profile.json"])
+    calls = []
+
+    def collect(argv, check):
+        calls.append(("collect", argv))
+        return type("Result", (), {"returncode": 0})()
+
+    monkeypatch.setattr(wrapper.subprocess, "run", collect)
+    monkeypatch.setattr(wrapper, "analyze", lambda argv: calls.append(("analyze", argv)) or 0)
+    assert (
+        wrapper.main(
+            [
+                "collect",
+                "--step4-input",
+                str(approved / "step4_input.json"),
+                "--answers-dir",
+                str(tmp_path / "answers"),
+                "--output-dir",
+                str(tmp_path / "result"),
+                "--max-cost",
+                "1",
+            ]
+        )
+        == 0
+    )
+    assert [kind for kind, _ in calls] == ["collect", "analyze"]
+    assert not (tmp_path / "answers").exists() and not (tmp_path / "result").exists()

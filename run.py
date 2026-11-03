@@ -16,7 +16,11 @@ def environment_python(directory: Path) -> Path:
 
 def call(arguments: list[str]) -> int:
     env = dict(os.environ, PYTHONUTF8="1")
-    return subprocess.run(arguments, cwd=ROOT, env=env, check=False).returncode  # nosec B603
+    try:
+        return subprocess.run(arguments, cwd=ROOT, env=env, check=False).returncode  # nosec B603
+    except OSError:
+        print("Не удалось запустить программу. Проверьте Python, права доступа и run.py setup.")
+        return 2
 
 
 def setup() -> int:

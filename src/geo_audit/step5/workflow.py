@@ -58,6 +58,34 @@ def read_input(path: Path, limit: int) -> bytes:
     return EvidenceStore(path.parent).read_bytes(path.name, limit=limit)
 
 
+def validate_layout(
+    step4_input: Path, answers_dir: Path, output_dir: Path, profile: Path
+) -> None:
+    """Reject invalid destinations before collection or publication, without writing."""
+    output = EvidenceStore(output_dir)
+    if output.root.exists() or output.root.is_symlink():
+        raise ValueError("analysis output must be new")
+    directories = (step4_input.parent, profile.parent, answers_dir)
+    for directory in directories:
+        source = EvidenceStore(directory)
+        if (
+            source.root == output.root
+            or source.root in output.root.parents
+            or output.root in source.root.parents
+        ):
+            raise ValueError("inputs and output must be separate directories")
+    # Collector/output folders can be new. Inspect the nearest existing ancestor
+    # without creating directories or following symlinks/junctions.
+    for directory in (*directories, output.root):
+        ancestor = EvidenceStore(directory).root
+        while not ancestor.exists() and not ancestor.is_symlink():
+            if ancestor.parent == ancestor:
+                raise ValueError("local filesystem root is unavailable")
+            ancestor = ancestor.parent
+        with pinned_directory(ancestor):
+            pass
+
+
 def run(
     step4_input: Path,
     answers_dir: Path,
@@ -69,15 +97,8 @@ def run(
     catalog: EntityCatalog | None = None,
 ) -> ChainManifest:
     profile = profile or step4_input.parent / "profile.json"
+    validate_layout(step4_input, answers_dir, output_dir, profile)
     output = EvidenceStore(output_dir)
-    for directory in (step4_input.parent, profile.parent, answers_dir):
-        source = EvidenceStore(directory)
-        if (
-            source.root == output.root
-            or source.root in output.root.parents
-            or output.root in source.root.parents
-        ):
-            raise ValueError("inputs and output must be separate directories")
     snapshots = {
         "step4-input.json": read_input(step4_input, MAX_METADATA_BYTES),
         "profile.json": read_input(profile, MAX_METADATA_BYTES),

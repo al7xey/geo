@@ -17,7 +17,7 @@ from geo_audit.errors import GeoAuditError
 from geo_audit.step5.collector import validate_approval
 from geo_audit.step5.pipeline import MAX_METADATA_BYTES
 from geo_audit.step5.workflow import main as analyze
-from geo_audit.step5.workflow import read_input
+from geo_audit.step5.workflow import read_input, validate_layout
 
 TOOLS = Path(__file__).resolve().parent
 
@@ -49,9 +49,8 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("папка сбора задаётся только через --answers-dir")
     if "--dry-run" not in collector_args:
         try:
-            if known.output_dir.exists():
-                raise ValueError("analysis output must be new")
             profile = known.profile or known.step4_input.parent / "profile.json"
+            validate_layout(known.step4_input, known.answers_dir, known.output_dir, profile)
             validate_approval(
                 read_input(known.step4_input, MAX_METADATA_BYTES),
                 read_input(profile, MAX_METADATA_BYTES),

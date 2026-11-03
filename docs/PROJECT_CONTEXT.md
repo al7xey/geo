@@ -39,3 +39,9 @@ runs/verifies steps5-8, and prints the local report without network or browser u
 See PORTABLE_RUN.md. CI covers Windows, macOS and Linux; controlled Windows tests
 use SelectorEventLoop only for the TLS-handshake deadline regression; subprocess
 tests retain the default Proactor loop. No upstream runtime files are changed.
+
+Collection preflight shares workflow.validate_layout with offline analysis:
+destinations must be new and disjoint from all source folders; existing path
+ancestors are checked with pinned_directory before any paid collector process.
+Unavailable filesystem roots fail without looping. The portable launcher reports
+interpreter/process startup OSError as a short message and exit2.

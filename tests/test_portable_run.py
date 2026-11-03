@@ -47,6 +47,18 @@ def test_verify_dispatch_preserves_operator_path_as_single_argument(monkeypatch,
     ]
 
 
+def test_launcher_reports_broken_interpreter_without_traceback(monkeypatch, capsys):
+    launcher = load_script("portable_launcher", "run.py")
+
+    def broken(*args, **kwargs):
+        raise OSError("synthetic inaccessible interpreter")
+
+    monkeypatch.setattr(launcher.subprocess, "run", broken)
+    assert launcher.call(["synthetic-python"]) == 2
+    text = capsys.readouterr().out
+    assert "run.py setup" in text and "Traceback" not in text
+
+
 def test_offline_demo_has_no_network_and_preserves_source(monkeypatch, tmp_path):
     demo = load_script("portable_demo", "tools/offline_demo.py")
     source = demo.ROOT / "examples" / "mock_answers_v1" / "input" / "answers.jsonl"
