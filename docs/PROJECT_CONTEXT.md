@@ -57,3 +57,30 @@ run.py finish and demo --through12 expose the offline chain. run.py sources requ
 explicit --allow-network, reuses the unchanged pinned/robots-aware crawler and limits
 inspection to five selected pages; it is never invoked by demo/finish. All model
 executors remain disabled. See STEPS_9_12.md. No live audits or paid APIs were run.
+
+React/TypeScript frontend: frontend/src uses app/pages/widgets/features/entities/shared
+with original itworx CSS and bundled local fonts. run.py ui-setup builds assets;
+run.py ui starts loopback app_web server. Test-only identity; no real accounts.
+Default mode uses synthetic answers; --live explicitly enables fixed HTTPS provider
+adapters configured from ignored .env. Live collection is bounded to 20 questions,
+one repeat per provider, 800 output tokens/request, zero retries. Per-project
+exclusive attempt ledger prevents repeat billing. Provider failures are persisted
+and remaining questions for that provider skipped; no fixture substitution.
+Existing steps0-4 source is unchanged. The UI prepares approved-format questions
+from the GoGetLinks scenario or accepts existing collector exports, then uses
+steps5-12 for analysis. Site crawling, search tools and independent model review
+are not enabled by --live. All private inputs, raw responses and usage stay private.
+See FRONTEND.md.
+
+Frontend integration follow-up: fresh live projects start without fixture questions.
+Explicit prepare invokes unchanged geo_pipeline via tools/ui_prepare.py (cheap,
+5 pages, no extra web brief), then upstream step3_review validation/save on human
+confirmation. The bounded web collector reads that exact approved handoff; the
+original CLI collector/search/repeat semantics remain separately available.
+Step1 context is passed to step9. Explicit live runs with generated profiles also
+use a bounded OpenAI blind-review executor (20 tasks, no retries, quotes validated)
+and one Claude gap-drafting job when sufficient site evidence exists. Step6 remains
+rules; step7 measures agreement with rules, not an invented Haiku primary run.
+No new calls were made after the user's instruction to finish configuration only.
+Gemini configuration moved to gemini-3.5-flash-lite from the supplied upstream
+routing; the revised connection was not exercised. Test results stay private.

@@ -48,4 +48,8 @@ benchmark-*.json
 *.orig
 *.rej
 .DS_Store
+node_modules/
+frontend/coverage/
+frontend/.vite/
+*.tsbuildinfo
 Thumbs.db
